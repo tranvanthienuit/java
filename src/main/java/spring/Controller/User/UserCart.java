@@ -1,0 +1,58 @@
+package spring.Controller.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import spring.Entity.*;
+import spring.Sercurity.userDetail;
+import spring.Service.BookService;
+import spring.Service.BorrowDeSevice;
+import spring.Service.BorrowSevice;
+import spring.Service.UserService;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+public class UserCart {
+    @Autowired
+    BookService bookService;
+    @Autowired
+    BorrowSevice borrowSevice;
+    @Autowired
+    BorrowDeSevice borrowDeSevice;
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/user/muon-sach")
+    public ResponseEntity<List<CartBook>> borrow(@RequestBody List<CartBook> cart) throws Exception {
+        userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(user1.getUserId());
+
+        LocalDate ldate = LocalDate.now();
+        Date date = Date.valueOf(ldate);
+        Date date1 = Date.valueOf(ldate.plusMonths(1));
+
+
+        Borrow borrow = new Borrow();
+        borrow.setBorrowDate(date);
+        borrow.setReturnDate(date1);
+        borrow.setUser(user);
+        borrowSevice.saveBorrow(borrow);
+
+
+        for (CartBook cartBook : cart) {
+            BorrowDetail borrowDetail = new BorrowDetail();
+            borrowDetail.setCount(cartBook.getQuantity());
+            borrowDetail.setStatus("exist");
+            borrowDetail.setBorrow(borrow);
+            borrowDetail.setBook(cartBook.getBooks());
+            borrowDeSevice.saveBorrowDe(borrowDetail);
+        }
+        return new ResponseEntity<List<CartBook>>(cart, HttpStatus.OK);
+    }
+}

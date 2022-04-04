@@ -1,0 +1,62 @@
+package spring.Controller.Admin;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import spring.Entity.Book;
+import spring.Entity.BookList;
+import spring.Service.BookService;
+import spring.Service.CategoryService;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+public class AdminBook {
+    @Autowired
+    BookService booksService;
+    @Autowired
+    CategoryService categoryService;
+
+    @GetMapping(value = {"/admin/xem-tat-ca-sach/{page}","/admin/xem-tat-ca-sach"})
+    public ResponseEntity<BookList> getAllBook(
+            @PathVariable(name = "page", required = false) Integer page) throws Exception {
+        BookList bookList = new BookList();
+        if (page == null) {
+            page = 0;
+        }
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<Book> bookPage = booksService.getAllBooks(pageable);
+        List<Book> bookPageContent = bookPage.getContent();
+        if (bookPageContent.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            bookList.setBookList(bookPageContent);
+            bookList.setCount(bookPageContent.size());
+            return new ResponseEntity<>(bookList, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(value = "/admin/luu-sach")
+    public ResponseEntity<Book> saveBook(@RequestBody Book book) throws Exception {
+        LocalDate ldate = LocalDate.now();
+        java.sql.Date date = java.sql.Date.valueOf(ldate);
+        book.setDayAdd(date);
+        book.setStatus("exist");
+        booksService.saveBook(book);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/admin/xoa-sach/{idBook}","/admin/xoa-sach"})
+    public ResponseEntity<Book> removeBook(@PathVariable(value = "idBook", required = false) String idBook) throws Exception {
+        if (booksService.findBooksByBookId(idBook) != null) {
+            booksService.removeBookByBookId(idBook);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
