@@ -10,6 +10,8 @@ import spring.Entity.User;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
+
 @Repository
 public interface BorrowRepository extends JpaRepository<Borrow, String> {
     @Transactional
@@ -22,4 +24,6 @@ public interface BorrowRepository extends JpaRepository<Borrow, String> {
 
     @Query("select u from Borrow u where u.borrowDate=:date and u.user=:user")
     Borrow findBorrowByBorrowDateAndUserId(Date date, User user);
+
+    List<Borrow> findBorrowsByUser(String userId);
 }

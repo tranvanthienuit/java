@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import spring.Entity.Borrow;
 import spring.Entity.BorrowDelist;
 import spring.Entity.BorrowDetail;
 import spring.Entity.User;
 import spring.Service.BorrowDeSevice;
+import spring.Service.BorrowSevice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +24,8 @@ import java.util.List;
 public class AdminBorrowDe {
     @Autowired
     BorrowDeSevice borrowDeSevice;
+    @Autowired
+    BorrowSevice borrowSevice;
 
     @GetMapping(value = {"/admin/xoa-borrow-detail/{idBorrowDe}","/admin/xoa-borrow-detail"})
     public ResponseEntity<BorrowDetail> removeBorrowDe(@PathVariable(value = "idBorrowDe", required = false) String idBorrowDe) throws Exception {
@@ -48,6 +53,20 @@ public class AdminBorrowDe {
             borrowDelist.setBorrowDelists(borrowDetailPageContent);
             borrowDelist.setCount(borrowDetailPageContent.size());
             return new ResponseEntity<>(borrowDelist, HttpStatus.OK);
+        }
+    }
+    @GetMapping(value = {"/admin/tim-borrowde/{userId}","/admin/tim-borrow"})
+    private ResponseEntity<List<BorrowDetail>> findBorrowDe(@PathVariable(name = "userId",required = false)String userId){
+        if (userId==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<BorrowDetail> borrowDetailList = new ArrayList<>();
+            List<Borrow> borrow = borrowSevice.findBorrowsByUser(userId);
+            for (Borrow borrow1:borrow){
+                List<BorrowDetail> borrowDetailList1 = borrowDeSevice.findBorrowDetailsByBorrow(borrow1.getBorrowId());
+                borrowDetailList.addAll(borrowDetailList1);
+            }
+            return new ResponseEntity<>(borrowDetailList,HttpStatus.OK);
         }
     }
 }

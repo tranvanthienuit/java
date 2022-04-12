@@ -43,10 +43,16 @@ public class AdminBook {
 
     @PostMapping(value = "/admin/luu-sach")
     public ResponseEntity<Book> saveBook(@RequestBody Book book) throws Exception {
+        List<Book> books = booksService.getAllBook();
+        for (Book book1:books){
+            if (book.getNameBook().equals(book1.getNameBook())){
+                booksService.findBookAndUpdate(book1.getCount()+ book.getCount(),book.getBookId());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
         LocalDate ldate = LocalDate.now();
         java.sql.Date date = java.sql.Date.valueOf(ldate);
         book.setDayAdd(date);
-        book.setStatus("exist");
         booksService.saveBook(book);
         return new ResponseEntity<>(HttpStatus.OK);
     }

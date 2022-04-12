@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -50,7 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.exceptionHandling()
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
                 .authenticationEntryPoint(
                         (request, response, ex) -> {
                             response.sendError(
@@ -65,12 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/dang-xuat").authenticated()
-                .and()
-                .authorizeRequests().antMatchers("/user/*").hasAnyAuthority("USER","ADMIN")
-                .and()
-                .authorizeRequests().antMatchers("/admin/*").hasAnyAuthority("ADMIN")
+                .antMatchers("/dang-xuat").authenticated()
+                .antMatchers("/librarian/*").hasAnyAuthority("LIBRARIAN", "ADMIN")
+                .antMatchers("/user/*").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/admin/*").hasAnyAuthority("ADMIN")
+                .antMatchers("/xem-tai-khoan/*", "/sua-thong-tin/*", "/cap-nhat-anh/*","/xem-tai-khoan", "/sua-thong-tin", "/cap-nhat-anh").hasAnyAuthority("USER","ADMIN","LIBRARIAN")
                 .and().httpBasic();// Cho phép tất cả mọi người truy cập vào 2 địa chỉ này;
 
         // Thêm một lớp Filter kiểm tra jwt

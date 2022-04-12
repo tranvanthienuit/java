@@ -15,7 +15,7 @@ public class BookService {
     BookRepository booksRepository;
 
     public Page<Book> getAllBooks(Pageable pageable) {
-        return booksRepository.findAll(pageable);
+        return booksRepository.getAllBooks(pageable);
     }
 
     public Book saveBook(Book book) {
@@ -47,5 +47,12 @@ public class BookService {
         return booksRepository.findAll(pageable);
     }
 
+    public List<Book> getAllBook() {
+        return booksRepository.findAll();
+    }
+
+    public void findBookAndUpdate(Integer count, String bookId) {
+        booksRepository.findBookAndUpdate(count, bookId);
+    }
 }
 

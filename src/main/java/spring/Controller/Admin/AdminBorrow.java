@@ -54,4 +54,13 @@ public class AdminBorrow {
             return new ResponseEntity<>(borrowList, HttpStatus.OK);
         }
     }
+    @GetMapping(value = {"/admin/tim-borrow/{userId}","/admin/tim-borrow"})
+    public ResponseEntity<List<Borrow>> findBorrow(@PathVariable(name = "userId",required = false)String userId){
+        if (userId==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<Borrow> borrowList = borrowSevice.findBorrowsByUser(userId);
+            return new ResponseEntity<>(borrowList,HttpStatus.OK);
+        }
+    }
 }

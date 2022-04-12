@@ -30,8 +30,8 @@ public class Book {
     private java.util.Date dayAdd;
     @Column(name = "Price")
     private Integer price;
-    @Column(name = "Status")
-    private String status;
+    @Column(name = "Count")
+    private Integer count;
     @Column(name = "Description")
     private String description;
     @Column(name = "image")
