@@ -68,14 +68,13 @@ public class HomeController {
         bookList.setCount(bookPageContent.size());
 
 
-        Sort sort = Sort.by("total").descending();
-        Pageable pageable1 = PageRequest.of(0, 8, sort);
+        Pageable pageable1 = PageRequest.of(0, 4);
         List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
 
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1,user.getUserId());
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
 
         if (bookUser.isEmpty()) {
             bookReturn.setBookList(bookList);
@@ -108,14 +107,13 @@ public class HomeController {
         bookList.setCount(bookPageContent.size());
 
 
-        Sort sort = Sort.by("total").descending();
-        Pageable pageable1 = PageRequest.of(0, 8, sort);
+        Pageable pageable1 = PageRequest.of(0, 4);
         List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
 
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1,user.getUserId());
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
 
         if (bookUser == null) {
             bookReturn.setBookList(bookList);
@@ -165,7 +163,7 @@ public class HomeController {
     @GetMapping("/dang-xuat")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth!=null){
+        if (auth != null) {
             String jwt = getJwtFromRequest(request);
             Token token = new Token(jwt);
             List<Token> tokenList = tokenService.getAllToken();

@@ -40,4 +40,8 @@ public class BorrowSevice {
     public List<Borrow> findBorrowsByUser(String userId) {
         return borrowRepository.findBorrowsByUser(userId);
     }
+
+    public List<Borrow> getAllBorrow() {
+        return borrowRepository.findAll();
+    }
 }

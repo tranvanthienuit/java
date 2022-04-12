@@ -15,8 +15,8 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
     @Transactional
     @Modifying
     @Query("delete from Role u where u.roleId=:roleId ")
-    public void removeByRoleId(@Param("roleId") String roleId);
+    void removeByRoleId(@Param("roleId") String roleId);
 
     @Query("select u from Role u where u.nameRole=:nameRole")
-    public Role fineRoleByName(@Param("nameRole") String nameRole);
+    Role fineRoleByName(@Param("nameRole") String nameRole);
 }

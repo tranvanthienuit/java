@@ -37,11 +37,12 @@ public class LibrarianBorrow {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             borrowList.setBorrowList(borrowPageContent);
-            borrowList.setCount(borrowPageContent.size());
+            borrowList.setCount(borrowSevice.getAllBorrow().size());
             return new ResponseEntity<>(borrowList, HttpStatus.OK);
         }
     }
-    @GetMapping(value = {"/librarian/xoa-borrow/{idBorrow}","/librarian/xoa-borrow"})
+
+    @GetMapping(value = {"/librarian/xoa-borrow/{idBorrow}", "/librarian/xoa-borrow"})
     public ResponseEntity<Borrow> removeBorrow(@PathVariable(value = "idBorrow", required = false) String idBorrow) throws Exception {
         Borrow borrow = borrowSevice.findBorrowByBorrowId(idBorrow);
         if (borrow != null) {
@@ -51,13 +52,14 @@ public class LibrarianBorrow {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @GetMapping(value = {"/librarian/tim-borrow/{userId}","/librarian   /tim-borrow"})
-    public ResponseEntity<List<Borrow>> findBorrow(@PathVariable(name = "userId",required = false)String userId){
-        if (userId==null){
+
+    @GetMapping(value = {"/librarian/tim-borrow/{userId}", "/librarian   /tim-borrow"})
+    public ResponseEntity<List<Borrow>> findBorrow(@PathVariable(name = "userId", required = false) String userId) {
+        if (userId == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             List<Borrow> borrowList = borrowSevice.findBorrowsByUser(userId);
-            return new ResponseEntity<>(borrowList,HttpStatus.OK);
+            return new ResponseEntity<>(borrowList, HttpStatus.OK);
         }
     }
 }

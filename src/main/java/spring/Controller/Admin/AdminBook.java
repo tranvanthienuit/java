@@ -22,7 +22,7 @@ public class AdminBook {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping(value = {"/admin/xem-tat-ca-sach/{page}","/admin/xem-tat-ca-sach"})
+    @GetMapping(value = {"/admin/xem-tat-ca-sach/{page}", "/admin/xem-tat-ca-sach"})
     public ResponseEntity<BookList> getAllBook(
             @PathVariable(name = "page", required = false) Integer page) throws Exception {
         BookList bookList = new BookList();
@@ -36,7 +36,7 @@ public class AdminBook {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             bookList.setBookList(bookPageContent);
-            bookList.setCount(bookPageContent.size());
+            bookList.setCount(booksService.getAllBook().size());
             return new ResponseEntity<>(bookList, HttpStatus.OK);
         }
     }
@@ -44,9 +44,9 @@ public class AdminBook {
     @PostMapping(value = "/admin/luu-sach")
     public ResponseEntity<Book> saveBook(@RequestBody Book book) throws Exception {
         List<Book> books = booksService.getAllBook();
-        for (Book book1:books){
-            if (book.getNameBook().equals(book1.getNameBook())){
-                booksService.findBookAndUpdate(book1.getCount()+ book.getCount(),book.getBookId());
+        for (Book book1 : books) {
+            if (book.getNameBook().equals(book1.getNameBook())) {
+                booksService.findBookAndUpdate(book1.getCount() + book.getCount(), book.getBookId());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         }
@@ -57,7 +57,7 @@ public class AdminBook {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/admin/xoa-sach/{idBook}","/admin/xoa-sach"})
+    @GetMapping(value = {"/admin/xoa-sach/{idBook}", "/admin/xoa-sach"})
     public ResponseEntity<Book> removeBook(@PathVariable(value = "idBook", required = false) String idBook) throws Exception {
         if (booksService.findBooksByBookId(idBook) != null) {
             booksService.removeBookByBookId(idBook);

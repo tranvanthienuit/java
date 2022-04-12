@@ -25,7 +25,7 @@ public class AdminCategory {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/admin/xoa-loai-sach/{idCategory}","/admin/xoa-loai-sach"})
+    @GetMapping(value = {"/admin/xoa-loai-sach/{idCategory}", "/admin/xoa-loai-sach"})
     public ResponseEntity<Categories> removeCategory(@PathVariable(value = "idCategory", required = false) String categoryId) throws Exception {
         if (categoryService.findByCategoryId(categoryId) != null) {
             categoryService.removeCategoriesByCategoryId(categoryId);

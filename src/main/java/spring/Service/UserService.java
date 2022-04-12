@@ -30,8 +30,9 @@ public class UserService {
     public User findUserByUserId(String idUser) {
         return userRepository.findUserByUserId(idUser);
     }
+
     public void editUserName(String nameUser, String userid) {
-        userRepository.editUserName(nameUser,userid);
+        userRepository.editUserName(nameUser, userid);
     }
 
 
@@ -56,17 +57,22 @@ public class UserService {
 
 
     public void editUserSex(String sex, String userid) {
-        userRepository.editUserSex(sex,userid);
-    }
-    public void editImage(Base64 image, String userid) {
-        userRepository.editImage(image,userid);
+        userRepository.editUserSex(sex, userid);
     }
 
-    public Page<User> getAllUser(Pageable pageable){
+    public void editImage(Base64 image, String userid) {
+        userRepository.editImage(image, userid);
+    }
+
+    public Page<User> getAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public Integer countUser(){
+    public Integer countUser() {
         return Math.toIntExact(userRepository.count());
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

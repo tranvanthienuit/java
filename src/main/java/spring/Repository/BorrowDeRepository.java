@@ -20,20 +20,20 @@ public interface BorrowDeRepository extends JpaRepository<BorrowDetail, String> 
     @Transactional
     @Modifying
     @Query("delete from BorrowDetail u where u.borrowDeId=:idBorrowDe")
-    public void removeByBorrowDeId(@Param("idBorrowDe") String idBorrowDe);
+    void removeByBorrowDeId(@Param("idBorrowDe") String idBorrowDe);
 
     @Transactional
     @Modifying
     @Query("delete from BorrowDetail u where u.borrow=:idBorrow ")
-    public void removeByBorrowId(@Param("idBorrow") String idBorrow);
+    void removeByBorrowId(@Param("idBorrow") String idBorrow);
 
     BorrowDetail findBorrowDetailByBorrowDeId(String idBorrowDe);
 
-    @Query("select u.book,sum(u.count) from BorrowDetail u group by u.book")
-    public List<BookSelect> getBookFromBorrDe(Pageable pageable);
+    @Query("select new spring.Entity.BookSelect(u.book,sum(u.count)) from BorrowDetail u group by u.book.bookId order by sum(u.count) desc ")
+    List<BookSelect> getBookFromBorrDe(Pageable pageable);
 
-    @Query("select new spring.Entity.BookSelect(u.book,sum(u.count)) from BorrowDetail u where u.borrow.user.userId=:userId group by u.book.bookId")
-    public List<BookSelect> getBookFromBorrDeAndUser(Pageable pageable, @Param("userId") String userId);
+    @Query("select new spring.Entity.BookSelect(u.book,sum(u.count)) from BorrowDetail u where u.borrow.user.userId=:userId group by u.book.bookId order by sum (u.count) desc ")
+    List<BookSelect> getBookFromBorrDeAndUser(Pageable pageable, @Param("userId") String userId);
 
     List<BorrowDetail> findBorrowDetailsByBorrow(String borrowId);
 }

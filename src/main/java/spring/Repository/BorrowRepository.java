@@ -17,10 +17,10 @@ public interface BorrowRepository extends JpaRepository<Borrow, String> {
     @Transactional
     @Modifying
     @Query("delete from Borrow u where u.borrowId=:idBorrow")
-    public void removeBorrowByBorrowId(@Param("idBorrow") String idBorrow);
+    void removeBorrowByBorrowId(@Param("idBorrow") String idBorrow);
 
     @Query("select u from  Borrow u where u.borrowId=:idBorrow")
-    public Borrow findBorrowByBorrowId(@Param("idBorrow") String idBorrow);
+    Borrow findBorrowByBorrowId(@Param("idBorrow") String idBorrow);
 
     @Query("select u from Borrow u where u.borrowDate=:date and u.user=:user")
     Borrow findBorrowByBorrowDateAndUserId(Date date, User user);

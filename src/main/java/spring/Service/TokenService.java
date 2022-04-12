@@ -11,13 +11,16 @@ import java.util.List;
 public class TokenService {
     @Autowired
     TokenRepository tokenRepository;
-    public List<Token> getAllToken(){
+
+    public List<Token> getAllToken() {
         return tokenRepository.findAll();
     }
-    public Token saveToken(Token token){
+
+    public Token saveToken(Token token) {
         return tokenRepository.save(token);
     }
-    public void removeToken(Token token){
+
+    public void removeToken(Token token) {
         tokenRepository.delete(token);
     }
 }

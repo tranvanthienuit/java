@@ -27,7 +27,7 @@ public class AdminBorrowDe {
     @Autowired
     BorrowSevice borrowSevice;
 
-    @GetMapping(value = {"/admin/xoa-borrow-detail/{idBorrowDe}","/admin/xoa-borrow-detail"})
+    @GetMapping(value = {"/admin/xoa-borrow-detail/{idBorrowDe}", "/admin/xoa-borrow-detail"})
     public ResponseEntity<BorrowDetail> removeBorrowDe(@PathVariable(value = "idBorrowDe", required = false) String idBorrowDe) throws Exception {
         if (borrowDeSevice.findBorrowDe(idBorrowDe) != null) {
             borrowDeSevice.removeByBorrowDeId(idBorrowDe);
@@ -37,7 +37,7 @@ public class AdminBorrowDe {
 
     }
 
-    @GetMapping(value = {"/admin/xem-tat-ca-Borrow-Detail/{page}","/admin/xem-tat-ca-Borrow-Detail"})
+    @GetMapping(value = {"/admin/xem-tat-ca-Borrow-Detail/{page}", "/admin/xem-tat-ca-Borrow-Detail"})
     public ResponseEntity<BorrowDelist> getAllBorrowDe(
             @PathVariable(name = "page", required = false) Integer page) throws Exception {
         BorrowDelist borrowDelist = new BorrowDelist();
@@ -51,22 +51,23 @@ public class AdminBorrowDe {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             borrowDelist.setBorrowDelists(borrowDetailPageContent);
-            borrowDelist.setCount(borrowDetailPageContent.size());
+            borrowDelist.setCount(borrowSevice.getAllBorrow().size());
             return new ResponseEntity<>(borrowDelist, HttpStatus.OK);
         }
     }
-    @GetMapping(value = {"/admin/tim-borrowde/{userId}","/admin/tim-borrow"})
-    private ResponseEntity<List<BorrowDetail>> findBorrowDe(@PathVariable(name = "userId",required = false)String userId){
-        if (userId==null){
+
+    @GetMapping(value = {"/admin/tim-borrowde/{userId}", "/admin/tim-borrow"})
+    private ResponseEntity<List<BorrowDetail>> findBorrowDe(@PathVariable(name = "userId", required = false) String userId) {
+        if (userId == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             List<BorrowDetail> borrowDetailList = new ArrayList<>();
             List<Borrow> borrow = borrowSevice.findBorrowsByUser(userId);
-            for (Borrow borrow1:borrow){
+            for (Borrow borrow1 : borrow) {
                 List<BorrowDetail> borrowDetailList1 = borrowDeSevice.findBorrowDetailsByBorrow(borrow1.getBorrowId());
                 borrowDetailList.addAll(borrowDetailList1);
             }
-            return new ResponseEntity<>(borrowDetailList,HttpStatus.OK);
+            return new ResponseEntity<>(borrowDetailList, HttpStatus.OK);
         }
     }
 }

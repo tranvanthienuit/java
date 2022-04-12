@@ -37,7 +37,7 @@ public class LibrarianBook {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             bookList.setBookList(bookPageContent);
-            bookList.setCount(bookPageContent.size());
+            bookList.setCount(booksService.getAllBook().size());
             return new ResponseEntity<>(bookList, HttpStatus.OK);
         }
     }

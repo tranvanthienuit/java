@@ -42,39 +42,43 @@ public class BorrowDeSevice {
         return borrowDeRepository.findBorrowDetailByBorrowDeId(idBorrowDe);
     }
 
-    public List<BorrowDetail> findBorrowDetailsByBorrow(String borrowId){
+    public List<BorrowDetail> findBorrowDetailsByBorrow(String borrowId) {
         return borrowDeRepository.findBorrowDetailsByBorrow(borrowId);
     }
 
     public List<Book> getBookFromBorrDe(Pageable pageable) {
         List<BookSelect> objects = borrowDeRepository.getBookFromBorrDe(pageable);
         List<Book> bookList = new ArrayList<>();
-        for (BookSelect bookSelect:objects){
+        for (BookSelect bookSelect : objects) {
             bookList.add(bookSelect.getBook());
         }
         return bookList;
     }
 
 
-    public List<Book> getBookFromBorrDeAndUser(Pageable pageable,String userId) {
+    public List<Book> getBookFromBorrDeAndUser(Pageable pageable, String userId) {
         List<Book> recomBook = new ArrayList<>();
-        if (userId.equals("anonymousUser")){
-            userId=" ";
+        if (userId.equals("anonymousUser")) {
+            userId = " ";
         }
-        List<BookSelect> objects = borrowDeRepository.getBookFromBorrDeAndUser(pageable,userId);
+        List<BookSelect> objects = borrowDeRepository.getBookFromBorrDeAndUser(pageable, userId);
         List<Book> bookList = new ArrayList<>();
         List<Book> books = bookRepository.findAll();
-        for (BookSelect bookSelect:objects){
+        for (BookSelect bookSelect : objects) {
             bookList.add(bookSelect.getBook());
         }
 
-        for (Book book:bookList){
-            for (Book book1:books){
-                if (similarity(book1.getDescription(),book.getDescription())>0.7){
+        for (Book book : bookList) {
+            for (Book book1 : books) {
+                if (similarity(book1.getDescription(), book.getDescription()) > 0.7) {
                     recomBook.add(book);
                 }
             }
         }
         return recomBook;
+    }
+
+    public List<BorrowDetail> getAllBorrowDe() {
+        return borrowDeRepository.findAll();
     }
 }

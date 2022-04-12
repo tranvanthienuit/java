@@ -34,7 +34,7 @@ public class LibrarianCategory {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             cateList.setCategoriesList(categoriesListContent);
-            cateList.setCount(categoriesListContent.size());
+            cateList.setCount(categoryService.getAllCategory().size());
             return new ResponseEntity<>(cateList, HttpStatus.OK);
         }
     }

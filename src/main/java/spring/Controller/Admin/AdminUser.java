@@ -13,6 +13,7 @@ import spring.Entity.User;
 import spring.Entity.UserList;
 import spring.Service.RoleService;
 import spring.Service.UserService;
+
 import java.util.List;
 
 @RestController
@@ -23,9 +24,9 @@ public class AdminUser {
     RoleService roleService;
 
 
-    @GetMapping(value = {"/admin/xoa-user/{idUser}","/admin/xoa-user"})
-    public ResponseEntity<User> removeUser(@PathVariable(value = "idUser",required = false) String idUser) throws Exception {
-        if (userService.findUserByUserId(idUser)!=null){
+    @GetMapping(value = {"/admin/xoa-user/{idUser}", "/admin/xoa-user"})
+    public ResponseEntity<User> removeUser(@PathVariable(value = "idUser", required = false) String idUser) throws Exception {
+        if (userService.findUserByUserId(idUser) != null) {
             if (!userService.countUser().equals(1)) {
                 userService.removeUserByUserId(idUser);
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -35,12 +36,12 @@ public class AdminUser {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = {"/admin/xem-tat-ca-user/{page}","/admin/xem-tat-ca-user"})
+    @GetMapping(value = {"/admin/xem-tat-ca-user/{page}", "/admin/xem-tat-ca-user"})
     public ResponseEntity<UserList> getAllUser(
             @PathVariable(name = "page", required = false) Integer page) throws Exception {
         UserList userList = new UserList();
-        if (page==null){
-            page=0;
+        if (page == null) {
+            page = 0;
         }
         Pageable pageable = PageRequest.of(page, 16);
         Page<User> userPage = userService.getAllUser(pageable);
@@ -49,7 +50,7 @@ public class AdminUser {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             userList.setUserList(userPageContent);
-            userList.setCount(userPageContent.size());
+            userList.setCount(userService.getAllUsers().size());
             return new ResponseEntity<>(userList, HttpStatus.OK);
         }
     }

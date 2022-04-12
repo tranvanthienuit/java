@@ -27,6 +27,10 @@ public class CategoryService {
     }
 
     public Page<Categories> getAllCate(Pageable pageable) {
-        return  categoryRepository.findAll(pageable);
+        return categoryRepository.findAll(pageable);
+    }
+
+    public List<Categories> getAllCategory() {
+        return categoryRepository.findAll();
     }
 }
