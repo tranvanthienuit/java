@@ -47,9 +47,9 @@ public class BookController {
 
     }
 
-    @GetMapping(value = {"/xem-chi-tiet-sach/{idBook}", "/xem-chi-tiet-sach"})
-    public ResponseEntity<Book> productdetail(@PathVariable(value = "idBook", required = false) String idBook) throws Exception {
-        Book book = booksService.findBooksByBookId(idBook);
+    @GetMapping(value = {"/xem-chi-tiet-sach/{bookId}", "/xem-chi-tiet-sach"})
+    public ResponseEntity<Book> productdetail(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
+        Book book = booksService.findBooksByBookId(bookId);
         if (book != null) {
             return new ResponseEntity<Book>(book, HttpStatus.OK);
         }

@@ -24,11 +24,11 @@ public class LibraryUser {
     RoleService roleService;
 
 
-    @GetMapping(value = {"/librarian/xoa-user/{idUser}", "/librarian/xoa-user"})
-    public ResponseEntity<User> removeUser(@PathVariable(value = "idUser", required = false) String idUser) throws Exception {
-        if (userService.findUserByUserId(idUser) != null) {
+    @GetMapping(value = {"/librarian/xoa-user/{userId}", "/librarian/xoa-user"})
+    public ResponseEntity<User> removeUser(@PathVariable(value = "userId", required = false) String userId) throws Exception {
+        if (userService.findUserByUserId(userId) != null) {
             if (!userService.countUser().equals(1)) {
-                userService.removeUserByUserId(idUser);
+                userService.removeUserByUserId(userId);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

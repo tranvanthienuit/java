@@ -57,10 +57,10 @@ public class AdminBook {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/admin/xoa-sach/{idBook}", "/admin/xoa-sach"})
-    public ResponseEntity<Book> removeBook(@PathVariable(value = "idBook", required = false) String idBook) throws Exception {
-        if (booksService.findBooksByBookId(idBook) != null) {
-            booksService.removeBookByBookId(idBook);
+    @GetMapping(value = {"/admin/xoa-sach/{bookId}", "/admin/xoa-sach"})
+    public ResponseEntity<Book> removeBook(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
+        if (booksService.findBooksByBookId(bookId) != null) {
+            booksService.removeBookByBookId(bookId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

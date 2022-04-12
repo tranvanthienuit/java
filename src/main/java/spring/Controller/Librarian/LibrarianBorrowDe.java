@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.Entity.Borrow;
 import spring.Entity.BorrowDelist;
 import spring.Entity.BorrowDetail;
+import spring.Service.BookService;
 import spring.Service.BorrowDeSevice;
 import spring.Service.BorrowSevice;
 
@@ -24,11 +25,15 @@ public class LibrarianBorrowDe {
     BorrowDeSevice borrowDeSevice;
     @Autowired
     BorrowSevice borrowSevice;
+    @Autowired
+    BookService bookService;
 
-    @GetMapping(value = {"/librarian/xoa-borrow-detail/{idBorrowDe}", "/librarian/xoa-borrow-detail"})
-    public ResponseEntity<BorrowDetail> removeBorrowDe(@PathVariable(value = "idBorrowDe", required = false) String idBorrowDe) throws Exception {
-        if (borrowDeSevice.findBorrowDe(idBorrowDe) != null) {
-            borrowDeSevice.removeByBorrowDeId(idBorrowDe);
+    @GetMapping(value = {"/librarian/xoa-borrow-detail/{borrowDeId}", "/librarian/xoa-borrow-detail"})
+    public ResponseEntity<BorrowDetail> removeBorrowDe(@PathVariable(value = "borrowDeId", required = false) String borrowDeId) throws Exception {
+        if (borrowDeSevice.findBorrowDe(borrowDeId) != null) {
+            BorrowDetail borrowDetail = borrowDeSevice.findBorrowDe(borrowDeId);
+            bookService.findBookAndUpdate(borrowDetail.getCount(),borrowDetail.getBook().getBookId());
+            borrowDeSevice.removeByBorrowDeId(borrowDeId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

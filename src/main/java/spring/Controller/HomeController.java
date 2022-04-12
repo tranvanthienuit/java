@@ -128,9 +128,9 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"/xem-tai-khoan/{idUser}", "/xem-tai-khoan"})
-    public ResponseEntity<User> about(@RequestBody @PathVariable(value = "idUser", required = false) String idUser) throws Exception {
-        User user = userService.findUserByUserId(idUser);
+    @GetMapping(value = {"/xem-tai-khoan/{userId}", "/xem-tai-khoan"})
+    public ResponseEntity<User> about(@RequestBody @PathVariable(value = "userId", required = false) String userId) throws Exception {
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -138,9 +138,9 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"/loai-sach/{idCate}", "/loai-sach"})
-    public ResponseEntity<Categories> getCategoryBook(@RequestBody @PathVariable(value = "idCate", required = false) String idCate) throws Exception {
-        Categories categoriesList = categoryService.findByCategoryId(idCate);
+    @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
+    public ResponseEntity<Categories> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
+        Categories categoriesList = categoryService.findByCategoryId(CategoryId);
         if (categoriesList == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

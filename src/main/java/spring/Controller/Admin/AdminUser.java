@@ -24,11 +24,11 @@ public class AdminUser {
     RoleService roleService;
 
 
-    @GetMapping(value = {"/admin/xoa-user/{idUser}", "/admin/xoa-user"})
-    public ResponseEntity<User> removeUser(@PathVariable(value = "idUser", required = false) String idUser) throws Exception {
-        if (userService.findUserByUserId(idUser) != null) {
+    @GetMapping(value = {"/admin/xoa-user/{userId}", "/admin/xoa-user"})
+    public ResponseEntity<User> removeUser(@PathVariable(value = "userId", required = false) String userId) throws Exception {
+        if (userService.findUserByUserId(userId) != null) {
             if (!userService.countUser().equals(1)) {
-                userService.removeUserByUserId(idUser);
+                userService.removeUserByUserId(userId);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
