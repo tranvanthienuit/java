@@ -55,7 +55,7 @@ public class UserCart {
                         borrowDetail.setCount(cartBook.getQuantity());
                         bookService.findBookAndUpdate(book1.getCount() - cartBook.getBooks().getCount(), cartBook.getBooks().getBookId());
                     } else {
-                        bookService.findBookAndUpdate(book1.getCount(), cartBook.getBooks().getBookId());
+                        bookService.findBookAndUpdate(0, cartBook.getBooks().getBookId());
                         borrowDetail.setCount(book1.getCount());
                     }
                 }

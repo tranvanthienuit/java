@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import spring.Entity.Book;
+import spring.Entity.BookSelect;
 import spring.Entity.BorrowDetail;
 
 import javax.transaction.Transactional;
@@ -28,11 +29,11 @@ public interface BorrowDeRepository extends JpaRepository<BorrowDetail, String> 
 
     BorrowDetail findBorrowDetailByBorrowDeId(String idBorrowDe);
 
-    @Query("select u.book,count(u.count) from BorrowDetail u group by u.book")
-    public Page<Book> getBookFromBorrDe(Pageable pageable);
+    @Query("select u.book,sum(u.count) from BorrowDetail u group by u.book")
+    public List<BookSelect> getBookFromBorrDe(Pageable pageable);
 
-    @Query("select u.book,count(u.count) from BorrowDetail u where u.borrow.user.userId=:userId group by u.book")
-    public Page<Book> getBookFromBorrDeAndUser(Pageable pageable, @Param("userId") String userId);
+    @Query("select new spring.Entity.BookSelect(u.book,sum(u.count)) from BorrowDetail u where u.borrow.user.userId=:userId group by u.book.bookId")
+    public List<BookSelect> getBookFromBorrDeAndUser(Pageable pageable, @Param("userId") String userId);
 
     List<BorrowDetail> findBorrowDetailsByBorrow(String borrowId);
 }

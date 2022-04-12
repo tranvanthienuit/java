@@ -68,16 +68,16 @@ public class HomeController {
         bookList.setCount(bookPageContent.size());
 
 
-        Sort sort = Sort.by("count").descending();
+        Sort sort = Sort.by("total").descending();
         Pageable pageable1 = PageRequest.of(0, 8, sort);
-        Page<Book> bookPage1 = borrowDeSevice.getBookFromBorrDe(pageable1);
-        List<Book> bookList1 = bookPage1.getContent();
+        List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
 
 
-        String userDetail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, userDetail);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findUserName(userName);
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1,user.getUserId());
 
-        if (bookUser == null) {
+        if (bookUser.isEmpty()) {
             bookReturn.setBookList(bookList);
             bookReturn.setBooks(bookList1);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
@@ -108,14 +108,14 @@ public class HomeController {
         bookList.setCount(bookPageContent.size());
 
 
-        Sort sort = Sort.by("count").descending();
+        Sort sort = Sort.by("total").descending();
         Pageable pageable1 = PageRequest.of(0, 8, sort);
-        Page<Book> bookPage1 = borrowDeSevice.getBookFromBorrDe(pageable1);
-        List<Book> bookList1 = bookPage1.getContent();
+        List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
 
 
-        String userDetail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, userDetail);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findUserName(userName);
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1,user.getUserId());
 
         if (bookUser == null) {
             bookReturn.setBookList(bookList);
