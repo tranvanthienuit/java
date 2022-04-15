@@ -22,7 +22,7 @@ public class CategoryService {
         categoryRepository.removeCategoriesByCategoryId(categoryId);
     }
 
-    public Categories findByCategoryId(String categoryid) {
+    public List<Categories> findByCategoryId(String categoryid) {
         return categoryRepository.findByCategoryId(categoryid);
     }
 

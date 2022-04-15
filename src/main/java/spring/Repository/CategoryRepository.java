@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import spring.Entity.Categories;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Categories, String> {
@@ -17,5 +18,5 @@ public interface CategoryRepository extends JpaRepository<Categories, String> {
     void removeCategoriesByCategoryId(@Param("categoryId") String name);
 
     @Query("select u from Categories u where u.categoryId=:categoryid")
-    Categories findByCategoryId(@Param("categoryid") String categoryid);
+    List<Categories> findByCategoryId(@Param("categoryid") String categoryid);
 }

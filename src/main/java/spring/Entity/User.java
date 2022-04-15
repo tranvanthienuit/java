@@ -24,6 +24,8 @@ public class User {
     @Column(name = "UserId", updatable = false, nullable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
     private String userId;
+    @Column(name = "fullName")
+    private String fullName;
     @Column(name = "NameUser")
     private String nameUser;
     @Column(name = "Password")
@@ -39,7 +41,6 @@ public class User {
     @Column(name = "image")
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @ToString.Exclude
     private byte[] image;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "RoleId")
@@ -56,5 +57,15 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public void setImage(String image) {
+        this.image = image.getBytes();
+    }
+
+    public String getImage() {
+        if (image==null)
+            return null;
+        return new String(image);
     }
 }

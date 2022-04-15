@@ -139,12 +139,16 @@ public class HomeController {
 
 
     @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
-    public ResponseEntity<Categories> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
-        Categories categoriesList = categoryService.findByCategoryId(CategoryId);
-        if (categoriesList == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<Categories>> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
+        if (CategoryId==null){
+            return new ResponseEntity<>(categoryService.getAllCategory(),HttpStatus.OK);
+        } else {
+            List<Categories> categoriesList = categoryService.findByCategoryId(CategoryId);
+            if (categoriesList == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(categoriesList, HttpStatus.OK);
         }
-        return new ResponseEntity<>(categoriesList, HttpStatus.OK);
     }
 
 
@@ -168,7 +172,6 @@ public class HomeController {
             Token token = new Token(jwt);
             List<Token> tokenList = tokenService.getAllToken();
             for (Token token1 : tokenList) {
-                System.out.println(token.getTokenRefesh().equals(token1.getTokenRefesh()));
                 if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
                     tokenService.removeToken(token);
                     new SecurityContextLogoutHandler().logout(request, response, auth);
@@ -191,7 +194,7 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.fineRoleByName("ADMIN");
+        Role role = roleService.fineRoleByName("USER");
         user.setRole(role);
         userService.saveUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
