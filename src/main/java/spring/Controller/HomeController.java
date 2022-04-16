@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.*;
+import spring.Entity.Model.*;
 import spring.JWT.JwtTokenProvider;
+import spring.Repository.MailService;
 import spring.Sercurity.userDetail;
 import spring.Service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import static spring.JWT.JwtAuthenticationFilter.getJwtFromRequest;
 
@@ -50,6 +50,9 @@ public class HomeController {
     TokenService tokenService;
     @Autowired
     JwtTokenProvider tokenProvider;
+    @Autowired
+    MailService mailService;
+    @Autowired RatingService ratingService;
 
     @GetMapping(value = {"/trang-chu/{page}", "/trang-chu"})
     public ResponseEntity<BookReturn> home(
@@ -76,13 +79,18 @@ public class HomeController {
         User user = userService.findUserName(userName);
         List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
 
+
+        List<BookRating> bookRatings = ratingService.bookRating();
+
         if (bookUser.isEmpty()) {
             bookReturn.setBookList(bookList);
             bookReturn.setBooks(bookList1);
+            bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
         } else {
             bookReturn.setBookList(bookList);
             bookReturn.setBooks(bookUser);
+            bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
         }
 
@@ -115,22 +123,28 @@ public class HomeController {
         User user = userService.findUserName(userName);
         List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
 
+
+        List<BookRating> bookRatings = ratingService.bookRating();
+
         if (bookUser == null) {
             bookReturn.setBookList(bookList);
             bookReturn.setBooks(bookList1);
+            bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
         } else {
             bookReturn.setBookList(bookList);
             bookReturn.setBooks(bookUser);
+            bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
         }
 
     }
 
 
-    @GetMapping(value = {"/xem-tai-khoan/{userId}", "/xem-tai-khoan"})
-    public ResponseEntity<User> about(@RequestBody @PathVariable(value = "userId", required = false) String userId) throws Exception {
-        User user = userService.findUserByUserId(userId);
+    @GetMapping(value = {"/xem-tai-khoan"})
+    public ResponseEntity<User> getUser() throws Exception {
+        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(userDetail.getUserId());
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -140,8 +154,8 @@ public class HomeController {
 
     @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
     public ResponseEntity<List<Categories>> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
-        if (CategoryId==null){
-            return new ResponseEntity<>(categoryService.getAllCategory(),HttpStatus.OK);
+        if (CategoryId == null) {
+            return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
         } else {
             List<Categories> categoriesList = categoryService.findByCategoryId(CategoryId);
             if (categoriesList == null) {
@@ -216,5 +230,31 @@ public class HomeController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 
+    }
+
+    @PostMapping("/quen-mat-khau/{email}")
+    public ResponseEntity<?> forgetPass(@PathVariable("email") String email) {
+        Mail mail = new Mail();
+        mail.setMailFrom("tranvanthienuit@gmail.com");
+        mail.setMailTo(email);
+        mail.setMailSubject("Quên password");
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        String code =  String.format("%06d", number);
+        userService.setPassword(passwordEncoder.encode(code),email);
+        mail.setMailContent("Code: "+code);
+        mailService.sendEmail(mail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}","/danh-gia-sach"})
+    public void appriciateBook(@PathVariable(value = "bookId",required = false)String bookId,@PathVariable(value = "star",required = false)int star){
+        Rating rating = new Rating();
+        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(userDetail.getUserId());
+        Book book = booksService.findBooksByBookId(bookId);
+        rating.setUser(user);
+        rating.setBook(book);
+        rating.setRating(star);
+        ratingService.save(rating);
     }
 }

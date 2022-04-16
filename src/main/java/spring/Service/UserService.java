@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import spring.Entity.User;
+import spring.Entity.Model.User;
 import spring.Repository.UserRepository;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -60,7 +59,7 @@ public class UserService {
         userRepository.editUserSex(sex, userid);
     }
 
-    public void editImage(Base64 image, String userid) {
+    public void editImage(byte[] image, String userid) {
         userRepository.editImage(image, userid);
     }
 
@@ -74,5 +73,9 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void setPassword(String password, String email) {
+        userRepository.setPassword(password, email);
     }
 }

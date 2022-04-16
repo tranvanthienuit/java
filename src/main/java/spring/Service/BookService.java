@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import spring.Entity.Book;
+import spring.Entity.Model.Book;
 import spring.Repository.BookRepository;
 
 import java.util.List;

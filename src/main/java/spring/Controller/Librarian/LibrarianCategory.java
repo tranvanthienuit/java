@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import spring.Entity.CateList;
-import spring.Entity.Categories;
+import spring.Entity.Model.Categories;
 import spring.Service.CategoryService;
 
 import java.util.List;

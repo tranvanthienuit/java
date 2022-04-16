@@ -1,15 +1,13 @@
 package spring.Repository;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import spring.Entity.Book;
 import spring.Entity.BookSelect;
-import spring.Entity.BorrowDetail;
+import spring.Entity.Model.BorrowDetail;
 
 import javax.transaction.Transactional;
 import java.util.List;

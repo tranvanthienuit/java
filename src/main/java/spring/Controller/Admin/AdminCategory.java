@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.CateList;
-import spring.Entity.Categories;
+import spring.Entity.Model.Categories;
 import spring.Service.CategoryService;
 
 import java.util.List;

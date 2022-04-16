@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import spring.Entity.User;
+import spring.Entity.Model.User;
 import spring.Sercurity.userDetail;
 import spring.Service.UserService;
 

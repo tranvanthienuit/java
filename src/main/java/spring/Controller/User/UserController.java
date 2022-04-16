@@ -4,24 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import spring.Entity.User;
+import spring.Entity.Model.User;
 import spring.Sercurity.userDetail;
 import spring.Service.UserService;
-
-import java.util.Base64;
 
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/sua-thong-tin/{userId}")
-    public ResponseEntity<?> editInfo(@RequestBody(required = false) User user, @RequestBody @PathVariable(value = "userId", required = false) String userId) throws Exception {
-        User user1 = userService.findUserByUserId(userId);
+    @PostMapping("/sua-thong-tin")
+    public ResponseEntity<?> editInfo(@RequestBody(required = false) User user) throws Exception {
+        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user1 = userService.findUserByUserId(userDetail.getUserId());
         if (user.getNameUser() != null) {
             userService.editUserName(user.getNameUser(), user1.getUserId());
         }
@@ -43,10 +41,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/cap-nhat-anh/{userId}")
-    public ResponseEntity<User> editimg(@RequestBody Base64 image, @RequestBody @PathVariable(value = "userId", required = false) String userId) throws Exception {
-        User user = userService.findUserByUserId(userId);
-        userService.editImage(image, user.getUserId());
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+    @PostMapping("/cap-nhat-anh")
+    public ResponseEntity<User> editimg(@RequestBody String image) throws Exception {
+        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(userDetail.getUserId());
+        byte[] newImage = image.getBytes();
+        userService.editImage(newImage, user.getUserId());
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

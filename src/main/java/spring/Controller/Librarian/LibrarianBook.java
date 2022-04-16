@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import spring.Entity.Book;
+import spring.Entity.Model.Book;
 import spring.Entity.BookList;
 import spring.Service.BookService;
 import spring.Service.CategoryService;

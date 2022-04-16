@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import spring.Entity.User;
+import spring.Entity.Model.User;
 import spring.Entity.UserList;
 import spring.Service.RoleService;
 import spring.Service.UserService;

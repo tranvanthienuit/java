@@ -2,7 +2,7 @@ package spring.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spring.Entity.Token;
+import spring.Entity.Model.Token;
 import spring.Repository.TokenRepository;
 
 import java.util.List;
