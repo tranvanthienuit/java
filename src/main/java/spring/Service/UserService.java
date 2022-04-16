@@ -63,6 +63,8 @@ public class UserService {
         userRepository.editImage(image, userid);
     }
 
+    public void editUserFullname(String fullName,String userId){userRepository.editUserFullname(fullName, userId);}
+
     public Page<User> getAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
