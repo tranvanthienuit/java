@@ -2,6 +2,7 @@ package spring.Entity.Model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -15,7 +16,9 @@ import java.util.Objects;
 public class Book {
     //Books: id, name, categoryId, author, publishYear, nxb, dayAdded, price, status, description
     @Id
-    @Column(name = "BookId")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "bookId", updatable = false, nullable = false)
     private String bookId;
     @Column(name = "NameBook")
     private String nameBook;
@@ -35,6 +38,7 @@ public class Book {
     @Column(name = "Description")
     private String description;
     @Column(name = "image")
+    @Lob
     private byte[] image;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "CategoryId")

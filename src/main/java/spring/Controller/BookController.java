@@ -28,22 +28,22 @@ public class BookController {
         if (infoBook != null) {
             if (booksService.findBooksByNameBook(infoBook) != null) {
                 List<Book> booksList = booksService.findBooksByNameBook(infoBook);
-                return new ResponseEntity<List<Book>>(booksList, HttpStatus.OK);
+                return new ResponseEntity<>(booksList, HttpStatus.OK);
             } else {
                 if (booksService.findBooksByAuthor(infoBook) != null) {
                     List<Book> booksList = booksService.findBooksByAuthor(infoBook);
-                    return new ResponseEntity<List<Book>>(booksList, HttpStatus.OK);
+                    return new ResponseEntity<>(booksList, HttpStatus.OK);
 
                 } else {
                     if (booksService.findBooksByCategoryName(infoBook) != null) {
                         List<Book> booksList = booksService.findBooksByCategoryName(infoBook);
-                        return new ResponseEntity<List<Book>>(booksList, HttpStatus.OK);
+                        return new ResponseEntity<>(booksList, HttpStatus.OK);
 
                     }
                 }
             }
         }
-        return new ResponseEntity<List<Book>>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
@@ -51,9 +51,9 @@ public class BookController {
     public ResponseEntity<Book> productdetail(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
         Book book = booksService.findBooksByBookId(bookId);
         if (book != null) {
-            return new ResponseEntity<Book>(book, HttpStatus.OK);
+            return new ResponseEntity<>(book, HttpStatus.OK);
         }
-        return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/sach-moi")
@@ -62,8 +62,8 @@ public class BookController {
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
         List<Book> bookList = bookPage.getContent();
         if (bookList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<List<Book>>(bookList, HttpStatus.OK);
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 }

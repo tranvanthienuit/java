@@ -54,5 +54,8 @@ public class BookService {
     public void findBookAndUpdate(Integer count, String bookId) {
         booksRepository.findBookAndUpdate(count, bookId);
     }
+    public Book findBookByName(String nameBook){
+        return booksRepository.findBookByName(nameBook);
+    }
 }
 

@@ -24,6 +24,6 @@ public interface BorrowRepository extends JpaRepository<Borrow, String> {
 
     @Query("select u from Borrow u where u.borrowDate=:date and u.user=:user")
     Borrow findBorrowByBorrowDateAndUserId(Date date, User user);
-
-    List<Borrow> findBorrowsByUser(String userId);
+    @Query("select u from Borrow u where u.user.nameUser=:userName")
+    List<Borrow> findBorrowsByUser(String userName);
 }

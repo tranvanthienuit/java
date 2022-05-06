@@ -25,6 +25,8 @@ public class BorrowDetail {
     private String status;
     @Column(name = "count")
     private Integer count;
+    @Column(name = "total_Price")
+    private Double total;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "BorrowId")
     private Borrow borrow;

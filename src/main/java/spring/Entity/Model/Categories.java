@@ -2,11 +2,9 @@ package spring.Entity.Model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -18,7 +16,9 @@ import java.util.Objects;
 public class Categories {
     //Categories: id, name
     @Id
-    @Column(name = "CategoryId")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "categoryId", updatable = false, nullable = false)
     private String categoryId;
     @Column(name = "NameCategory")
     private String nameCate;

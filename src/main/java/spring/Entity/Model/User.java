@@ -32,11 +32,15 @@ public class User {
     private String email;
     @Column(name = "Address")
     private String address;
+    @Column(name = "DayAdd")
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date dayAdd;
     @Column(name = "Telephone")
     private String telephone;
     @Column(name = "Sex")
     private String sex;
     @Column(name = "image")
+    @Lob
     private byte[] image;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "RoleId")

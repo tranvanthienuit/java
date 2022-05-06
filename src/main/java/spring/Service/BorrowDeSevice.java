@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import spring.Entity.Model.Book;
 import spring.Entity.BookSelect;
 import spring.Entity.Model.BorrowDetail;
+import spring.Entity.Model.User;
 import spring.Repository.BookRepository;
 import spring.Repository.BorrowDeRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static spring.Recommendation.StringSimilarity.similarity;
@@ -56,25 +58,26 @@ public class BorrowDeSevice {
     }
 
 
-    public List<Book> getBookFromBorrDeAndUser(Pageable pageable, String userId) {
+    public List<Book> getBookFromBorrDeAndUser(Pageable pageable, User user) {
         List<Book> recomBook = new ArrayList<>();
-        if (userId.equals("anonymousUser")) {
-            userId = " ";
-        }
-        List<BookSelect> objects = borrowDeRepository.getBookFromBorrDeAndUser(pageable, userId);
-        List<Book> bookList = new ArrayList<>();
-        List<Book> books = bookRepository.findAll();
-        for (BookSelect bookSelect : objects) {
-            bookList.add(bookSelect.getBook());
-        }
+        if (user!=null){
+            List<BookSelect> objects = borrowDeRepository.getBookFromBorrDeAndUser(pageable, user.getUserId());
+            List<Book> bookList = new ArrayList<>();
+            List<Book> books = bookRepository.findAll();
+            for (BookSelect bookSelect : objects) {
+                bookList.add(bookSelect.getBook());
+            }
 
-        for (Book book : bookList) {
-            for (Book book1 : books) {
-                if (similarity(book1.getDescription(), book.getDescription()) > 0.7) {
-                    recomBook.add(book);
+            for (Book book : bookList) {
+                for (Book book1 : books) {
+                    if (similarity(book1.getDescription(), book.getDescription()) > 0.7) {
+                        recomBook.add(book);
+                    }
                 }
             }
+            return recomBook;
         }
+        recomBook = Collections.emptyList();
         return recomBook;
     }
 

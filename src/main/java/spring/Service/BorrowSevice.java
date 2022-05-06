@@ -37,8 +37,8 @@ public class BorrowSevice {
         return borrowRepository.findAll(pageable);
     }
 
-    public List<Borrow> findBorrowsByUser(String userId) {
-        return borrowRepository.findBorrowsByUser(userId);
+    public List<Borrow> findBorrowsByUser(String username) {
+        return borrowRepository.findBorrowsByUser(username);
     }
 
     public List<Borrow> getAllBorrow() {

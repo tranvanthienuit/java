@@ -22,6 +22,7 @@ import spring.Service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -64,22 +65,23 @@ public class HomeController {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 8);
+        //lấy tất cả các sách và số lưởng tổng
+        Pageable pageable = PageRequest.of(page, 4);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(bookPageContent.size());
 
-
+        // lấy sách dựa trên những phiếu mượn sách trước
         Pageable pageable1 = PageRequest.of(0, 4);
         List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
 
-
+        // lấy sách dựa trên số sách mà khách hàng đã mượn
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
-
+        // lấy sách dựa trên số sao đánh giá cao nhất
         List<BookRating> bookRatings = ratingService.bookRating();
 
         if (bookUser.isEmpty()) {
@@ -108,7 +110,7 @@ public class HomeController {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 4);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
@@ -121,7 +123,7 @@ public class HomeController {
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user.getUserId());
+        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
 
         List<BookRating> bookRatings = ratingService.bookRating();
@@ -146,7 +148,7 @@ public class HomeController {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -159,7 +161,7 @@ public class HomeController {
         } else {
             List<Categories> categoriesList = categoryService.findByCategoryId(CategoryId);
             if (categoriesList == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(categoriesList, HttpStatus.OK);
         }
@@ -189,11 +191,11 @@ public class HomeController {
                 if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
                     tokenService.removeToken(token);
                     new SecurityContextLogoutHandler().logout(request, response, auth);
-                    return new ResponseEntity<>(HttpStatus.OK);
+                    return new ResponseEntity<>("successful",HttpStatus.OK);
                 }
             }
         }
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/dang-ky")
@@ -205,11 +207,14 @@ public class HomeController {
             username = userService.findUserName(user.getNameUser()).getNameUser();
         }
         if (user.getNameUser().equals(username)) {
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.fineRoleByName("USER");
+        Role role = roleService.fineRoleByName("ADMIN");
         user.setRole(role);
+        LocalDate ldate = LocalDate.now();
+        java.sql.Date date = java.sql.Date.valueOf(ldate);
+        user.setDayAdd(date);
         userService.saveUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -228,14 +233,14 @@ public class HomeController {
                 return ResponseEntity.ok(new LoginResponse(accessToken, token.getTokenRefesh()));
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @PostMapping("/quen-mat-khau/{email}")
     public ResponseEntity<?> forgetPass(@PathVariable("email") String email) {
         Mail mail = new Mail();
-        mail.setMailFrom("tranvanthienuit@gmail.com");
+        mail.setMailFrom("uitsneaker@gmail.com");
         mail.setMailTo(email);
         mail.setMailSubject("Quên password");
         Random rnd = new Random();
@@ -244,7 +249,7 @@ public class HomeController {
         userService.setPassword(passwordEncoder.encode(code),email);
         mail.setMailContent("Code: "+code);
         mailService.sendEmail(mail);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("successful",HttpStatus.OK);
     }
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}","/danh-gia-sach"})
     public void appriciateBook(@PathVariable(value = "bookId",required = false)String bookId,@PathVariable(value = "star",required = false)int star){
@@ -256,5 +261,12 @@ public class HomeController {
         rating.setBook(book);
         rating.setRating(star);
         ratingService.save(rating);
+    }
+    @GetMapping("/category")
+    public ResponseEntity<CateList> getAllCategory(){
+        CateList cateList = new CateList() ;
+        cateList.setCategoriesList(categoryService.getAllCategory());
+        cateList.setCount(categoryService.getAllCategory().size());
+        return new ResponseEntity<>(cateList,HttpStatus.OK);
     }
 }
