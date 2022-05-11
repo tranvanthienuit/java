@@ -19,16 +19,4 @@ public class Role {
     @Column(name = "NameRole")
     private String nameRole;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Role role = (Role) o;
-        return roleId != null && Objects.equals(roleId, role.roleId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

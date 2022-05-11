@@ -23,16 +23,5 @@ public class Categories {
     @Column(name = "NameCategory")
     private String nameCate;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Categories that = (Categories) o;
-        return categoryId != null && Objects.equals(categoryId, that.categoryId);
-    }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

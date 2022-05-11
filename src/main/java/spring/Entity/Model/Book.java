@@ -44,18 +44,6 @@ public class Book {
     @JoinColumn(name = "CategoryId")
     private Categories category;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Book book = (Book) o;
-        return bookId != null && Objects.equals(bookId, book.bookId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
     public void setImage(String image) {
         this.image = image.getBytes();
     }

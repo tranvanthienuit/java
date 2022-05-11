@@ -40,7 +40,7 @@ public class HomeController {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    BorrowDeSevice borrowDeSevice;
+    OrderssDeSevice orderssDeSevice;
     @Autowired
     AuthenticationManager manager;
     @Autowired
@@ -74,12 +74,12 @@ public class HomeController {
 
         // lấy sách dựa trên những phiếu mượn sách trước
         Pageable pageable1 = PageRequest.of(0, 4);
-        List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
+        List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user);
+        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
         // lấy sách dựa trên số sao đánh giá cao nhất
         List<BookRating> bookRatings = ratingService.bookRating();
@@ -118,12 +118,12 @@ public class HomeController {
 
 
         Pageable pageable1 = PageRequest.of(0, 4);
-        List<Book> bookList1 = borrowDeSevice.getBookFromBorrDe(pageable1);
+        List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
 
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findUserName(userName);
-        List<Book> bookUser = borrowDeSevice.getBookFromBorrDeAndUser(pageable1, user);
+        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
 
         List<BookRating> bookRatings = ratingService.bookRating();

@@ -66,9 +66,9 @@ public class AdminBook {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PostMapping(value = {"/admin/sua-sach/{nameBook}"})
-    public ResponseEntity<Book> editBook(@RequestBody Book book,@PathVariable("nameBook")String nameBook){
-        Book newBook = booksService.findBookByName(nameBook);
+    @PostMapping(value = {"/admin/sua-sach/{idBook}"})
+    public ResponseEntity<Book> editBook(@RequestBody Book book,@PathVariable("idBook")String idBook){
+        Book newBook = booksService.findBookByBookId(idBook);
         if (book.getNameBook()!=null){
             newBook.setNameBook(book.getNameBook());
             booksService.saveBook(newBook);
@@ -101,7 +101,7 @@ public class AdminBook {
             newBook.setImage(book.getImage());
             booksService.saveBook(newBook);
         }
-        Book bookByName = booksService.findBookByName(nameBook);
+        Book bookByName = booksService.findBookByBookId(idBook);
         if (bookByName!=null){
             return new ResponseEntity<>(bookByName,HttpStatus.OK);
         }
