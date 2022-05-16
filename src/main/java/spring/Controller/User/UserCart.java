@@ -45,6 +45,9 @@ public class UserCart {
         Orderss orderss = new Orderss();
         orderss.setOrderssDate(date);
         orderss.setUser(user);
+        Integer totalBook = 0;
+        cart.stream().map(result->totalBook+result.getQuantity());
+        orderss.setTotalBook(totalBook);
         orderssSevice.saveOrderss(orderss);
 
 

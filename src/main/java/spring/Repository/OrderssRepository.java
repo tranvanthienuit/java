@@ -11,6 +11,7 @@ import spring.Entity.Model.User;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface OrderssRepository extends JpaRepository<Orderss, String> {
@@ -24,6 +25,10 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
 
     @Query("select u from Orderss u where u.OrderssDate=:date and u.user=:user")
     Orderss findOrderssByOrderssDateAndUserId(Date date, User user);
+
     @Query("select u from Orderss u where u.user.nameUser=:userName")
     List<Orderss> findOrdersssByUser(String userName);
+
+    @Query("select month(u.OrderssDate),sum(u.totalBook) from Orderss u group by month(u.OrderssDate)")
+    Map<Integer, Integer> getBookAndMonth();
 }

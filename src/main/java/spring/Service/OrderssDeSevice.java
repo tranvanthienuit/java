@@ -14,6 +14,7 @@ import spring.Repository.OrderssDeRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static spring.Recommendation.StringSimilarity.similarity;
 
@@ -60,7 +61,7 @@ public class OrderssDeSevice {
 
     public List<Book> getBookFromBorrDeAndUser(Pageable pageable, User user) {
         List<Book> recomBook = new ArrayList<>();
-        if (user!=null){
+        if (user != null) {
             List<BookSelect> objects = orderssDeRepository.getBookFromBorrDeAndUser(pageable, user.getUserId());
             List<Book> bookList = new ArrayList<>();
             List<Book> books = bookRepository.findAll();
@@ -83,5 +84,13 @@ public class OrderssDeSevice {
 
     public List<OrderssDetail> getAllOrderssDe() {
         return orderssDeRepository.findAll();
+    }
+
+    public Map<Integer, String> getBookAndCategory() {
+        return orderssDeRepository.getBookAndCategory();
+    }
+
+    public Map<Integer, Double> getPriceAndMonth() {
+        return orderssDeRepository.getPriceAndMonth();
     }
 }

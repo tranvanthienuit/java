@@ -10,6 +10,7 @@ import spring.Repository.OrderssRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderssSevice {
@@ -43,5 +44,9 @@ public class OrderssSevice {
 
     public List<Orderss> getAllOrderss() {
         return orderssRepository.findAll();
+    }
+
+    public Map<Integer, Integer> getBookAndMonth() {
+        return orderssRepository.getBookAndMonth();
     }
 }

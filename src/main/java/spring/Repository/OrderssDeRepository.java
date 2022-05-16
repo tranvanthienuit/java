@@ -11,6 +11,7 @@ import spring.Entity.Model.OrderssDetail;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -35,4 +36,10 @@ public interface OrderssDeRepository extends JpaRepository<OrderssDetail, String
     List<BookSelect> getBookFromBorrDeAndUser(Pageable pageable, @Param("userId") String userId);
 
     List<OrderssDetail> findOrderssDetailsByOrderss(String OrderssId);
+
+    @Query("select sum(u.count),u.book.category.nameCate from OrderssDetail u group by u.book.category.nameCate")
+    Map<Integer, String> getBookAndCategory();
+
+    @Query("select month(u.orderss.OrderssDate),sum(u.total)from OrderssDetail u group by u.orderss.OrderssDate")
+    Map<Integer, Double> getPriceAndMonth();
 }

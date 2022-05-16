@@ -25,6 +25,8 @@ public class Orderss {
     @Column(name = "OrderssDate")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date OrderssDate;
+    @Column(name = "totalBook")
+    private Integer totalBook;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "UserId")
     private User user;

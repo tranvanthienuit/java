@@ -8,6 +8,7 @@ import spring.Entity.Model.User;
 import spring.Repository.UserRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -63,7 +64,9 @@ public class UserService {
         userRepository.editImage(image, userid);
     }
 
-    public void editUserFullname(String fullName,String userId){userRepository.editUserFullname(fullName, userId);}
+    public void editUserFullname(String fullName, String userId) {
+        userRepository.editUserFullname(fullName, userId);
+    }
 
     public Page<User> getAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -79,5 +82,9 @@ public class UserService {
 
     public void setPassword(String password, String email) {
         userRepository.setPassword(password, email);
+    }
+
+    public Map<Integer, Integer> getUserAndMonnth() {
+        return userRepository.getUserAndMonnth();
     }
 }
