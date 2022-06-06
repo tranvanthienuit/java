@@ -53,7 +53,8 @@ public class HomeController {
     JwtTokenProvider tokenProvider;
     @Autowired
     MailService mailService;
-    @Autowired RatingService ratingService;
+    @Autowired
+    RatingService ratingService;
 
     @GetMapping(value = {"/trang-chu/{page}", "/trang-chu"})
     public ResponseEntity<BookReturn> home(
@@ -191,7 +192,7 @@ public class HomeController {
                 if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
                     tokenService.removeToken(token);
                     new SecurityContextLogoutHandler().logout(request, response, auth);
-                    return new ResponseEntity<>("successful",HttpStatus.OK);
+                    return new ResponseEntity<>("successful", HttpStatus.OK);
                 }
             }
         }
@@ -239,20 +240,28 @@ public class HomeController {
 
     @PostMapping("/quen-mat-khau/{email}")
     public ResponseEntity<?> forgetPass(@PathVariable("email") String email) {
-        Mail mail = new Mail();
-        mail.setMailFrom("uitsneaker@gmail.com");
-        mail.setMailTo(email);
-        mail.setMailSubject("Quên password");
-        Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-        String code =  String.format("%06d", number);
-        userService.setPassword(passwordEncoder.encode(code),email);
-        mail.setMailContent("Code: "+code);
-        mailService.sendEmail(mail);
-        return new ResponseEntity<>("successful",HttpStatus.OK);
+        if (mailService.checkMail(email)) {
+            Mail mail = new Mail();
+            mail.setMailFrom("uitsneaker@gmail.com");
+            mail.setMailTo(email);
+            mail.setMailSubject("Quên password");
+            Random rnd = new Random();
+            int number = rnd.nextInt(999999);
+            String code = String.format("%06d", number);
+            userService.setPassword(passwordEncoder.encode(code), email);
+            mail.setMailContent("<h1>Reset mật khẩu</h1></br></br>\n" +
+                    "<h2>Xin chào quý khách mật khẩu của bạn đang được reset.</br>\n" +
+                    "\tHãy nhập code dưới đây để đăng nhập lại. Cảm ơn quý khách\n" +
+                    "</h2>\n" +
+                    "<h3>Code: </h3>" + code);
+            mailService.sendEmail(mail);
+            return new ResponseEntity<>("successful", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("không có mail nào trong tài khoản", HttpStatus.OK);
     }
-    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}","/danh-gia-sach"})
-    public void appriciateBook(@PathVariable(value = "bookId",required = false)String bookId,@PathVariable(value = "star",required = false)int star){
+
+    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
+    public void appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
@@ -262,11 +271,12 @@ public class HomeController {
         rating.setRating(star);
         ratingService.save(rating);
     }
+
     @GetMapping("/category")
-    public ResponseEntity<CateList> getAllCategory(){
-        CateList cateList = new CateList() ;
+    public ResponseEntity<CateList> getAllCategory() {
+        CateList cateList = new CateList();
         cateList.setCategoriesList(categoryService.getAllCategory());
         cateList.setCount(categoryService.getAllCategory().size());
-        return new ResponseEntity<>(cateList,HttpStatus.OK);
+        return new ResponseEntity<>(cateList, HttpStatus.OK);
     }
 }

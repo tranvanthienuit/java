@@ -7,9 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.Entity.Model.Book;
 import spring.Service.BookService;
 import spring.Service.CategoryService;
@@ -65,5 +63,10 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable("keyword")String keywword){
+        List<String> searchString = booksService.searchByNameBook(keywword);
+        return new ResponseEntity<>(searchString,HttpStatus.OK);
     }
 }

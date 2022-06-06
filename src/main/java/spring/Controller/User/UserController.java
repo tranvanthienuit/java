@@ -63,7 +63,7 @@ public class UserController {
     public ResponseEntity<?> editPassword(@RequestBody @PathVariable("old-password") String oldPassword, @RequestBody @PathVariable("new-password") String newPassword) {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
-        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             userService.editUserPass(passwordEncoder.encode(newPassword), user.getUserId());
             return new ResponseEntity<>("thanh cong roi ban ey", HttpStatus.OK);
         } else {

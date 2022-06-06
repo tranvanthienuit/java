@@ -54,8 +54,13 @@ public class BookService {
     public void findBookAndUpdate(Integer count, String bookId) {
         booksRepository.findBookAndUpdate(count, bookId);
     }
-    public Book findBookByBookId(String IdBook){
+
+    public Book findBookByBookId(String IdBook) {
         return booksRepository.findBooksByBookId(IdBook);
+    }
+
+    public List<String> searchByNameBook(String keyword){
+        return booksRepository.searchByNameBook(keyword);
     }
 }
 

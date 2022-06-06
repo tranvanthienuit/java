@@ -68,4 +68,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("select month(u.dayAdd),count(u.userId) from User u group by month(u.dayAdd)")
     Map<Integer, Integer> getUserAndMonnth();
+
+    User findByEmail(String mail);
 }

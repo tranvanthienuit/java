@@ -87,4 +87,8 @@ public class UserService {
     public Map<Integer, Integer> getUserAndMonnth() {
         return userRepository.getUserAndMonnth();
     }
+
+    User findByEmail(String mail) {
+        return userRepository.findByEmail(mail);
+    }
 }
