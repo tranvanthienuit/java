@@ -174,20 +174,24 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         userDetail user = (userDetail) authentication.getPrincipal();
         String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getUsername());
+        Token token = new Token();
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getUserId(), user.getUsername());
-        tokenService.saveToken(new Token(refreshToken));
+        token.setTokenRefesh(refreshToken);
+        User user1 = userService.findUserByUserId(user.getUserId());
+        token.setUser(user1);
+        tokenService.saveToken(token);
         return new LoginResponse(accessToken, refreshToken);
     }
 
     @GetMapping("/dang-xuat")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(user1.getUserId());
         if (auth != null) {
-            String jwt = getJwtFromRequest(request);
-            Token token = new Token(jwt);
             List<Token> tokenList = tokenService.getAllToken();
-            for (Token token1 : tokenList) {
-                if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
+            for (Token token : tokenList) {
+                if (token.getUser().getUserId().equals(user.getUserId())) {
                     tokenService.removeToken(token);
                     new SecurityContextLogoutHandler().logout(request, response, auth);
                     return new ResponseEntity<>("successful", HttpStatus.OK);
@@ -235,7 +239,6 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-
 
 
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})

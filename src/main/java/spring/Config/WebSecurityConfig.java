@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -83,14 +85,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/dang-xuat").permitAll()
                 .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler()).permitAll()
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .and()
+                .sessionManagement()
+                .invalidSessionUrl("/dang-xuat")
                 .and().httpBasic();// Cho phép tất cả mọi người truy cập vào 2 địa chỉ này;
 
         // Thêm một lớp Filter kiểm tra jwt
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
+//    @Bean
+//    public SessionRegistry sessionRegistry(){
+//        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+//        return sessionRegistry;
+//    }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

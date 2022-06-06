@@ -10,6 +10,6 @@ import spring.Entity.Model.Book;
 @NoArgsConstructor
 public class CartBook {
     private Integer quantity;
-    private Book books;
+    private String books;
     private Double total;
 }

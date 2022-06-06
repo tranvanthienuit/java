@@ -18,6 +18,10 @@ public class BookService {
         return booksRepository.getAllBooks(pageable);
     }
 
+    public Page<Book> getAllBook(Pageable pageable) {
+        return booksRepository.getAllBook(pageable);
+    }
+
     public Book saveBook(Book book) {
         return booksRepository.save(book);
     }

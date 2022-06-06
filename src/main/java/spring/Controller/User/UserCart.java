@@ -55,13 +55,14 @@ public class UserCart {
             OrderssDetail orderssDetail = new OrderssDetail();
             List<Book> books = bookService.getAllBook();
             for (Book book1 : books) {
-                if (cartBook.getBooks().getBookId().equals(book1.getBookId())) {
+                Book book = bookService.findBookByBookId(cartBook.getBooks());
+                if (book.getBookId().equals(book1.getBookId())) {
                     if (book1.getCount() - cartBook.getQuantity() > 0) {
                         orderssDetail.setCount(cartBook.getQuantity());
                         orderssDetail.setTotal((Double) cartBook.getTotal());
-                        bookService.findBookAndUpdate(book1.getCount() - cartBook.getBooks().getCount(), cartBook.getBooks().getBookId());
+                        bookService.findBookAndUpdate(book1.getCount() - book.getCount(), book.getBookId());
                     } else {
-                        bookService.findBookAndUpdate(0, cartBook.getBooks().getBookId());
+                        bookService.findBookAndUpdate(0, book.getBookId());
                         orderssDetail.setTotal((Double) cartBook.getTotal());
                         orderssDetail.setCount(book1.getCount());
                     }
@@ -69,7 +70,8 @@ public class UserCart {
             }
             orderssDetail.setStatus("exist");
             orderssDetail.setOrderss(orderss);
-            orderssDetail.setBook(cartBook.getBooks());
+            Book book = bookService.findBookByBookId(cartBook.getBooks());
+            orderssDetail.setBook(book);
             orderssDeSevice.saveOrderssDe(orderssDetail);
         }
         return new ResponseEntity<>(cart, HttpStatus.OK);

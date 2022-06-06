@@ -2,10 +2,7 @@ package spring.Entity.Model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Token")
@@ -18,6 +15,9 @@ public class Token {
     @Id
     @Column(name = "tokenRefresh")
     private String tokenRefesh;
+    @OneToOne
+    @JoinColumn(name = "user")
+    private User user;
 
     public Token(String jwt) {
         this.tokenRefesh = jwt;

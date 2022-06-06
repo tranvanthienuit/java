@@ -25,5 +25,6 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "book")
     private Book book;
+    @Column(name = "rating")
     private int rating;
 }

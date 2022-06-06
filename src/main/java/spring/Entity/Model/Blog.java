@@ -20,5 +20,6 @@ public class Blog {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "UserId")
     private User user;
-    private String context;
+    @Column(name = "content")
+    private String content;
 }

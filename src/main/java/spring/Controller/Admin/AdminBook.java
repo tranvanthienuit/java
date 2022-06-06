@@ -101,6 +101,10 @@ public class AdminBook {
             newBook.setImage(book.getImage());
             booksService.saveBook(newBook);
         }
+        if (book.getCategory()!=null){
+            newBook.setCategory(book.getCategory());
+            booksService.saveBook(newBook);
+        }
         Book bookByName = booksService.findBookByBookId(idBook);
         if (bookByName!=null){
             return new ResponseEntity<>(bookByName,HttpStatus.OK);

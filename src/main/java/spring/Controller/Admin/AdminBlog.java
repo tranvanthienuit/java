@@ -46,7 +46,7 @@ public class AdminBlog {
 
     @GetMapping("/admin/sua-blog")
     public ResponseEntity<?> updateBlog(Blog blog){
-        blogService.findAndUpdateBlog(blog.getBlogId(), blog.getContext());
+        blogService.findAndUpdateBlog(blog.getBlogId(), blog.getContent());
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 }
