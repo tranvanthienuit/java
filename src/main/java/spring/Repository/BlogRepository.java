@@ -3,6 +3,7 @@ package spring.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import spring.Entity.Model.Blog;
 
@@ -14,6 +15,6 @@ public interface BlogRepository extends JpaRepository<Blog,String> {
 
     @Transactional
     @Modifying
-    @Query("update Blog u set u.context=:content where u.blogId=:blodId")
-    void findAndUpdateBlog(String blogId,String content);
+    @Query("update Blog u set u.context=:content where u.blogId=:blogId")
+    void findAndUpdateBlog(@Param("blogId") String blogId,@Param("content") String content);
 }

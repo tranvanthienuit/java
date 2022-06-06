@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import spring.Entity.Mail;
 import spring.Entity.Model.User;
 import spring.Entity.image;
+import spring.Repository.MailService;
 import spring.Sercurity.userDetail;
 import spring.Service.UserService;
+
+import java.util.Random;
 
 @RestController
 public class UserController {
@@ -21,6 +25,8 @@ public class UserController {
     UserService userService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    MailService mailService;
 
     @PostMapping("/sua-thong-tin")
     public ResponseEntity<User> editInfo(@RequestBody(required = false) User user) throws Exception {
@@ -70,11 +76,34 @@ public class UserController {
             return new ResponseEntity<>("mat khau cu sai", HttpStatus.OK);
         }
     }
-    public byte[] getImageByte(){
+
+    public byte[] getImageByte() {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
-        if (user.getImage()==null)
+        if (user.getImage() == null)
             return null;
         return user.getImage().getBytes();
+    }
+
+    @PostMapping("/quen-mat-khau/{email}")
+    public ResponseEntity<?> forgetPass(@PathVariable("email") String email) {
+        if (mailService.checkMail(email)) {
+            Mail mail = new Mail();
+            mail.setMailFrom("uitsneaker@gmail.com");
+            mail.setMailTo(email);
+            mail.setMailSubject("Quên password");
+            mail.setMailContent("<h1>Reset Password</h1></br></br>\n" +
+                    "<h2>Xin chào quý khách mật khẩu của bạn đang được reset.</br>\n" +
+                    "\tHãy nhấp vào link dưới đây để cài đặt mật khẩu lại. Cảm ơn quý khách\n</h2>\n" +
+                    "<h3>Link: </h3>" + "<a href="+"https://cai-dat-mat-khau-moi/"+">"+email+"</a>");
+            mailService.sendEmail(mail);
+            return new ResponseEntity<>("successful", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("không có mail nào trong tài khoản", HttpStatus.OK);
+    }
+    @PostMapping("/cai-dat-mat-khau-moi/{email}/{password}")
+    public ResponseEntity<?> setPassword(@PathVariable("email")String email,@PathVariable("password")String password){
+        userService.setPassword(passwordEncoder.encode(password),email);
+        return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 }
