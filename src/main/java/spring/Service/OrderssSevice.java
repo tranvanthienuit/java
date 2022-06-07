@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spring.Entity.Model.Orderss;
 import spring.Entity.Model.User;
+import spring.Entity.month_book;
 import spring.Repository.OrderssRepository;
 
 import java.util.Date;
@@ -46,7 +47,7 @@ public class OrderssSevice {
         return orderssRepository.findAll();
     }
 
-    public Map<Integer, Integer> getBookAndMonth() {
+    public List<month_book> getBookAndMonth() {
         return orderssRepository.getBookAndMonth();
     }
 }

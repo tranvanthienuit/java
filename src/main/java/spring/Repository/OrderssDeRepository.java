@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import spring.Entity.BookSelect;
 import spring.Entity.Model.OrderssDetail;
+import spring.Entity.book_category;
+import spring.Entity.month_price;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -37,9 +39,9 @@ public interface OrderssDeRepository extends JpaRepository<OrderssDetail, String
 
     List<OrderssDetail> findOrderssDetailsByOrderss(String OrderssId);
 
-    @Query("select sum(u.count),u.book.category.nameCate from OrderssDetail u group by u.book.category.nameCate")
-    Map<Integer, String> getBookAndCategory();
+    @Query("select new spring.Entity.book_category(sum(u.count),u.book.category.nameCate) from OrderssDetail u group by u.book.category.nameCate")
+    List<book_category> getBookAndCategory();
 
-    @Query("select month(u.orderss.OrderssDate),sum(u.total)from OrderssDetail u group by u.orderss.OrderssDate")
-    Map<Integer, Double> getPriceAndMonth();
+    @Query("select new spring.Entity.month_price(month(u.orderss.OrderssDate),sum(u.total)) from OrderssDetail u group by u.orderss.OrderssDate")
+    List<month_price> getPriceAndMonth();
 }

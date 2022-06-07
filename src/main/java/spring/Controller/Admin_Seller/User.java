@@ -43,7 +43,7 @@ public class User {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 8);
         Page<spring.Entity.Model.User> userPage = userService.getAllUser(pageable);
         List<spring.Entity.Model.User> userPageContent = userPage.getContent();
         if (userPageContent.isEmpty()) {

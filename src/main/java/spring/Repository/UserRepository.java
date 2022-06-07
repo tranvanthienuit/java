@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import spring.Entity.Model.User;
+import spring.Entity.month_user;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -66,8 +68,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("update User u set u.password=:pass where u.email=:email")
     void setPassword(@Param("pass") String pass, @Param("email") String email);
 
-    @Query("select month(u.dayAdd),count(u.userId) from User u group by month(u.dayAdd)")
-    Map<Integer, Integer> getUserAndMonnth();
+    @Query("select new spring.Entity.month_user(month(u.dayAdd),count(u.userId)) from User u group by month(u.dayAdd)")
+    List<month_user> getUserAndMonnth();
 
     User findByEmail(String mail);
 }

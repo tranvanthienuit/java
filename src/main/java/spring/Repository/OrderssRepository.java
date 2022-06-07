@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import spring.Entity.Model.Orderss;
 import spring.Entity.Model.User;
+import spring.Entity.month_book;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -29,6 +30,6 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
     @Query("select u from Orderss u where u.user.nameUser=:userName")
     List<Orderss> findOrdersssByUser(String userName);
 
-    @Query("select month(u.OrderssDate),sum(u.totalBook) from Orderss u group by month(u.OrderssDate)")
-    Map<Integer, Integer> getBookAndMonth();
+    @Query("select new spring.Entity.month_book(month(u.OrderssDate),sum(u.totalBook)) from Orderss u group by month(u.OrderssDate)")
+    List<month_book> getBookAndMonth();
 }

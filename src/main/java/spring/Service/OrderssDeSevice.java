@@ -8,6 +8,8 @@ import spring.Entity.Model.Book;
 import spring.Entity.BookSelect;
 import spring.Entity.Model.OrderssDetail;
 import spring.Entity.Model.User;
+import spring.Entity.book_category;
+import spring.Entity.month_price;
 import spring.Repository.BookRepository;
 import spring.Repository.OrderssDeRepository;
 
@@ -86,11 +88,11 @@ public class OrderssDeSevice {
         return orderssDeRepository.findAll();
     }
 
-    public Map<Integer, String> getBookAndCategory() {
+    public List<book_category> getBookAndCategory() {
         return orderssDeRepository.getBookAndCategory();
     }
 
-    public Map<Integer, Double> getPriceAndMonth() {
+    public List<month_price> getPriceAndMonth() {
         return orderssDeRepository.getPriceAndMonth();
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import spring.Entity.*;
@@ -33,7 +34,7 @@ public class UserCart {
     @Autowired
     UserService userService;
 
-    @GetMapping("/user/mua-sach")
+    @PostMapping("/user/mua-sach")
     public ResponseEntity<List<CartBook>> Orderss(@RequestBody List<CartBook> cart) throws Exception {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
@@ -46,21 +47,21 @@ public class UserCart {
         orderss.setOrderssDate(date);
         orderss.setUser(user);
         Integer totalBook = 0;
-        cart.stream().map(result->totalBook+result.getQuantity());
-        orderss.setTotalBook(totalBook);
-        orderssSevice.saveOrderss(orderss);
 
 
         for (CartBook cartBook : cart) {
+            totalBook = totalBook+cartBook.getQuantity();
             OrderssDetail orderssDetail = new OrderssDetail();
-            List<Book> books = bookService.getAllBook();
-            for (Book book1 : books) {
+            for (Book book1 : bookService.getAllBook()) {
+                // tìm từng cuốn sách
                 Book book = bookService.findBookByBookId(cartBook.getBooks());
+                //so sánh có trong list sach không
                 if (book.getBookId().equals(book1.getBookId())) {
-                    if (book1.getCount() - cartBook.getQuantity() > 0) {
+                    //nếu sách nhiều hơn mua thì lấy sách trừ mua
+                    if (book1.getCount() - cartBook.getQuantity() >= 0) {
                         orderssDetail.setCount(cartBook.getQuantity());
                         orderssDetail.setTotal((Double) cartBook.getTotal());
-                        bookService.findBookAndUpdate(book1.getCount() - book.getCount(), book.getBookId());
+                        bookService.findBookAndUpdate(book1.getCount() - cartBook.getQuantity(), book.getBookId());
                     } else {
                         bookService.findBookAndUpdate(0, book.getBookId());
                         orderssDetail.setTotal((Double) cartBook.getTotal());
@@ -68,6 +69,10 @@ public class UserCart {
                     }
                 }
             }
+            orderss.setTotalBook(totalBook);
+            orderssSevice.saveOrderss(orderss);
+
+
             orderssDetail.setStatus("exist");
             orderssDetail.setOrderss(orderss);
             Book book = bookService.findBookByBookId(cartBook.getBooks());

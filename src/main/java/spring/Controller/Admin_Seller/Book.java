@@ -29,7 +29,7 @@ public class Book {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 16);
         Page<spring.Entity.Model.Book> bookPage = booksService.getAllBook(pageable);
         List<spring.Entity.Model.Book> bookPageContent = bookPage.getContent();
         if (bookPageContent.isEmpty()) {

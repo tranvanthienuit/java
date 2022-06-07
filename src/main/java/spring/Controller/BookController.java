@@ -56,7 +56,7 @@ public class BookController {
 
     @GetMapping("/sach-moi")
     public ResponseEntity<List<Book>> findbyarrive() throws Exception {
-        Pageable pageable = PageRequest.of(0, 4, Sort.by("dayAdd").descending());
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("dayAdd").descending());
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
         List<Book> bookList = bookPage.getContent();
         if (bookList.isEmpty()) {

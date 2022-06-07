@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spring.Entity.Model.User;
+import spring.Entity.month_user;
 import spring.Repository.UserRepository;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class UserService {
         userRepository.setPassword(password, email);
     }
 
-    public Map<Integer, Integer> getUserAndMonnth() {
+    public List<month_user> getUserAndMonnth() {
         return userRepository.getUserAndMonnth();
     }
 
