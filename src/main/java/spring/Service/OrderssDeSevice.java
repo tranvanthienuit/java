@@ -32,7 +32,8 @@ public class OrderssDeSevice {
     }
 
     public void removeByOrderssDeId(String idOrderssDe) {
-        orderssDeRepository.removeByOrderssDeId(idOrderssDe);
+        OrderssDetail orderssDetail = orderssDeRepository.findOrderssDetailByOrderssDeId(idOrderssDe);
+        orderssDeRepository.delete(orderssDetail);
     }
 
     public void saveOrderssDe(OrderssDetail orderssDetail) {

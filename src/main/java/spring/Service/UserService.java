@@ -17,7 +17,8 @@ public class UserService {
     UserRepository userRepository;
 
     public void removeUserByUserId(String idUser) {
-        userRepository.removeUserByUserId(idUser);
+        User user = userRepository.findUserByUserId(idUser);
+        userRepository.delete(user);
     }
 
     public void saveUser(User user) {

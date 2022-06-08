@@ -23,7 +23,8 @@ public class OrderssSevice {
     }
 
     public void removeOrderssByOrderssId(String idOrderss) {
-        orderssRepository.removeOrderssByOrderssId(idOrderss);
+        Orderss orderss = orderssRepository.findOrderssByOrderssId(idOrderss);
+        orderssRepository.delete(orderss);
     }
 
 

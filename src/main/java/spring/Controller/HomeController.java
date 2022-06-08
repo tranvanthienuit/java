@@ -217,6 +217,7 @@ public class HomeController {
         if (role==null)
             role = roleService.fineRoleByName("USER");
         user.setRole(role);
+//        user.setNameRole(role.getNameRole());
         LocalDate ldate = LocalDate.now();
         java.sql.Date date = java.sql.Date.valueOf(ldate);
         user.setDayAdd(date);

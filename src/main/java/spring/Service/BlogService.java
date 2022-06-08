@@ -15,7 +15,8 @@ public class BlogService {
         blogRepository.save(blog);
     }
     public void findAndDeleteBlog(String blogId){
-        blogRepository.deleteByBlogId(blogId);
+        Blog blog = blogRepository.findBlogByBlogId(blogId);
+        blogRepository.delete(blog);
     }
     public List<Blog> findAllBlog(){
         return blogRepository.findAll();

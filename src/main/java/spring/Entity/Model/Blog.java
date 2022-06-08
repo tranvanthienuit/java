@@ -25,6 +25,8 @@ public class Blog {
     @Column(name = "content")
     @Lob
     private byte[] content;
+//    @Column(name = "nameAuthor")
+//    private String nameAuthor;
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;

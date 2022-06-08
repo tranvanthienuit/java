@@ -19,7 +19,8 @@ public class CategoryService {
     }
 
     public void removeCategoriesByCategoryId(String categoryId) {
-        categoryRepository.removeCategoriesByCategoryId(categoryId);
+        Categories categories = categoryRepository.findByCategoryId(categoryId);
+        categoryRepository.delete(categories);
     }
 
     public Categories findByCategoryId(String categoryid) {

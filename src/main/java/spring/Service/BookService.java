@@ -49,7 +49,8 @@ public class BookService {
 
 
     public void removeBookByBookId(String idBook) {
-        booksRepository.removeBookByBookId(idBook);
+        Book book = booksRepository.findBooksByBookId(idBook);
+        booksRepository.delete(book);
     }
 
     public Page<Book> getBookByDayAdd(Pageable pageable) {

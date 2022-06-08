@@ -42,5 +42,11 @@ public class Orderss {
     @JsonIgnore
     @ToString.Exclude
     private List<OrderssDetail> orderssDetails;
-
+    //xóa các bảng, thông tin có khóa ngoại liên kết
+    @PreRemove
+    public void preRemove(){
+        this.orderssDetails.forEach(result->{
+            this.orderssDetails.remove(result);
+        });
+    }
 }

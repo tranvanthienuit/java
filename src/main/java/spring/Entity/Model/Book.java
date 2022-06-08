@@ -2,9 +2,11 @@ package spring.Entity.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -13,7 +15,7 @@ import java.util.List;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Book {
+public class Book  {
     //Books: id, name, categoryId, author, publishYear, nxb, dayAdded, price, status, description
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
@@ -35,6 +37,8 @@ public class Book {
     private Integer price;
     @Column(name = "Count")
     private Integer count;
+//    @Column(name = "nameCate")
+//    private String nameCate;
     @Column(name = "Description")
     @Lob
     private byte[] description;
@@ -74,5 +78,18 @@ public class Book {
         if (description==null)
             return null;
         return new String(description);
+    }
+    //xóa các bảng, thông tin có khóa ngoại liên kết
+    @PreRemove
+    public void preRemove(){
+        this.orderssDetails.forEach(result->{
+            this.orderssDetails.remove(result);
+        });
+        this.ratings.forEach(result->{
+            this.ratings.remove(result);
+        });
+        this.comments.forEach(result->{
+            this.comments.remove(result);
+        });
     }
 }

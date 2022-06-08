@@ -16,10 +16,10 @@ import java.util.Map;
 
 @Repository
 public interface OrderssRepository extends JpaRepository<Orderss, String> {
-    @Transactional
-    @Modifying
-    @Query("delete from Orderss u where u.OrderssId=:orderssId")
-    void removeOrderssByOrderssId(@Param("orderssId") String orderssId);
+//    @Transactional
+//    @Modifying
+//    @Query("delete from Orderss u where u.OrderssId=:orderssId")
+//    void removeOrderssByOrderssId(@Param("orderssId") String orderssId);
 
     @Query("select u from  Orderss u where u.OrderssId=:orderssId")
     Orderss findOrderssByOrderssId(@Param("orderssId") String orderssId);

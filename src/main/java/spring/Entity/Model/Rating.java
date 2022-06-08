@@ -21,6 +21,8 @@ public class Rating {
     private Long ratingId;
     @Column(name = "rating")
     private int rating;
+//    @Column(name = "nameBook")
+//    private String nameBook;
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;

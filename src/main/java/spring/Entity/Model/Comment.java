@@ -22,6 +22,8 @@ public class Comment {
     private String commentId;
     @Column(name = "content")
     private String content;
+//    @Column(name = "nameUser")
+//    private String nameUser;
     @ManyToOne
     @JoinColumn(name = "User")
     private User user;

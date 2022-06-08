@@ -14,10 +14,10 @@ import java.util.Map;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    @Transactional
-    @Modifying
-    @Query("delete from User u where u.userId=:idUser")
-    void removeUserByUserId(@Param("idUser") String idUser);
+//    @Transactional
+//    @Modifying
+//    @Query("delete from User u where u.userId=:idUser")
+//    void removeUserByUserId(@Param("idUser") String idUser);
 
     User findByNameUser(String username);
 

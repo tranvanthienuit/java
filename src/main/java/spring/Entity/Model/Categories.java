@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Categories")
@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Categories {
+public class Categories{
     //Categories: id, name
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
@@ -22,9 +22,15 @@ public class Categories {
     private String categoryId;
     @Column(name = "NameCategory")
     private String nameCate;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     @ToString.Exclude
-    private List<Book> books;
-
+    private Set<Book> books;
+    //xóa các bảng, thông tin có khóa ngoại liên kết
+    @PreRemove
+    public void preRemove(){
+        this.books.forEach(result->{
+            this.books.remove(result);
+        });
+    }
 }
