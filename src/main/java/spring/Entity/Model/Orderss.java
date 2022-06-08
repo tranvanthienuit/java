@@ -1,12 +1,12 @@
 package spring.Entity.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "Orderss")
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Orderss {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "OrderssId", updatable = false, nullable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
@@ -27,9 +27,20 @@ public class Orderss {
     private java.util.Date OrderssDate;
     @Column(name = "totalBook")
     private Integer totalBook;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @Column(name = "Telephone")
+    private String telephone;
+    @Column(name = "Address")
+    private String address;
+    @Column(name = "Status")
+    private String status;
+    @Column(name = "nameUser")
+    private String nameUser;
+    @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;
-
+    @OneToMany(mappedBy = "orderss", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<OrderssDetail> orderssDetails;
 
 }

@@ -13,13 +13,36 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 public class Blog {
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "BlogId", updatable = false, nullable = false)
     private String blogId;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @Column(name = "title")
+    private String title;
+    @Column(name = "context")
+    @Lob
+    private byte[] context;
+    @Column(name = "content")
+    @Lob
+    private byte[] content;
+    @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;
-    @Column(name = "content")
-    private String content;
+
+    public void setContent(String content) {
+        this.content = content.getBytes();
+    }
+    public String getContent() {
+        if (content==null)
+            return null;
+        return new String(content);
+    }
+    public void setContext(String content) {
+        this.context = content.getBytes();
+    }
+    public String getContext() {
+        if (context==null)
+            return null;
+        return new String(context);
+    }
 }

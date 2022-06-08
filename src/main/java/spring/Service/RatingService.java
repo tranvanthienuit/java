@@ -23,7 +23,7 @@ public class RatingService {
         ratingRepository.save(rating);
     }
     public List<BookRating> bookRating(){
-        Pageable pageable = PageRequest.of(0, 8);
+        Pageable pageable = PageRequest.of(0, 16);
         List<BookRating> bookRatings = ratingRepository.getAllBookRating(pageable);
         bookRatings.stream().filter(result->result.getRating()>4).collect(Collectors.toList());
         return bookRatings;

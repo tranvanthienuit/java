@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
                 .antMatchers("/dang-xuat").authenticated()
-                .antMatchers("/seller/*","/seller/*/*").hasAnyAuthority("", "ADMIN")
+                .antMatchers("/seller/*","/seller/*/*").hasAnyAuthority("SELLER", "ADMIN")
                 .antMatchers("/user/*","/user/*/*").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/admin/*","/admin/*/*").hasAnyAuthority("ADMIN")
                 .antMatchers("/xem-tai-khoan/*", "/sua-thong-tin/*", "/cap-nhat-anh/*", "/xem-tai-khoan", "/sua-thong-tin", "/cap-nhat-anh").hasAnyAuthority("USER", "ADMIN", "SELLER")

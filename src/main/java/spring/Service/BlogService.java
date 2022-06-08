@@ -20,7 +20,7 @@ public class BlogService {
     public List<Blog> findAllBlog(){
         return blogRepository.findAll();
     }
-    public void findAndUpdateBlog(String blogId,String content){
-        blogRepository.findAndUpdateBlog(blogId, content);
+    public Blog findBlog(String blogId){
+        return blogRepository.findBlogByBlogId(blogId);
     }
 }

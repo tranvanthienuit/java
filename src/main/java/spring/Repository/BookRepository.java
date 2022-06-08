@@ -24,13 +24,16 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select u from Book u where u.category.nameCate=:name")
     List<Book> findBooksByCategoryName(@Param("name") String name);
 
-    @Query("select u from Book u where u.bookId=:idBook")
-    Book findBooksByBookId(@Param("idBook") String idBook);
+    @Query("select u from Book u where u.category.categoryId=:categoryId")
+    List<Book> findBooksByCategoryId(@Param("categoryId") String categoryId);
+
+    @Query("select u from Book u where u.bookId=:bookId")
+    Book findBooksByBookId(@Param("bookId") String bookId);
 
     @Transactional
     @Modifying
-    @Query("delete from Book u where u.bookId=:idBook")
-    void removeBookByBookId(@Param("idBook") String idBook);
+    @Query("delete from Book u where u.bookId=:bookId")
+    void removeBookByBookId(@Param("bookId") String bookId);
 
     @Transactional
     @Modifying
@@ -44,5 +47,14 @@ public interface BookRepository extends JpaRepository<Book, String> {
     Page<Book> getAllBook(Pageable pageable);
 
     @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
-    public List<String> searchByNameBook(@Param("keyword") String keyword);
+    List<String> searchByNameBook(@Param("keyword") String keyword);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Book u where u.category.categoryId=:categoryId")
+    void removeBookByCategory(@Param("categoryId") String categoryId);
+
+    @Query(value = "select u from Book u where u.author=:tacgia or u.author = false and u.price<:giathap or u.price = false and u.price<:giacao or u.price = false and u.publishYear=:namsb or u.publishYear = false",nativeQuery = true)
+    List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
+                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb);
 }

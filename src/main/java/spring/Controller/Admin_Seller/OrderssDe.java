@@ -32,8 +32,8 @@ public class OrderssDe {
     @DeleteMapping(value = {"/seller/xoa-Orderss-detail/{OrderssDeId}", "/seller/xoa-Orderss-detail","/admin/xoa-Orderss-detail/{OrderssDeId}", "/admin/xoa-Orderss-detail"})
     public ResponseEntity<String> removeOrderssDe(@PathVariable(value = "OrderssDeId", required = false) String OrderssDeId) throws Exception {
         if (orderssDeSevice.findOrderssDe(OrderssDeId) != null) {
-            OrderssDetail orderssDetail = orderssDeSevice.findOrderssDe(OrderssDeId);
-            bookService.findBookAndUpdate(orderssDetail.getCount(), orderssDetail.getBook().getBookId());
+//            OrderssDetail orderssDetail = orderssDeSevice.findOrderssDe(OrderssDeId);
+//            bookService.findBookAndUpdate(orderssDetail.getCount(), orderssDetail.getBook().getBookId());
             orderssDeSevice.removeByOrderssDeId(OrderssDeId);
             return new ResponseEntity<>("successful",HttpStatus.OK);
         }

@@ -16,7 +16,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "CommentId", updatable = false, nullable = false)
     private String commentId;

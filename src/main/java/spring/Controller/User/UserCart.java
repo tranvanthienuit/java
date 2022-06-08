@@ -70,10 +70,13 @@ public class UserCart {
                 }
             }
             orderss.setTotalBook(totalBook);
+            orderss.setStatus("chưa giao hàng");
+            orderss.setTelephone(user.getTelephone());
+            orderss.setAddress(user.getAddress());
+            orderss.setNameUser(user.getNameUser());
             orderssSevice.saveOrderss(orderss);
 
 
-            orderssDetail.setStatus("exist");
             orderssDetail.setOrderss(orderss);
             Book book = bookService.findBookByBookId(cartBook.getBooks());
             orderssDetail.setBook(book);

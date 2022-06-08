@@ -15,8 +15,8 @@ public interface CategoryRepository extends JpaRepository<Categories, String> {
     @Transactional
     @Modifying
     @Query("delete from Categories u where u.categoryId=:categoryId")
-    void removeCategoriesByCategoryId(@Param("categoryId") String name);
+    void removeCategoriesByCategoryId(@Param("categoryId")String categoryId);
 
     @Query("select u from Categories u where u.categoryId=:categoryid")
-    List<Categories> findByCategoryId(@Param("categoryid") String categoryid);
+    Categories findByCategoryId(@Param("categoryid") String categoryid);
 }

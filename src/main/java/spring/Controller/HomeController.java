@@ -47,8 +47,8 @@ public class HomeController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    TokenService tokenService;
+//    @Autowired
+//    TokenService tokenService;
     @Autowired
     JwtTokenProvider tokenProvider;
     @Autowired
@@ -154,11 +154,11 @@ public class HomeController {
 
 
     @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
-    public ResponseEntity<List<Categories>> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
+    public ResponseEntity<?> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
         if (CategoryId == null) {
             return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
         } else {
-            List<Categories> categoriesList = categoryService.findByCategoryId(CategoryId);
+            Categories categoriesList = categoryService.findByCategoryId(CategoryId);
             if (categoriesList == null) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -174,32 +174,32 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         userDetail user = (userDetail) authentication.getPrincipal();
         String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getUsername());
-        Token token = new Token();
+//        Token token = new Token();
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getUserId(), user.getUsername());
-        token.setTokenRefesh(refreshToken);
+//        token.setTokenRefesh(refreshToken);
         User user1 = userService.findUserByUserId(user.getUserId());
-        token.setUser(user1);
-        tokenService.saveToken(token);
+//        token.setUser(user1);
+//        tokenService.saveToken(token);
         return new LoginResponse(accessToken, refreshToken);
     }
 
-    @GetMapping("/dang-xuat")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.findUserByUserId(user1.getUserId());
-        if (auth != null) {
-            List<Token> tokenList = tokenService.getAllToken();
-            for (Token token : tokenList) {
-                if (token.getUser().getUserId().equals(user.getUserId())) {
-                    tokenService.removeToken(token);
-                    new SecurityContextLogoutHandler().logout(request, response, auth);
-                    return new ResponseEntity<>("successful", HttpStatus.OK);
-                }
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/dang-xuat")
+//    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userService.findUserByUserId(user1.getUserId());
+//        if (auth != null) {
+//            List<Token> tokenList = tokenService.getAllToken();
+//            for (Token token : tokenList) {
+//                if (token.getUser().getUserId().equals(user.getUserId())) {
+//                    tokenService.removeToken(token);
+//                    new SecurityContextLogoutHandler().logout(request, response, auth);
+//                    return new ResponseEntity<>("successful", HttpStatus.OK);
+//                }
+//            }
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @PostMapping("/dang-ky")
     public ResponseEntity<User> getregister(@RequestBody User user) throws Exception {
@@ -214,6 +214,8 @@ public class HomeController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleService.fineRoleByName("ADMIN");
+        if (role==null)
+            role = roleService.fineRoleByName("USER");
         user.setRole(role);
         LocalDate ldate = LocalDate.now();
         java.sql.Date date = java.sql.Date.valueOf(ldate);
@@ -222,23 +224,23 @@ public class HomeController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
-        String jwt = getJwtFromRequest(request);
-        Token token = new Token(jwt);
-        List<Token> tokenList = tokenService.getAllToken();
-        for (Token token1 : tokenList) {
-            System.out.println(token.getTokenRefesh().equals(token1.getTokenRefesh()));
-            if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
-                String userId = tokenProvider.getUserIdFromJWT(jwt);
-                User user = userService.findUserByUserId(userId);
-                String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getNameUser());
-                return ResponseEntity.ok(new LoginResponse(accessToken, token.getTokenRefesh()));
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+//        String jwt = getJwtFromRequest(request);
+//        Token token = new Token(jwt);
+//        List<Token> tokenList = tokenService.getAllToken();
+//        for (Token token1 : tokenList) {
+//            System.out.println(token.getTokenRefesh().equals(token1.getTokenRefesh()));
+//            if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
+//                String userId = tokenProvider.getUserIdFromJWT(jwt);
+//                User user = userService.findUserByUserId(userId);
+//                String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getNameUser());
+//                return ResponseEntity.ok(new LoginResponse(accessToken, token.getTokenRefesh()));
+//            }
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//
+//    }
 
 
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})

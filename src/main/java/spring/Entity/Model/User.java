@@ -1,23 +1,20 @@
 package spring.Entity.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 public class User {
 //    Users: id, name, email, password, roleId, address, phoneNumber, gender
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "UserId", updatable = false, nullable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
@@ -42,9 +39,27 @@ public class User {
     @Column(name = "image")
     @Lob
     private byte[] image;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "RoleId")
+    @JsonIgnore
+    @ToString.Exclude
     private Role role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Blog> blogs;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Orderss> orderssDetails;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Rating> ratings;
 
 
     public void setImage(String image) {
@@ -52,7 +67,7 @@ public class User {
     }
 
     public String getImage() {
-        if (image==null)
+        if (image == null)
             return null;
         return new String(image);
     }

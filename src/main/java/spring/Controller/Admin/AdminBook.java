@@ -58,7 +58,7 @@ public class AdminBook {
         return new ResponseEntity<>("successful",HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/admin/xoa-sach/{bookId}", "/admin/xoa-sach"})
+    @DeleteMapping(value = {"/admin/xoa-sach/{bookId}", "/admin/xoa-sach"})
     public ResponseEntity<String> removeBook(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
         if (booksService.findBooksByBookId(bookId) != null) {
             booksService.removeBookByBookId(bookId);
@@ -67,8 +67,8 @@ public class AdminBook {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PostMapping(value = {"/admin/sua-sach/{idBook}"})
-    public ResponseEntity<Book> editBook(@RequestBody Book book,@PathVariable("idBook")String idBook){
-        Book newBook = booksService.findBookByBookId(idBook);
+    public ResponseEntity<Book> editBook(@RequestBody Book book){
+        Book newBook = booksService.findBookByBookId(book.getBookId());
         if (book.getNameBook()!=null){
             newBook.setNameBook(book.getNameBook());
             booksService.saveBook(newBook);
@@ -105,7 +105,7 @@ public class AdminBook {
             newBook.setCategory(book.getCategory());
             booksService.saveBook(newBook);
         }
-        Book bookByName = booksService.findBookByBookId(idBook);
+        Book bookByName = booksService.findBookByBookId(book.getBookId());
         if (bookByName!=null){
             return new ResponseEntity<>(bookByName,HttpStatus.OK);
         }

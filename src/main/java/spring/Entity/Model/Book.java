@@ -1,11 +1,11 @@
 package spring.Entity.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "Books")
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Book {
     //Books: id, name, categoryId, author, publishYear, nxb, dayAdded, price, status, description
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "bookId", updatable = false, nullable = false)
     private String bookId;
@@ -36,13 +36,26 @@ public class Book {
     @Column(name = "Count")
     private Integer count;
     @Column(name = "Description")
-    private String description;
+    @Lob
+    private byte[] description;
     @Column(name = "image")
     @Lob
     private byte[] image;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "CategoryId")
     private Categories category;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<OrderssDetail> orderssDetails;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Rating> ratings;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Comment> comments;
 
     public void setImage(String image) {
         this.image = image.getBytes();
@@ -52,5 +65,14 @@ public class Book {
         if (image==null)
             return null;
         return new String(image);
+    }
+    public void setDescription(String description) {
+        this.description = description.getBytes();
+    }
+
+    public String getDescription() {
+        if (description==null)
+            return null;
+        return new String(description);
     }
 }

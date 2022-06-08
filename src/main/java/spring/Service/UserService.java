@@ -32,6 +32,10 @@ public class UserService {
         return userRepository.findUserByUserId(idUser);
     }
 
+    public List<User> findUsersByRole(String roleName){
+        return userRepository.findUsersByRole(roleName);
+    }
+
     public void editUserName(String nameUser, String userid) {
         userRepository.editUserName(nameUser, userid);
     }
