@@ -75,17 +75,9 @@ public class User {
     //xóa các bảng, thông tin có khóa ngoại liên kết
     @PreRemove
     public void preRemove(){
-        this.blogs.forEach(result->{
-            this.blogs.remove(result);
-        });
-        this.ratings.forEach(result->{
-            this.ratings.remove(result);
-        });
-        this.comments.forEach(result->{
-            this.comments.remove(result);
-        });
-        this.ordersses.forEach(result->{
-            this.ordersses.remove(result);
-        });
+        this.getBlogs().remove(this);
+        this.getRatings().remove(this);
+        this.getComments().remove(this);
+        this.ordersses.remove(this);
     }
 }

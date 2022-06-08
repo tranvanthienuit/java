@@ -23,10 +23,6 @@ public class OrderssDetail {
     private Integer count;
     @Column(name = "total_Price")
     private Double total;
-//    @Column(name = "nameBook")
-//    private String nameBook;
-//    @Column(name = "orderId")
-//    private String oderId;
     @ManyToOne
     @JoinColumn(name = "OrderssId")
     private Orderss orderss;
