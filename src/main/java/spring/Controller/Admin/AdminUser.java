@@ -19,15 +19,6 @@ public class AdminUser {
     @Autowired
     RoleService roleService;
 
-    @PostMapping("/admin/{userId}")
-    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String,Object> roleName) {
-        User user = userService.findUserByUserId(userId);
-
-        Role role = roleService.fineRoleByName(roleName.get("roleName").toString());
-        user.setRole(role);
-        userService.saveUser(user);
-        return new ResponseEntity<>("successful", HttpStatus.OK);
-    }
 
     @GetMapping("/admin/{roleName}")
     public ResponseEntity<?> findUsersByRole(@PathVariable("roleName") String roleName) {

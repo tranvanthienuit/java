@@ -6,15 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import spring.Entity.Model.Role;
 import spring.Entity.UserList;
 import spring.Service.RoleService;
 import spring.Service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class User {
@@ -54,5 +53,13 @@ public class User {
             return new ResponseEntity<>(userList, HttpStatus.OK);
         }
     }
+    @PostMapping(value = {"/admin/{userId}","/seller/{userId}"})
+    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String,Object> roleName) {
+        spring.Entity.Model.User user = userService.findUserByUserId(userId);
 
+        Role role = roleService.fineRoleByName(roleName.get("roleName").toString());
+        user.setRole(role);
+        userService.saveUser(user);
+        return new ResponseEntity<>("successful", HttpStatus.OK);
+    }
 }

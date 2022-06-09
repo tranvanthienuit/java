@@ -31,6 +31,9 @@ public interface OrderssDeRepository extends JpaRepository<OrderssDetail, String
     @Query("select u from OrderssDetail u where u.OrderssDeId=:orderssDeId")
     OrderssDetail findOrderssDetailByOrderssDeId(String orderssDeId);
 
+    @Query("select u from OrderssDetail u where u.orderss.OrderssId=:orderssId")
+    List<OrderssDetail> findAllByOrderssId(@Param("orderssId")String orderssId);
+
     @Query("select new spring.Entity.BookSelect(u.book,sum(u.count)) from OrderssDetail u group by u.book.bookId order by sum(u.count) desc ")
     List<BookSelect> getBookFromBorrDe(Pageable pageable);
 

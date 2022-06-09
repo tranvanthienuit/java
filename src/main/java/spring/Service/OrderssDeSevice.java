@@ -44,8 +44,8 @@ public class OrderssDeSevice {
         return orderssDeRepository.findAll(pageable);
     }
 
-    public OrderssDetail findOrderssDe(String idOrderssDe) {
-        return orderssDeRepository.findOrderssDetailByOrderssDeId(idOrderssDe);
+    public List<OrderssDetail> findOrderssDe(String idOrderss) {
+        return orderssDeRepository.findAllByOrderssId(idOrderss);
     }
 
     public List<OrderssDetail> findOrderssDetailsByOrderss(String OrderssId) {

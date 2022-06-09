@@ -64,13 +64,13 @@ public class BookController {
         }
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable("keyword")String keywword){
+    @GetMapping(value = {"/search/book/{keyword}","/search/book"})
+    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable(name = "keyword", required = false)String keywword){
         List<String> searchString = booksService.searchByNameBook(keywword);
         return new ResponseEntity<>(searchString,HttpStatus.OK);
     }
-    @GetMapping("/search/{categoryId}")
-    public ResponseEntity<?> findBookByCategory(@PathVariable(value = "categoryId")String categoryId){
+    @GetMapping(value = {"/search/{categoryId}","/search"})
+    public ResponseEntity<?> findBookByCategory(@PathVariable(value = "categoryId", required = false)String categoryId){
         List<Book> bookList = booksService.findBooksByCategoryId(categoryId);
         return new ResponseEntity<>(bookList,HttpStatus.OK);
     }

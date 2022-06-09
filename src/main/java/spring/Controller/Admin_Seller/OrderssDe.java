@@ -75,12 +75,12 @@ public class OrderssDe {
         }
     }
 
-    @GetMapping(value = {"/seller/tim-Orderssde/{orderDeId}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{orderDeId}", "/admin/tim-Orderss"})
-    public ResponseEntity<?> findOrderDe(@PathVariable("orderDeId")String orderDeId) {
+    @GetMapping(value = {"/seller/tim-Orderssde/{orderId}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{orderId}", "/admin/tim-Orderss"})
+    public ResponseEntity<?> findOrderDe(@PathVariable("orderId")String orderDeId) {
         if (orderDeId == null){
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            OrderssDetail orderssDetail = orderssDeSevice.findOrderssDe(orderDeId);
+            List<OrderssDetail> orderssDetail = orderssDeSevice.findOrderssDe(orderDeId);
             return new ResponseEntity<>(orderssDetail,HttpStatus.OK);
         }
     }
