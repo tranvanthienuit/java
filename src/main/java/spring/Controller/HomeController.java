@@ -11,22 +11,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.*;
 import spring.Entity.Model.*;
 import spring.JWT.JwtTokenProvider;
-import spring.Repository.MailService;
 import spring.Sercurity.userDetail;
 import spring.Service.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
-import static spring.JWT.JwtAuthenticationFilter.getJwtFromRequest;
 
 
 @RestController
@@ -142,15 +135,6 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"/xem-tai-khoan"})
-    public ResponseEntity<User> getUser() throws Exception {
-        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.findUserByUserId(userDetail.getUserId());
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
 
 
     @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
@@ -202,7 +186,7 @@ public class HomeController {
 //    }
 
     @PostMapping("/dang-ky")
-    public ResponseEntity<User> getregister(@RequestBody User user) throws Exception {
+    public ResponseEntity<?> getregister(@RequestBody User user) throws Exception {
         String username;
         if (userService.findUserName(user.getNameUser()) == null) {
             username = "";
@@ -210,10 +194,10 @@ public class HomeController {
             username = userService.findUserName(user.getNameUser()).getNameUser();
         }
         if (user.getNameUser().equals(username)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("account exist",HttpStatus.OK);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.fineRoleByName("ADMIN");
+        Role role = roleService.fineRoleByName(user.getRole().getNameRole());
         if (role==null)
             role = roleService.fineRoleByName("USER");
         user.setRole(role);

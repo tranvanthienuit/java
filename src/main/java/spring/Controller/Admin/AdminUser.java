@@ -10,6 +10,7 @@ import spring.Service.RoleService;
 import spring.Service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AdminUser {
@@ -19,17 +20,18 @@ public class AdminUser {
     RoleService roleService;
 
     @PostMapping("/admin/{userId}")
-    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody String roleName) {
+    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String,Object> roleName) {
         User user = userService.findUserByUserId(userId);
-        Role role = roleService.fineRoleByName(roleName);
+
+        Role role = roleService.fineRoleByName(roleName.get("roleName").toString());
         user.setRole(role);
         userService.saveUser(user);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
     @GetMapping("/admin/{roleName}")
-    public ResponseEntity<?> findUsersByRole(@PathVariable("roleName")String roleName){
+    public ResponseEntity<?> findUsersByRole(@PathVariable("roleName") String roleName) {
         List<User> userList = userService.findUsersByRole(roleName);
-        return new ResponseEntity<>(userList,HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }

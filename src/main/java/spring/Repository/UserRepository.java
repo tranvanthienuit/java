@@ -21,45 +21,45 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByNameUser(String username);
 
-    @Transactional
-    @Modifying
-    @Query("update User u set u.nameUser=:nameUser where u.userId=:userId")
-    void editUserName(@Param("nameUser") String nameUser, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.password=:pass where u.userId=:userId")
-    void editUserPass(@Param("pass") String pass, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.address=:address where u.userId=:userId")
-    void editUserAdress(@Param("address") String address, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.email=:email where u.userId=:userId")
-    void editUserEmail(@Param("email") String email, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.telephone=:telephone where u.userId=:userId")
-    void editUserTelephone(@Param("telephone") String telephone, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.sex=:sex where u.userId=:userId")
-    void editUserSex(@Param("sex") String sex, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.image=:image where u.userId=:userId")
-    void editImage(@Param("image") byte[] image, @Param("userId") String userId);
-
-    @Transactional
-    @Modifying
-    @Query("update User u set u.fullName=:fullName where u.userId=:userId")
-    void editUserFullname(@Param("fullName") String fullName, @Param("userId") String userId);
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.nameUser=:nameUser where u.userId=:userId")
+//    void editUserName(@Param("nameUser") String nameUser, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.password=:pass where u.userId=:userId")
+//    void editUserPass(@Param("pass") String pass, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.address=:address where u.userId=:userId")
+//    void editUserAdress(@Param("address") String address, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.email=:email where u.userId=:userId")
+//    void editUserEmail(@Param("email") String email, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.telephone=:telephone where u.userId=:userId")
+//    void editUserTelephone(@Param("telephone") String telephone, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.sex=:sex where u.userId=:userId")
+//    void editUserSex(@Param("sex") String sex, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.image=:image where u.userId=:userId")
+//    void editImage(@Param("image") byte[] image, @Param("userId") String userId);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update User u set u.fullName=:fullName where u.userId=:userId")
+//    void editUserFullname(@Param("fullName") String fullName, @Param("userId") String userId);
 
     User findUserByUserId(String userId);
 

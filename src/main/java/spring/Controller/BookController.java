@@ -69,7 +69,7 @@ public class BookController {
         List<String> searchString = booksService.searchByNameBook(keywword);
         return new ResponseEntity<>(searchString,HttpStatus.OK);
     }
-    @PostMapping("/search/{categoryId}")
+    @GetMapping("/search/{categoryId}")
     public ResponseEntity<?> findBookByCategory(@PathVariable(value = "categoryId")String categoryId){
         List<Book> bookList = booksService.findBooksByCategoryId(categoryId);
         return new ResponseEntity<>(bookList,HttpStatus.OK);
@@ -79,7 +79,7 @@ public class BookController {
                                                  @PathVariable(value = "gia-thap",required = false)Integer giathap,
                                                  @PathVariable(value = "gia-cao",required = false)Integer giacao,
                                                  @PathVariable(value = "nam-sb",required = false)Integer namsb){
-        List<Book> bookList = booksService.findBookByCondition(tacgia, giathap, giacao, namsb);
+        booksService.findBookByCondition(tacgia, giathap, giacao, namsb);
         return new ResponseEntity<>("successful",HttpStatus.OK);
     }
 }

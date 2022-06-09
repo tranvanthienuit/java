@@ -27,6 +27,8 @@ public class Orderss {
     private java.util.Date OrderssDate;
     @Column(name = "totalBook")
     private Integer totalBook;
+    @Column(name = "totalPrice")
+    private Double totalPrice;
     @Column(name = "Telephone")
     private String telephone;
     @Column(name = "Address")
@@ -35,6 +37,8 @@ public class Orderss {
     private String status;
     @Column(name = "nameUser")
     private String nameUser;
+    @Column(name = "fullName")
+    private String fullName;
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;

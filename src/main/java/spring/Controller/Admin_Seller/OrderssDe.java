@@ -29,19 +29,19 @@ public class OrderssDe {
     @Autowired
     BookService bookService;
 
-    @DeleteMapping(value = {"/seller/xoa-Orderss-detail/{OrderssDeId}", "/seller/xoa-Orderss-detail","/admin/xoa-Orderss-detail/{OrderssDeId}", "/admin/xoa-Orderss-detail"})
+    @DeleteMapping(value = {"/seller/xoa-Orderss-detail/{OrderssDeId}", "/seller/xoa-Orderss-detail", "/admin/xoa-Orderss-detail/{OrderssDeId}", "/admin/xoa-Orderss-detail"})
     public ResponseEntity<String> removeOrderssDe(@PathVariable(value = "OrderssDeId", required = false) String OrderssDeId) throws Exception {
         if (orderssDeSevice.findOrderssDe(OrderssDeId) != null) {
 //            OrderssDetail orderssDetail = orderssDeSevice.findOrderssDe(OrderssDeId);
 //            bookService.findBookAndUpdate(orderssDetail.getCount(), orderssDetail.getBook().getBookId());
             orderssDeSevice.removeByOrderssDeId(OrderssDeId);
-            return new ResponseEntity<>("successful",HttpStatus.OK);
+            return new ResponseEntity<>("successful", HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
-    @GetMapping(value = {"/seller/xem-tat-ca-Orderss-Detail/{page}", "/seller/xem-tat-ca-Orderss-Detail","/admin/xem-tat-ca-Orderss-Detail/{page}", "/admin/xem-tat-ca-Orderss-Detail"})
+    @GetMapping(value = {"/seller/xem-tat-ca-Orderss-Detail/{page}", "/seller/xem-tat-ca-Orderss-Detail", "/admin/xem-tat-ca-Orderss-Detail/{page}", "/admin/xem-tat-ca-Orderss-Detail"})
     public ResponseEntity<OrderssDelist> getAllOrderssDe(
             @PathVariable(name = "page", required = false) Integer page) throws Exception {
         OrderssDelist orderssDelist = new OrderssDelist();
@@ -60,8 +60,8 @@ public class OrderssDe {
         }
     }
 
-    @GetMapping(value = {"/seller/tim-Orderssde/{userName}", "/seller/tim-Orderss","/admin/tim-Orderssde/{userName}", "/admin/tim-Orderss"})
-    private ResponseEntity<List<OrderssDetail>> findOrderssDe(@PathVariable(name = "userName", required = false) String userName) {
+    @GetMapping(value = {"/seller/tim-Orderssde/{userName}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{userName}", "/admin/tim-Orderss"})
+    public ResponseEntity<List<OrderssDetail>> findOrderssDe(@PathVariable(name = "userName", required = false) String userName) {
         if (userName == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -72,6 +72,16 @@ public class OrderssDe {
                 orderssDetailList.addAll(orderssDetailList1);
             }
             return new ResponseEntity<>(orderssDetailList, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(value = {"/seller/tim-Orderssde/{orderDeId}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{orderDeId}", "/admin/tim-Orderss"})
+    public ResponseEntity<?> findOrderDe(@PathVariable("orderDeId")String orderDeId) {
+        if (orderDeId == null){
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            OrderssDetail orderssDetail = orderssDeSevice.findOrderssDe(orderDeId);
+            return new ResponseEntity<>(orderssDetail,HttpStatus.OK);
         }
     }
 }

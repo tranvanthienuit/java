@@ -47,10 +47,12 @@ public class UserCart {
         orderss.setOrderssDate(date);
         orderss.setUser(user);
         Integer totalBook = 0;
+        Double totalPrice = 0.0;
 
 
         for (CartBook cartBook : cart) {
             totalBook = totalBook+cartBook.getQuantity();
+            totalPrice = totalPrice+cartBook.getTotal();
             OrderssDetail orderssDetail = new OrderssDetail();
             for (Book book1 : bookService.getAllBook()) {
                 // tìm từng cuốn sách
@@ -74,6 +76,8 @@ public class UserCart {
             orderss.setTelephone(user.getTelephone());
             orderss.setAddress(user.getAddress());
             orderss.setNameUser(user.getNameUser());
+            orderss.setFullName(user.getFullName());
+            orderss.setTotalPrice(totalPrice);
             orderssSevice.saveOrderss(orderss);
 
 

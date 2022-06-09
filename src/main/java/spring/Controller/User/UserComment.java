@@ -12,6 +12,8 @@ import spring.Service.BookService;
 import spring.Service.CommentService;
 import spring.Service.UserService;
 
+import java.util.Map;
+
 @RestController
 public class UserComment {
     @Autowired
@@ -37,8 +39,8 @@ public class UserComment {
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
     @PostMapping("/user/sua-comment/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable(name = "commentId")String commentId,@RequestBody String content){
-        commentService.updateComment(commentId, content);
+    public ResponseEntity<?> updateComment(@PathVariable(name = "commentId")String commentId,@RequestBody Map<String,Object> content){
+        commentService.updateComment(commentId, content.get("conten").toString());
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
     @GetMapping("/book/comment/{bookId}")
