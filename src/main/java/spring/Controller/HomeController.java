@@ -69,24 +69,24 @@ public class HomeController {
         List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findUserName(userName);
-        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User user = userService.findUserName(userName);
+//        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
         // lấy sách dựa trên số sao đánh giá cao nhất
         List<BookRating> bookRatings = ratingService.bookRating();
 
-        if (bookUser.isEmpty()) {
+//        if (bookUser.isEmpty()) {
+//            bookReturn.setBookList(bookList);
+//            bookReturn.setBooks(bookList1);
+//            bookReturn.setBookRatings(bookRatings);
+//            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
+//        } else {
             bookReturn.setBookList(bookList);
-            bookReturn.setBooks(bookList1);
+//            bookReturn.setBooks(bookUser);
             bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-        } else {
-            bookReturn.setBookList(bookList);
-            bookReturn.setBooks(bookUser);
-            bookReturn.setBookRatings(bookRatings);
-            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-        }
+//        }
 
 
     }
@@ -113,24 +113,24 @@ public class HomeController {
         List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
 
 
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findUserName(userName);
-        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User user = userService.findUserName(userName);
+//        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
 
         List<BookRating> bookRatings = ratingService.bookRating();
 
-        if (bookUser == null) {
+//        if (bookUser == null) {
+//            bookReturn.setBookList(bookList);
+//            bookReturn.setBooks(bookList1);
+//            bookReturn.setBookRatings(bookRatings);
+//            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
+//        } else {
             bookReturn.setBookList(bookList);
-            bookReturn.setBooks(bookList1);
+//            bookReturn.setBooks(bookUser);
             bookReturn.setBookRatings(bookRatings);
             return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-        } else {
-            bookReturn.setBookList(bookList);
-            bookReturn.setBooks(bookUser);
-            bookReturn.setBookRatings(bookRatings);
-            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-        }
+//        }
 
     }
 
@@ -197,7 +197,7 @@ public class HomeController {
             return new ResponseEntity<>("account exist",HttpStatus.OK);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.fineRoleByName(user.getRole().getNameRole());
+        Role role = user.getRole();
         if (role==null)
             role = roleService.fineRoleByName("USER");
         user.setRole(role);
@@ -229,7 +229,7 @@ public class HomeController {
 
 
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
-    public void appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
+    public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
@@ -238,6 +238,7 @@ public class HomeController {
         rating.setBook(book);
         rating.setRating(star);
         ratingService.save(rating);
+        return new ResponseEntity<>("successful",HttpStatus.OK);
     }
 
     @GetMapping("/category")

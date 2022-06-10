@@ -15,7 +15,7 @@ public class Blog {
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "BlogId", updatable = false, nullable = false)
+    @Column(name = "BlogId", updatable = false)
     private String blogId;
     @Column(name = "title")
     private String title;

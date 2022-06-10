@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static spring.Recommendation.StringSimilarity.similarity;
 
 @Service
 public class OrderssDeSevice {
@@ -62,28 +61,28 @@ public class OrderssDeSevice {
     }
 
 
-    public List<Book> getBookFromBorrDeAndUser(Pageable pageable, User user) {
-        List<Book> recomBook = new ArrayList<>();
-        if (user != null) {
-            List<BookSelect> objects = orderssDeRepository.getBookFromBorrDeAndUser(pageable, user.getUserId());
-            List<Book> bookList = new ArrayList<>();
-            List<Book> books = bookRepository.findAll();
-            for (BookSelect bookSelect : objects) {
-                bookList.add(bookSelect.getBook());
-            }
-
-            for (Book book : bookList) {
-                for (Book book1 : books) {
-                    if (similarity(book1.getDescription(), book.getDescription()) > 0.7) {
-                        recomBook.add(book);
-                    }
-                }
-            }
-            return recomBook;
-        }
-        recomBook = Collections.emptyList();
-        return recomBook;
-    }
+//    public List<Book> getBookFromBorrDeAndUser(Pageable pageable, User user) {
+//        List<Book> recomBook = new ArrayList<>();
+//        if (user != null) {
+//            List<BookSelect> objects = orderssDeRepository.getBookFromBorrDeAndUser(pageable, user.getUserId());
+//            List<Book> bookList = new ArrayList<>();
+//            List<Book> books = bookRepository.findAll();
+//            for (BookSelect bookSelect : objects) {
+//                bookList.add(bookSelect.getBook());
+//            }
+//
+//            for (Book book : bookList) {
+//                for (Book book1 : books) {
+//                    if (similarity(book1.getDescription(), book.getDescription()) > 0.7) {
+//                        recomBook.add(book);
+//                    }
+//                }
+//            }
+//            return recomBook;
+//        }
+//        recomBook = Collections.emptyList();
+//        return recomBook;
+//    }
 
     public List<OrderssDetail> getAllOrderssDe() {
         return orderssDeRepository.findAll();

@@ -19,7 +19,7 @@ public class Orderss {
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "OrderssId", updatable = false, nullable = false)
+    @Column(name = "OrderssId", updatable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
     private String OrderssId;
     @Column(name = "OrderssDate")

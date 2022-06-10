@@ -20,7 +20,7 @@ public class Book  {
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "bookId", updatable = false, nullable = false)
+    @Column(name = "bookId", updatable = false)
     private String bookId;
     @Column(name = "NameBook")
     private String nameBook;

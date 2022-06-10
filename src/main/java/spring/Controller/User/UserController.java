@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.Mail;
 import spring.Entity.Model.User;
-import spring.Entity.image;
 import spring.JWT.JwtTokenProvider;
 import spring.Repository.MailService;
 import spring.Repository.UserRepository;
@@ -71,10 +70,10 @@ public class UserController {
     }
 
     @PostMapping(value = {"/user/cap-nhat-anh", "/admin/cap-nhat-anh", "/seller/cap-nhat-anh"})
-    public ResponseEntity<User> editImg(@RequestBody image image) throws Exception {
+    public ResponseEntity<User> editImg(@RequestBody Map<String,Object> image) throws Exception {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
-        user.setImage(image.getImage());
+        user.setImage(image.get("image").toString());
         userService.saveUser(user);
 //        userService.editImage(getImageByte(), user.getUserId());
         return new ResponseEntity<>(user, HttpStatus.OK);

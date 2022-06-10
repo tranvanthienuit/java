@@ -34,11 +34,15 @@ public class UserCart {
     @Autowired
     UserService userService;
 
-    @PostMapping("/user/mua-sach")
-    public ResponseEntity<List<CartBook>> Orderss(@RequestBody List<CartBook> cart) throws Exception {
+    @PostMapping(value = {"/user/mua-sach", "/mua-sach"})
+    public ResponseEntity<List<CartBook>> Orderss(@RequestBody List<CartBook> cart, @RequestBody User userBuy) throws Exception {
+        User user = new User();
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.findUserByUserId(user1.getUserId());
-
+        if (user1 != null) {
+            user = userService.findUserByUserId(user1.getUserId());
+        } else {
+            user = userBuy;
+        }
         LocalDate ldate = LocalDate.now();
         Date date = Date.valueOf(ldate);
 
@@ -51,8 +55,8 @@ public class UserCart {
 
 
         for (CartBook cartBook : cart) {
-            totalBook = totalBook+cartBook.getQuantity();
-            totalPrice = totalPrice+cartBook.getTotal();
+            totalBook = totalBook + cartBook.getQuantity();
+            totalPrice = totalPrice + cartBook.getTotal();
             OrderssDetail orderssDetail = new OrderssDetail();
             for (Book book1 : bookService.getAllBook()) {
                 // tìm từng cuốn sách

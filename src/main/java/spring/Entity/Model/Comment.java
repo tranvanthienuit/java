@@ -20,7 +20,7 @@ public class Comment {
     @Id
     @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "CommentId", updatable = false, nullable = false)
+    @Column(name = "CommentId", updatable = false)
     private String commentId;
     @Column(name = "content")
     private String content;
