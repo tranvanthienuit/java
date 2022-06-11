@@ -7,12 +7,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.Model.Book;
+import spring.Entity.Model.Rating;
+import spring.Entity.Model.User;
+import spring.Sercurity.userDetail;
 import spring.Service.BookService;
 import spring.Service.CategoryService;
+import spring.Service.RatingService;
+import spring.Service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class BookController {
@@ -20,21 +27,25 @@ public class BookController {
     BookService booksService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    RatingService ratingService;
 
-    @GetMapping(value = {"/tim-sach/{infoBook}", "/tim-sach"})
-    public ResponseEntity<List<Book>> findBook(@PathVariable(value = "infoBook", required = false) String infoBook) throws Exception {
+    @PostMapping(value = {"/tim-sach"})
+    public ResponseEntity<List<Book>> findBook(@RequestBody Map<String,Object> infoBook) throws Exception {
         if (infoBook != null) {
-            if (booksService.findBooksByNameBook(infoBook) != null) {
-                List<Book> booksList = booksService.findBooksByNameBook(infoBook);
+            if (!booksService.findBooksByNameBook(infoBook.get("infoBook").toString()).isEmpty()) {
+                List<Book> booksList = booksService.findBooksByNameBook(infoBook.get("infoBook").toString());
                 return new ResponseEntity<>(booksList, HttpStatus.OK);
             } else {
-                if (booksService.findBooksByAuthor(infoBook) != null) {
-                    List<Book> booksList = booksService.findBooksByAuthor(infoBook);
+                if (!booksService.findBooksByAuthor(infoBook.get("infoBook").toString()).isEmpty()) {
+                    List<Book> booksList = booksService.findBooksByAuthor(infoBook.get("infoBook").toString());
                     return new ResponseEntity<>(booksList, HttpStatus.OK);
 
                 } else {
-                    if (booksService.findBooksByCategoryName(infoBook) != null) {
-                        List<Book> booksList = booksService.findBooksByCategoryName(infoBook);
+                    if (!booksService.findBooksByCategoryName(infoBook.get("infoBook").toString()).isEmpty()) {
+                        List<Book> booksList = booksService.findBooksByCategoryName(infoBook.get("infoBook").toString());
                         return new ResponseEntity<>(booksList, HttpStatus.OK);
 
                     }
@@ -56,7 +67,7 @@ public class BookController {
 
     @GetMapping("/sach-moi")
     public ResponseEntity<List<Book>> findbyarrive() throws Exception {
-        Pageable pageable = PageRequest.of(0, 8, Sort.by("dayAdd").descending());
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("dayAdd").descending());
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
         List<Book> bookList = bookPage.getContent();
         if (bookList.isEmpty()) {
@@ -85,5 +96,19 @@ public class BookController {
         Pageable pageable = PageRequest.of(page, 1);
         List<Book> bookList = booksService.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
         return new ResponseEntity<>(bookList,HttpStatus.OK);
+    }
+    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
+    public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
+        Rating rating = new Rating();
+        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findUserByUserId(userDetail.getUserId());
+        Book book = booksService.findBooksByBookId(bookId);
+        rating.setUser(user);
+        rating.setBook(book);
+        rating.setRating(star);
+        ratingService.save(rating);
+        book.setRating(rating.getRating());
+        booksService.saveBook(book);
+        return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 }

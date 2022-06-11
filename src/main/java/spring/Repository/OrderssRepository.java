@@ -27,8 +27,8 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
     @Query("select u from Orderss u where u.OrderssDate=:date and u.user=:user")
     Orderss findOrderssByOrderssDateAndUserId(Date date, User user);
 
-    @Query("select u from Orderss u where u.user.nameUser=:userName")
-    List<Orderss> findOrderssByUser(String userName);
+    @Query("select u from Orderss u where u.user.fullName=:fullName")
+    List<Orderss> findOrderssByUser(String fullName);
 
     List<Orderss> findOrderssByAddress(String address);
     List<Orderss> findOrderssByStatus(String status);

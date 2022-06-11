@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BookReturn {
     private BookList bookList;
-    private List<Book> books;
-    private List<BookRating> bookRatings;
+    private List<Book> bookOder;
+    private List<Book> bookRating;
 }

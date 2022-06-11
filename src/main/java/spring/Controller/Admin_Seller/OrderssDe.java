@@ -45,7 +45,7 @@ public class OrderssDe {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 16);
+        Pageable pageable = PageRequest.of(page, 6);
         Page<OrderssDetail> OrderssDetailPage = orderssDeSevice.getAllOrderssDe(pageable);
         List<OrderssDetail> orderssDetailPageContent = OrderssDetailPage.getContent();
         if (orderssDetailPageContent.isEmpty()) {
@@ -72,7 +72,7 @@ public class OrderssDe {
         }
     }
 
-    @GetMapping(value = {"/seller/tim-Orderssde/{orderId}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{orderId}", "/admin/tim-Orderss"})
+    @PostMapping(value = {"/seller/tim-Orderssde/{orderId}", "/seller/tim-Orderss", "/admin/tim-Orderssde/{orderId}", "/admin/tim-Orderss"})
     public ResponseEntity<?> findOrderDe(@PathVariable("orderId")String orderDeId) {
         if (orderDeId == null){
             return new ResponseEntity<>(HttpStatus.OK);

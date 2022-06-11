@@ -37,10 +37,6 @@ public class AdminBlog {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @GetMapping("/admin/xem-tat-ca-blog")
-    public ResponseEntity<List<Blog>> findAllBlog(){
-        return new ResponseEntity<>(blogService.findAllBlog(),HttpStatus.OK);
-    }
 
     @PostMapping("/admin/sua-blog")
     public ResponseEntity<?> updateBlog(@RequestBody Blog blog){

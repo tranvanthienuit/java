@@ -17,9 +17,9 @@ import spring.Entity.Model.*;
 import spring.JWT.JwtTokenProvider;
 import spring.Sercurity.userDetail;
 import spring.Service.*;
+
 import java.time.LocalDate;
 import java.util.List;
-
 
 
 @RestController
@@ -40,12 +40,14 @@ public class HomeController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     PasswordEncoder passwordEncoder;
-//    @Autowired
+    //    @Autowired
 //    TokenService tokenService;
     @Autowired
     JwtTokenProvider tokenProvider;
     @Autowired
     RatingService ratingService;
+    @Autowired
+    BlogService blogService;
 
     @GetMapping(value = {"/trang-chu/{page}", "/trang-chu"})
     public ResponseEntity<BookReturn> home(
@@ -58,15 +60,15 @@ public class HomeController {
             page = 0;
         }
         //lấy tất cả các sách và số lưởng tổng
-        Pageable pageable = PageRequest.of(page, 16);
+        Pageable pageable = PageRequest.of(page, 6);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(bookPageContent.size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
-        Pageable pageable1 = PageRequest.of(0, 16);
-        List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
+        Pageable pageable1 = PageRequest.of(0,6);
+        List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -74,7 +76,7 @@ public class HomeController {
 //        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
         // lấy sách dựa trên số sao đánh giá cao nhất
-        List<BookRating> bookRatings = ratingService.bookRating();
+        List<Book> bookRating = booksService.getBookByRating();
 
 //        if (bookUser.isEmpty()) {
 //            bookReturn.setBookList(bookList);
@@ -82,10 +84,12 @@ public class HomeController {
 //            bookReturn.setBookRatings(bookRatings);
 //            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        } else {
-            bookReturn.setBookList(bookList);
+        bookReturn.setBookList(bookList);
+        bookReturn.setBookOder(bookOrder);
+        bookReturn.setBookRating(bookRating);
 //            bookReturn.setBooks(bookUser);
-            bookReturn.setBookRatings(bookRatings);
-            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
+//        bookReturn.setFullBooks(fullBooks);
+        return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        }
 
 
@@ -102,39 +106,40 @@ public class HomeController {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 16);
+        //lấy tất cả các sách và số lưởng tổng
+        Pageable pageable = PageRequest.of(page, 6);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(bookPageContent.size());
 
+        // lấy sách dựa trên những phiếu mượn sách trước
+        Pageable pageable1 = PageRequest.of(0, 6);
+        List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
-        Pageable pageable1 = PageRequest.of(0, 16);
-        List<Book> bookList1 = orderssDeSevice.getBookFromBorrDe(pageable1);
-
-
+        // lấy sách dựa trên số sách mà khách hàng đã mượn
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 //        User user = userService.findUserName(userName);
 //        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
+        // lấy sách dựa trên số sao đánh giá cao nhất
+        List<Book> bookRating = booksService.getBookByRating();
 
-        List<BookRating> bookRatings = ratingService.bookRating();
-
-//        if (bookUser == null) {
+//        if (bookUser.isEmpty()) {
 //            bookReturn.setBookList(bookList);
 //            bookReturn.setBooks(bookList1);
 //            bookReturn.setBookRatings(bookRatings);
 //            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        } else {
-            bookReturn.setBookList(bookList);
+        bookReturn.setBookList(bookList);
+        bookReturn.setBookOder(bookOrder);
+        bookReturn.setBookRating(bookRating);
 //            bookReturn.setBooks(bookUser);
-            bookReturn.setBookRatings(bookRatings);
-            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
+//        bookReturn.setFullBooks(fullBooks);
+        return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        }
 
     }
-
-
 
 
     @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
@@ -194,11 +199,11 @@ public class HomeController {
             username = userService.findUserName(user.getNameUser()).getNameUser();
         }
         if (user.getNameUser().equals(username)) {
-            return new ResponseEntity<>("account exist",HttpStatus.OK);
+            return new ResponseEntity<>("account exist", HttpStatus.OK);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = user.getRole();
-        if (role==null)
+        if (role == null)
             role = roleService.fineRoleByName("USER");
         user.setRole(role);
 //        user.setNameRole(role.getNameRole());
@@ -228,24 +233,16 @@ public class HomeController {
 //    }
 
 
-    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
-    public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
-        Rating rating = new Rating();
-        userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.findUserByUserId(userDetail.getUserId());
-        Book book = booksService.findBooksByBookId(bookId);
-        rating.setUser(user);
-        rating.setBook(book);
-        rating.setRating(star);
-        ratingService.save(rating);
-        return new ResponseEntity<>("successful",HttpStatus.OK);
-    }
-
     @GetMapping("/category")
     public ResponseEntity<CateList> getAllCategory() {
         CateList cateList = new CateList();
         cateList.setCategoriesList(categoryService.getAllCategory());
         cateList.setCount(categoryService.getAllCategory().size());
         return new ResponseEntity<>(cateList, HttpStatus.OK);
+    }
+
+    @GetMapping("/xem-tat-ca-blog")
+    public ResponseEntity<List<Blog>> findAllBlog() {
+        return new ResponseEntity<>(blogService.findAllBlog(), HttpStatus.OK);
     }
 }

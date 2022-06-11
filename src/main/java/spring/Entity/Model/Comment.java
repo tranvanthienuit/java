@@ -24,6 +24,9 @@ public class Comment {
     private String commentId;
     @Column(name = "content")
     private String content;
+    @Column(name = "DayAdd")
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date dayAdd;
 //    @Column(name = "nameUser")
 //    private String nameUser;
     @ManyToOne

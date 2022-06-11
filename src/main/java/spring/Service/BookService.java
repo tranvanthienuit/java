@@ -80,5 +80,9 @@ public class BookService {
     public List<Book> findBookByCondition(String tacgia,Integer giathap,Integer giacao,Integer namsb,Pageable pageable){
         return booksRepository.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
     }
+
+    public List<Book> getBookByRating(){
+        return booksRepository.getBookByRating();
+    }
 }
 
