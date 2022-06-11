@@ -63,7 +63,7 @@ public class OrderssDe {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             List<OrderssDetail> orderssDetailList = new ArrayList<>();
-            List<Orderss> orderss = orderssSevice.findOrdersssByUser(userName);
+            List<Orderss> orderss = orderssSevice.findOrder(userName);
             for (Orderss orderss1 : orderss) {
                 List<OrderssDetail> orderssDetailList1 = orderssDeSevice.findOrderssDetailsByOrderss(orderss1.getOrderssId());
                 orderssDetailList.addAll(orderssDetailList1);

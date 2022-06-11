@@ -28,7 +28,10 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
     Orderss findOrderssByOrderssDateAndUserId(Date date, User user);
 
     @Query("select u from Orderss u where u.user.nameUser=:userName")
-    List<Orderss> findOrdersssByUser(String userName);
+    List<Orderss> findOrderssByUser(String userName);
+
+    List<Orderss> findOrderssByAddress(String address);
+    List<Orderss> findOrderssByStatus(String status);
 
     @Query("select new spring.Entity.month_book(month(u.OrderssDate),sum(u.totalBook)) from Orderss u group by month(u.OrderssDate)")
     List<month_book> getBookAndMonth();

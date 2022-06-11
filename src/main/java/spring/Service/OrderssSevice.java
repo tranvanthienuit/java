@@ -40,8 +40,12 @@ public class OrderssSevice {
         return orderssRepository.findAll(pageable);
     }
 
-    public List<Orderss> findOrdersssByUser(String username) {
-        return orderssRepository.findOrdersssByUser(username);
+    public List<Orderss> findOrder(String keysearch) {
+        if (orderssRepository.findOrderssByUser(keysearch)!=null)
+            return orderssRepository.findOrderssByUser(keysearch);
+        if (orderssRepository.findOrderssByAddress(keysearch)!=null)
+            return orderssRepository.findOrderssByAddress(keysearch);
+        return orderssRepository.findOrderssByStatus(keysearch);
     }
 
     public List<Orderss> getAllOrderss() {

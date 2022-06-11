@@ -13,6 +13,7 @@ import spring.Entity.Model.Book;
 import spring.Entity.Model.Orderss;
 import spring.Entity.Model.OrderssDetail;
 import spring.Entity.Model.User;
+import spring.Repository.MailService;
 import spring.Sercurity.userDetail;
 import spring.Service.BookService;
 import spring.Service.OrderssDeSevice;
@@ -33,16 +34,18 @@ public class UserCart {
     OrderssDeSevice orderssDeSevice;
     @Autowired
     UserService userService;
+    @Autowired
+    MailService mailService;
 
     @PostMapping(value = {"/user/mua-sach", "/mua-sach"})
-    public ResponseEntity<List<CartBook>> Orderss(@RequestBody List<CartBook> cart, @RequestBody User userBuy) throws Exception {
+    public ResponseEntity<List<CartBook>> Orderss(@RequestBody List<CartBook> cart) throws Exception {
         User user = new User();
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user1 != null) {
+//        if (user1 != null) {
             user = userService.findUserByUserId(user1.getUserId());
-        } else {
-            user = userBuy;
-        }
+//        } else {
+//            user = userBuy;
+//        }
         LocalDate ldate = LocalDate.now();
         Date date = Date.valueOf(ldate);
 
@@ -90,6 +93,67 @@ public class UserCart {
             orderssDetail.setBook(book);
             orderssDeSevice.saveOrderssDe(orderssDetail);
         }
+        Mail mail = new Mail();
+        mail.setMailFrom("uitsneaker@gmail.com");
+        mail.setMailTo(user.getEmail());
+        mail.setMailSubject("THÔNG TIN HÓA ĐƠN");
+        String html = "    <style>\n" +
+                ".styled-table {\n" +
+                "border-collapse: collapse;\n" +
+                "margin: 25px 0;\n" +
+                "font-size: 0.9em;\n" +
+                "font-family: sans-serif;\n" +
+                "width: 100%;\n" +
+                "box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);\n" +
+                "}\n" +
+                ".styled-table thead tr {\n" +
+                "background-color: #81afaf;\n" +
+                "color: #ffffff;\n" +
+                "text-align: left;\n" +
+                "}\n" +
+                ".styled-table th,\n" +
+                ".styled-table td {\n" +
+                "text-align: center;"+
+                "padding: 12px 15px;\n" +
+                "size: fixed;\n" +
+                "}\n" +
+                ".styled-table tbody tr {\n" +
+                "    border-bottom: 1px solid #dddddd;\n" +
+                "}\n" +
+                "\n" +
+                ".styled-table tbody tr:nth-of-type(even) {\n" +
+                "    background-color: #f3f3f3;\n" +
+                "}\n" +
+                "\n" +
+                ".styled-table tbody tr:last-of-type {\n" +
+                "    border-bottom: 2px solid #009879;\n" +
+                "}\n" +
+                ".styled-table tbody tr.active-row {\n" +
+                "    font-weight: bold;\n" +
+                "    color: #009879;\n" +
+                "}\n" +
+                "    </style>" +"<h2>TÊN CỦA KHÁCH HÀNG: "+user.getFullName()+"</h2></br>"+
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "        <tr>\n" +
+                "            <th>Tên Sách</th>\n" +
+                "            <th>Số Lượng</th>\n" +
+                "            <th>Giá</th>\n" +
+                "        </tr>\n" +
+                "    </thead><tbody>";
+        String table = "";
+        for (CartBook cartBook : cart){
+            Book book = bookService.findBookByBookId(cartBook.getBooks());
+            table = table + "<tr>\n" +
+                    "<td>"+book.getNameBook()+"</td>\n" +
+                    "<td>"+cartBook.getQuantity()+"</td>\n" +
+                    "<td>"+cartBook.getTotal()+"</td>\n" +
+                    "</tr>";
+        }
+        html = html + table + " </tbody>\n" +
+                "</table>"+"</br><h3>TỔNG GIÁ TIỀN CỦA BẠN LÀ : "+totalPrice+"</h3></br><h3>TỔNG SỐ SÁCH BẠN ĐÃ MUA : "+totalBook+"</h3>";
+        mail.setMailContent(html);
+        mailService.sendEmail(mail);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 }

@@ -77,8 +77,8 @@ public class BookService {
         booksRepository.removeBookByCategory(categoryId);
     }
 
-    public List<Book> findBookByCondition(String tacgia,Integer giathap,Integer giacao,Integer namsb){
-        return booksRepository.findBookByCondition(tacgia, giathap, giacao, namsb);
+    public List<Book> findBookByCondition(String tacgia,Integer giathap,Integer giacao,Integer namsb,Pageable pageable){
+        return booksRepository.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
     }
 }
 

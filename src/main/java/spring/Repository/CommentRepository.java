@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,String> {
-    @Query("select u from Comment u where u.user.userId=:userId and u.book.bookId=:commentId")
+    @Query("select u from Comment u where u.user.userId=:userId and u.commentId=:commentId")
     Comment findByUserIdAndCommentId(@Param("userId")String userId,@Param("commentId")String commentId);
     @Transactional
     @Modifying

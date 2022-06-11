@@ -80,11 +80,11 @@ public class UserController {
     }
 
     @PostMapping(value = {"/user/sua-mat-khau", "/admin/sua-mat-khau", "/seller/sua-mat-khau"})
-    public ResponseEntity<?> editPassword(@RequestBody String oldPassword, @RequestBody @PathVariable("new-password") String newPassword) {
+    public ResponseEntity<?> editPassword(@RequestBody Map<String,Object> password) {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
-        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(newPassword));
+        if (passwordEncoder.matches(password.get("oldPassword").toString(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(password.get("newPassword").toString()));
             userService.saveUser(user);
 //            userService.editUserPass(passwordEncoder.encode(newPassword), user.getUserId());
             return new ResponseEntity<>("thanh cong roi ban ey", HttpStatus.OK);
@@ -114,7 +114,7 @@ public class UserController {
             mail.setMailContent("<h1>Reset Password</h1></br></br>\n" +
                     "<h2>Xin chào quý khách mật khẩu của bạn đang được reset.</br>\n" +
                     "\tHãy nhấp vào link dưới đây để cài đặt mật khẩu lại. Cảm ơn quý khách\n</h2>\n" +
-                    "<h3>Link: </h3>" + "<a href=" + "https://cai-dat-mat-khau-moi/" + token + ">" + email + "</a>");
+                    "<h3>Link: </h3>" + "<a href=https://cai-dat-mat-khau-moi/" + token + ">" + email + "</a>");
             mailService.sendEmail(mail);
             return new ResponseEntity<>("successful", HttpStatus.OK);
         }

@@ -58,12 +58,12 @@ public class Orderss {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/seller/tim-Orderss/{userName}", "/seller/tim-Orderss", "/admin/tim-Orderss/{userName}", "/admin/tim-Orderss"})
-    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@PathVariable(name = "userName", required = false) String userName) {
-        if (userName == null) {
+    @PostMapping(value = {"/seller/tim-Orderss/{keysearch}", "/seller/tim-Orderss", "/admin/tim-Orderss/{keysearch}", "/admin/tim-Orderss"})
+    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@PathVariable(name = "keysearch", required = false) String keysearch) {
+        if (keysearch == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrdersssByUser(userName);
+            List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrder(keysearch);
             return new ResponseEntity<>(orderssList, HttpStatus.OK);
         }
     }

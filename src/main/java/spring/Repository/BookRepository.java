@@ -54,7 +54,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("delete from Book u where u.category.categoryId=:categoryId")
     void removeBookByCategory(@Param("categoryId") String categoryId);
 
-    @Query(value = "select u from Book u where u.author=:tacgia or u.author = false and u.price<:giathap or u.price = false and u.price<:giacao or u.price = false and u.publishYear=:namsb or u.publishYear = false",nativeQuery = true)
+    @Query(value = "select * from books u where author=:tacgia or author = false and price<:giathap or price = false and price<:giacao or price = false and publish_year=:namsb or publish_year = false",nativeQuery = true)
     List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
-                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb);
+                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb,Pageable pageable);
 }

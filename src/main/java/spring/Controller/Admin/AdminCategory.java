@@ -37,7 +37,7 @@ public class AdminCategory {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/admin/sua-loai-sach")
+    @PostMapping("/admin/sua-loai-sach")
     public ResponseEntity<?> editeCategory(@RequestBody Categories category){
         Categories categories = categoryService.findByCategoryId(category.getCategoryId());
         categories.setNameCate(category.getNameCate());

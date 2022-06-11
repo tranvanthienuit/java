@@ -31,7 +31,7 @@ public class UserComment {
         commentService.saveComment(comment);
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
-    @PostMapping("/user/xoa-comment/{commentId}")
+    @DeleteMapping(value = "/user/xoa-comment/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable(name = "commentId")String commentId){
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
@@ -40,7 +40,7 @@ public class UserComment {
     }
     @PostMapping("/user/sua-comment/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable(name = "commentId")String commentId,@RequestBody Map<String,Object> content){
-        commentService.updateComment(commentId, content.get("conten").toString());
+        commentService.updateComment(commentId, content.get("content").toString());
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
     @GetMapping("/book/comment/{bookId}")
