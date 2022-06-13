@@ -35,6 +35,8 @@ public class Orderss {
     private String address;
     @Column(name = "Status")
     private String status;
+    @Column(name = "pay")
+    private String pay;
     @Column(name = "nameUser")
     private String nameUser;
     @Column(name = "fullName")

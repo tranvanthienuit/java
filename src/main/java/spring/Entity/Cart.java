@@ -9,4 +9,5 @@ import java.util.List;
 public class Cart {
     private List<CartBook> cartBooks;
     private User user;
+    private String pay;
 }

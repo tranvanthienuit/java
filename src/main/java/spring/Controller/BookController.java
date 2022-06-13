@@ -66,9 +66,9 @@ public class BookController {
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/search/book/{keyword}", "/search/book"})
-    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable(name = "keyword", required = false) String keywword) {
-        List<String> searchString = booksService.searchAuto(keywword);
+    @PostMapping(value = {"/search/book"})
+    public ResponseEntity<List<String>> searchByNameBook(@RequestBody Map<String,String> keywword) {
+        List<String> searchString = booksService.searchAuto(keywword.get("keyword"));
         return new ResponseEntity<>(searchString, HttpStatus.OK);
     }
 
@@ -86,15 +86,13 @@ public class BookController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> findBookByCondition(@RequestParam(value = "tacgia", required = false) String tacgia,
-                                                 @RequestParam(value = "giathap", required = false) Integer giathap,
-                                                 @RequestParam(value = "giacao", required = false) Integer giacao,
-                                                 @RequestParam(value = "namsb", required = false) Integer namsb,
+    public ResponseEntity<?> findBookByCondition(@RequestBody Map<String,Object> keyword,
                                                  @RequestParam(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
         Pageable pageable = PageRequest.of(page, 1);
-        List<Book> bookList = booksService.findBookByCondition(tacgia, giathap, giacao, namsb, pageable);
+        List<Book> bookList = booksService.findBookByCondition(keyword.get("tacgia").toString(), (Integer) keyword.get("giathap"),
+                (Integer) keyword.get("tacgia"), (Integer) keyword.get("namsb"), pageable);
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 

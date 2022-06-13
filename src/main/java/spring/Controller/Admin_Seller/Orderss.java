@@ -70,6 +70,7 @@ public class Orderss {
         orderss1.setTelephone(orderss.getTelephone());
         orderss1.setAddress(orderss.getAddress());
         orderss1.setStatus(orderss.getStatus());
+        orderss1.setPay(orderss.getPay());
         orderssSevice.saveOrderss(orderss1);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }

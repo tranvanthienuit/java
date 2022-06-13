@@ -38,7 +38,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select u from Book u where u.rating>3")
     List<Book> getBookByRating(Pageable pageable);
 
-    @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
+    @Query("SELECT u.nameBook FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
     List<String> searchAuto(@Param("keyword") String keyword);
 
     @Query(value = "select * from books u where author=:tacgia or author = false and price<:giathap or price = false and price<:giacao or price = false and publish_year=:namsb or publish_year = false", nativeQuery = true)

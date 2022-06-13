@@ -3,6 +3,7 @@ package spring.Controller.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,22 +43,22 @@ public class UserCart {
     @PostMapping(value = {"/user/mua-sach", "/mua-sach"})
     public ResponseEntity<List<CartBook>> Orderss(@RequestBody Cart objectCart) throws Exception {
         List<CartBook> cart = objectCart.getCartBooks();
+
         User user = new User();
-        if (objectCart.getUser().getFullName() == null & objectCart.getUser().getEmail() == null
-                & objectCart.getUser().getAddress() == null & objectCart.getUser().getTelephone() == null) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName()!=null) {
             userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             user = userService.findUserByUserId(user1.getUserId());
         } else {
             user = objectCart.getUser();
         }
+
+
         LocalDate ldate = LocalDate.now();
         Date date = Date.valueOf(ldate);
-
-
         Orderss orderss = new Orderss();
         orderss.setOrderssDate(date);
-        if (objectCart.getUser() == null)
-            orderss.setUser(user);
+        orderss.setUser(user);
         Integer totalBook = 0;
         Double totalPrice = 0.0;
 
@@ -85,6 +86,7 @@ public class UserCart {
             }
             orderss.setTotalBook(totalBook);
             orderss.setStatus("chưa giao hàng");
+            orderss.setPay(objectCart.getPay());
             orderss.setTelephone(user.getTelephone());
             orderss.setAddress(user.getAddress());
             orderss.setNameUser(user.getNameUser());
