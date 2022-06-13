@@ -42,6 +42,6 @@ public interface OrderssDeRepository extends JpaRepository<OrderssDetail, String
     @Query("select new spring.Entity.book_category(sum(u.count),u.book.category.nameCate) from OrderssDetail u group by u.book.category.nameCate")
     List<book_category> getBookAndCategory();
 
-    @Query("select new spring.Entity.month_price(month(u.orderss.OrderssDate),sum(u.total)) from OrderssDetail u group by u.orderss.OrderssDate")
+    @Query("select new spring.Entity.month_price(month(u.orderss.OrderssDate),sum(u.total)) from OrderssDetail u group by month(u.orderss.OrderssDate)")
     List<month_price> getPriceAndMonth();
 }

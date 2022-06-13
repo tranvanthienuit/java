@@ -33,11 +33,6 @@ public class UserService {
         return userRepository.findUserByUserId(idUser);
     }
 
-    public List<User> findUsersByRole(String roleName){
-        return userRepository.findUsersByRole(roleName);
-    }
-
-
     public Page<User> getAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
     }

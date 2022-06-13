@@ -28,8 +28,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<month_user> getUserAndMonnth();
 
     User findByEmail(String mail);
-    @Query("select u from User u where u.role.nameRole=:roleName")
-    List<User> findUsersByRole(@Param("roleName")String roleName);
-    @Query(value = "select * from users where address like %:keyword% or email like %:keyword% or full_name like %:keyword% or name_user like %:keyword% or sex like %:keyword% or telephone like %:keyword%",nativeQuery = true)
+
+    @Query(value = "select * from users inner join roles on users.role_id = roles.role_id where address like %:keyword% or email like %:keyword% or full_name like %:keyword% or name_user like %:keyword% or sex like %:keyword% or telephone like %:keyword% or name_role like %:keyword% ", nativeQuery = true)
     List<User> findUser(@Param("keyword") String keyword);
 }
