@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
-    @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
+    @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword% or u.publishYear like %:keyword% or u.author like %:keyword%")
     List<Book> searchBook(@Param("keyword") String keyword);
 
     @Query("select u from Book u where u.category.categoryId=:categoryId")
@@ -38,12 +38,21 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select u from Book u where u.rating>3")
     List<Book> getBookByRating(Pageable pageable);
 
-    @Query("SELECT u.nameBook FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
+    @Query("SELECT u.nameBook FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword% or u.publishYear like %:keyword% or u.author like %:keyword%")
     List<String> searchAuto(@Param("keyword") String keyword);
 
-    @Query(value = "select * from books u where author=:tacgia or author = false and price<:giathap or price = false and price<:giacao or price = false and publish_year=:namsb or publish_year = false", nativeQuery = true)
+    @Query("select u from Book u where u.author=:tacgia and u.price<:giathap and u.price<:giacao and u.publishYear=:namsb ")
     List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
-                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb, Pageable pageable);
+                                   @Param("giacao") Integer giacao, @Param("namsb") String namsb, Pageable pageable);
     @Query("select u from Book u where u.category.categoryId=:categoryId")
     List<Book> findBooksByCategoryId(@Param("categoryId")String categoryId);
+
+    @Query("select u.author from Book u")
+    List<String> findAuthor();
+
+    @Query("select u.price from Book u order by u.price asc")
+    List<Integer> findPrice();
+
+    @Query("select u.publishYear from Book u")
+    List<String> findYearPublic();
 }

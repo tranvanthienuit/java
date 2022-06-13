@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.BookList;
+import spring.Entity.Filter;
 import spring.Entity.Model.Book;
 import spring.Entity.Model.Rating;
 import spring.Entity.Model.User;
@@ -86,16 +87,18 @@ public class BookController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> findBookByCondition(@RequestBody Map<String,Object> keyword,
+    public ResponseEntity<?> findBookByCondition(@RequestBody Filter keyword,
                                                  @RequestParam(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
-        Pageable pageable = PageRequest.of(page, 1);
-        List<Book> bookList = booksService.findBookByCondition(keyword.get("tacgia").toString(), (Integer) keyword.get("giathap"),
-                (Integer) keyword.get("tacgia"), (Integer) keyword.get("namsb"), pageable);
+        Pageable pageable = PageRequest.of(page, 6);
+        List<Book> bookList = booksService.findBookByCondition(keyword, pageable);
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
-
+    @GetMapping("/data-filter")
+    public ResponseEntity<?> findDataFilter(){
+        return new ResponseEntity<>(booksService.dataFilters(),HttpStatus.OK);
+    }
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
     public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();

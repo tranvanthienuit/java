@@ -5,9 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import spring.Entity.DataFilter;
+import spring.Entity.Filter;
 import spring.Entity.Model.Book;
 import spring.Repository.BookRepository;
 
+import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -65,8 +68,8 @@ public class BookService {
     }
 
 
-    public List<Book> findBookByCondition(String tacgia,Integer giathap,Integer giacao,Integer namsb,Pageable pageable){
-        return booksRepository.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
+    public List<Book> findBookByCondition(Filter filter, Pageable pageable){
+        return booksRepository.findBookByCondition(filter.getTacgia(),filter.getGiathap(), filter.getGiacao(),filter.getNamsb(),pageable);
     }
 
     public List<Book> getBookByRating(Pageable pageable){
@@ -75,6 +78,14 @@ public class BookService {
 
     public List<Book> findBooksByCategoryId(String categoryId){
         return booksRepository.findBooksByCategoryId(categoryId);
+    }
+
+    public DataFilter dataFilters(){
+        DataFilter dataFilter = new DataFilter();
+        dataFilter.setTacgia(booksRepository.findAuthor());
+        dataFilter.setGia(booksRepository.findPrice());
+        dataFilter.setNamsb(booksRepository.findYearPublic());
+        return dataFilter;
     }
 }
 
