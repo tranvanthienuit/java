@@ -11,10 +11,6 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog,String> {
-//    @Transactional
-//    @Modifying
-//    @Query("delete from Blog u where u.blogId=:blogId")
-//    void deleteByBlogId(@Param("blogId") String blogId);
 
     @Query("select u from Blog u where u.blogId=:blogId")
     Blog findBlogByBlogId(String blogId);

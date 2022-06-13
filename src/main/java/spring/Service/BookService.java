@@ -18,7 +18,6 @@ public class BookService {
     public Page<Book> getAllBooks(Pageable pageable) {
         return booksRepository.getAllBooks(pageable);
     }
-
     public Page<Book> getAllBook(Pageable pageable) {
         return booksRepository.getAllBook(pageable);
     }
@@ -27,20 +26,12 @@ public class BookService {
         return booksRepository.save(book);
     }
 
-    public List<Book> findBooksByNameBook(String name) {
-        return booksRepository.findBooksByNameBook(name);
+    public List<Book> searchBook(String keyword){
+        return booksRepository.searchBook(keyword);
     }
 
-    public List<Book> findBooksByAuthor(String name) {
-        return booksRepository.findBooksByAuthor(name);
-    }
-
-    public List<Book> findBooksByCategoryName(String name) {
-        return booksRepository.findBooksByCategoryName(name);
-    }
-
-    public List<Book> findBooksByCategoryId(String categoryId){
-        return booksRepository.findBooksByCategoryId(categoryId);
+    public List<Book> findBooksByCategoryId(String categoryId,Pageable pageable){
+        return booksRepository.findBooksByCategoryId(categoryId,pageable);
     }
 
     public Book findBooksByBookId(String idBook) {
@@ -69,20 +60,21 @@ public class BookService {
         return booksRepository.findBooksByBookId(IdBook);
     }
 
-    public List<String> searchByNameBook(String keyword){
-        return booksRepository.searchByNameBook(keyword);
+    public List<String> searchAuto(String keyword){
+        return booksRepository.searchAuto(keyword);
     }
 
-    public void removeBookByCategory(String categoryId){
-        booksRepository.removeBookByCategory(categoryId);
-    }
 
     public List<Book> findBookByCondition(String tacgia,Integer giathap,Integer giacao,Integer namsb,Pageable pageable){
         return booksRepository.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
     }
 
-    public List<Book> getBookByRating(){
-        return booksRepository.getBookByRating();
+    public List<Book> getBookByRating(Pageable pageable){
+        return booksRepository.getBookByRating(pageable);
+    }
+
+    public List<Book> findBooksByCategoryId(String categoryId){
+        return booksRepository.findBooksByCategoryId(categoryId);
     }
 }
 

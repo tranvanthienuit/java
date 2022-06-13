@@ -41,11 +41,9 @@ public class OrderssSevice {
     }
 
     public List<Orderss> findOrder(String keysearch) {
-        if (orderssRepository.findOrderssByUser(keysearch)!=null)
-            return orderssRepository.findOrderssByUser(keysearch);
-        if (orderssRepository.findOrderssByAddress(keysearch)!=null)
-            return orderssRepository.findOrderssByAddress(keysearch);
-        return orderssRepository.findOrderssByStatus(keysearch);
+        if (orderssRepository.findOrderssByUserId(keysearch).size() != 0)
+            return orderssRepository.findOrderssByUserId(keysearch);
+        return orderssRepository.findOrderss(keysearch);
     }
 
     public List<Orderss> getAllOrderss() {

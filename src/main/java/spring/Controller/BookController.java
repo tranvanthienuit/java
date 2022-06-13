@@ -5,10 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import spring.Entity.BookList;
 import spring.Entity.Model.Book;
 import spring.Entity.Model.Rating;
 import spring.Entity.Model.User;
@@ -33,27 +35,15 @@ public class BookController {
     RatingService ratingService;
 
     @PostMapping(value = {"/tim-sach"})
-    public ResponseEntity<List<Book>> findBook(@RequestBody Map<String,Object> infoBook) throws Exception {
-        if (infoBook != null) {
-            if (!booksService.findBooksByNameBook(infoBook.get("infoBook").toString()).isEmpty()) {
-                List<Book> booksList = booksService.findBooksByNameBook(infoBook.get("infoBook").toString());
-                return new ResponseEntity<>(booksList, HttpStatus.OK);
-            } else {
-                if (!booksService.findBooksByAuthor(infoBook.get("infoBook").toString()).isEmpty()) {
-                    List<Book> booksList = booksService.findBooksByAuthor(infoBook.get("infoBook").toString());
-                    return new ResponseEntity<>(booksList, HttpStatus.OK);
-
-                } else {
-                    if (!booksService.findBooksByCategoryName(infoBook.get("infoBook").toString()).isEmpty()) {
-                        List<Book> booksList = booksService.findBooksByCategoryName(infoBook.get("infoBook").toString());
-                        return new ResponseEntity<>(booksList, HttpStatus.OK);
-
-                    }
-                }
+    public ResponseEntity<List<Book>> findBook(@RequestBody Map<String, Object> infoBook) throws Exception {
+        List<Book> books = booksService.searchBook(infoBook.get("infoBook").toString());
+        if (infoBook.get("infoBook").toString() != null) {
+            if (books.size() != 0) {
+                return new ResponseEntity<>(books, HttpStatus.OK);
             }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = {"/xem-chi-tiet-sach/{bookId}", "/xem-chi-tiet-sach"})
@@ -75,28 +65,39 @@ public class BookController {
         }
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
-    @GetMapping(value = {"/search/book/{keyword}","/search/book"})
-    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable(name = "keyword", required = false)String keywword){
-        List<String> searchString = booksService.searchByNameBook(keywword);
-        return new ResponseEntity<>(searchString,HttpStatus.OK);
+
+    @GetMapping(value = {"/search/book/{keyword}", "/search/book"})
+    public ResponseEntity<List<String>> searchByNameBook(@RequestBody @PathVariable(name = "keyword", required = false) String keywword) {
+        List<String> searchString = booksService.searchAuto(keywword);
+        return new ResponseEntity<>(searchString, HttpStatus.OK);
     }
-    @GetMapping(value = {"/search/{categoryId}","/search"})
-    public ResponseEntity<?> findBookByCategory(@PathVariable(value = "categoryId", required = false)String categoryId){
-        List<Book> bookList = booksService.findBooksByCategoryId(categoryId);
-        return new ResponseEntity<>(bookList,HttpStatus.OK);
+
+    @GetMapping(value = {"/search/{categoryId}/{page}", "/search/{page}"})
+    public ResponseEntity<?> findBookByCategory(@PathVariable(name = "page", required = false) Integer page, @PathVariable(value = "categoryId", required = false) String categoryId) {
+        if (page == null) {
+            page = 0;
+        }
+        Pageable pageable = PageRequest.of(page, 8);
+        List<Book> book = booksService.findBooksByCategoryId(categoryId, pageable);
+        BookList bookList = new BookList();
+        bookList.setBookList(book);
+        bookList.setCount(booksService.findBooksByCategoryId(categoryId).size());
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
+
     @PostMapping("/search")
-    public ResponseEntity<?> findBookByCondition(@RequestParam(value = "tacgia",required = false)String tacgia,
-                                                 @RequestParam(value = "giathap",required = false)Integer giathap,
-                                                 @RequestParam(value = "giacao",required = false)Integer giacao,
-                                                 @RequestParam(value = "namsb",required = false)Integer namsb,
-                                                 @RequestParam(name = "page", required = false) Integer page){
+    public ResponseEntity<?> findBookByCondition(@RequestParam(value = "tacgia", required = false) String tacgia,
+                                                 @RequestParam(value = "giathap", required = false) Integer giathap,
+                                                 @RequestParam(value = "giacao", required = false) Integer giacao,
+                                                 @RequestParam(value = "namsb", required = false) Integer namsb,
+                                                 @RequestParam(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
         Pageable pageable = PageRequest.of(page, 1);
-        List<Book> bookList = booksService.findBookByCondition(tacgia, giathap, giacao, namsb,pageable);
-        return new ResponseEntity<>(bookList,HttpStatus.OK);
+        List<Book> bookList = booksService.findBookByCondition(tacgia, giathap, giacao, namsb, pageable);
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
+
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
     public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();

@@ -15,25 +15,14 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
-    @Query("select u from Book u where u.nameBook = :name")
-    List<Book> findBooksByNameBook(@Param("name") String name);
-
-    @Query("select u from Book u where u.author=:name")
-    List<Book> findBooksByAuthor(@Param("name") String name);
-
-    @Query("select u from Book u where u.category.nameCate=:name")
-    List<Book> findBooksByCategoryName(@Param("name") String name);
+    @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
+    List<Book> searchBook(@Param("keyword") String keyword);
 
     @Query("select u from Book u where u.category.categoryId=:categoryId")
-    List<Book> findBooksByCategoryId(@Param("categoryId") String categoryId);
+    List<Book> findBooksByCategoryId(@Param("categoryId") String categoryId, Pageable pageable);
 
     @Query("select u from Book u where u.bookId=:bookId")
     Book findBooksByBookId(@Param("bookId") String bookId);
-
-//    @Transactional
-//    @Modifying
-//    @Query("delete from Book u where u.bookId=:bookId")
-//    void removeBookByBookId(@Param("bookId") String bookId);
 
     @Transactional
     @Modifying
@@ -45,19 +34,16 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     @Query("select u from Book u")
     Page<Book> getAllBook(Pageable pageable);
+
     @Query("select u from Book u where u.rating>3")
-    List<Book> getBookByRating();
+    List<Book> getBookByRating(Pageable pageable);
 
     @Query("SELECT u FROM Book u where u.nameBook like %:keyword% or u.category.nameCate like %:keyword%")
-    List<String> searchByNameBook(@Param("keyword") String keyword);
+    List<String> searchAuto(@Param("keyword") String keyword);
 
-    @Transactional
-    @Modifying
-    @Query("delete from Book u where u.category.categoryId=:categoryId")
-    void removeBookByCategory(@Param("categoryId") String categoryId);
-
-    @Query(value = "select * from books u where author=:tacgia or author = false and price<:giathap or price = false and price<:giacao or price = false and publish_year=:namsb or publish_year = false",nativeQuery = true)
+    @Query(value = "select * from books u where author=:tacgia or author = false and price<:giathap or price = false and price<:giacao or price = false and publish_year=:namsb or publish_year = false", nativeQuery = true)
     List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
-                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb,Pageable pageable);
-
+                                   @Param("giacao") Integer giacao, @Param("namsb") Integer namsb, Pageable pageable);
+    @Query("select u from Book u where u.category.categoryId=:categoryId")
+    List<Book> findBooksByCategoryId(@Param("categoryId")String categoryId);
 }

@@ -11,6 +11,7 @@ import spring.Sercurity.userDetail;
 import spring.Service.BlogService;
 import spring.Service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,14 @@ public class AdminBlog {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
         blog.setUser(user);
+        LocalDate ldate = LocalDate.now();
+        java.sql.Date date = java.sql.Date.valueOf(ldate);
+        blog.setDayAdd(date);
         blogService.saveBlog(blog);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @GetMapping("/admin/xoa-blog/{blogId}")
+    @DeleteMapping("/admin/xoa-blog/{blogId}")
     public ResponseEntity<?> deleteBlog(@RequestBody @PathVariable(name = "blogId") String blogId){
         blogService.findAndDeleteBlog(blogId);
         return new ResponseEntity<>("successful", HttpStatus.OK);
@@ -47,6 +51,8 @@ public class AdminBlog {
             blog1.setContext(blog.getContext());
         if (blog.getTitle()!=null)
             blog1.setTitle(blog.getTitle());
+        if (blog.getImage()!=null)
+            blog1.setImage(blog.getImage());
         blogService.saveBlog(blog1);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }

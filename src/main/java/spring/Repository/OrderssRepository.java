@@ -16,10 +16,6 @@ import java.util.Map;
 
 @Repository
 public interface OrderssRepository extends JpaRepository<Orderss, String> {
-//    @Transactional
-//    @Modifying
-//    @Query("delete from Orderss u where u.OrderssId=:orderssId")
-//    void removeOrderssByOrderssId(@Param("orderssId") String orderssId);
 
     @Query("select u from  Orderss u where u.OrderssId=:orderssId")
     Orderss findOrderssByOrderssId(@Param("orderssId") String orderssId);
@@ -27,11 +23,12 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
     @Query("select u from Orderss u where u.OrderssDate=:date and u.user=:user")
     Orderss findOrderssByOrderssDateAndUserId(Date date, User user);
 
-    @Query("select u from Orderss u where u.user.fullName=:fullName")
-    List<Orderss> findOrderssByUser(String fullName);
+    @Query("select u from Orderss u where u.fullName like %:keyword% or u.address like %:keyword% or u.status like %:keyword% or u.telephone like %:keyword%")
+    List<Orderss> findOrderss(@Param("keyword")String keyword);
 
-    List<Orderss> findOrderssByAddress(String address);
-    List<Orderss> findOrderssByStatus(String status);
+
+    @Query("select u from Orderss u where u.user.userId=:keyword")
+    List<Orderss> findOrderssByUserId(@Param("keyword")String keyword);
 
     @Query("select new spring.Entity.month_book(month(u.OrderssDate),sum(u.totalBook)) from Orderss u group by month(u.OrderssDate)")
     List<month_book> getBookAndMonth();

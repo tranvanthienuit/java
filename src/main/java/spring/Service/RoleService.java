@@ -12,18 +12,6 @@ public class RoleService {
     @Autowired
     RoleRepository roleRepository;
 
-    public List<Role> getAllRole() {
-        return roleRepository.findAll();
-    }
-
-    public void saveRole(Role role) {
-        roleRepository.save(role);
-    }
-
-    public void removeByRoleId(String roleId) {
-        roleRepository.removeByRoleId(roleId);
-    }
-
     public Role fineRoleByName(String name) {
         return roleRepository.fineRoleByName(name);
     }

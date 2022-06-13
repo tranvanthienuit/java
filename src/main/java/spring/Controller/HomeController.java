@@ -64,31 +64,20 @@ public class HomeController {
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
-        bookList.setCount(bookPageContent.size());
+        bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
         Pageable pageable1 = PageRequest.of(0,6);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User user = userService.findUserName(userName);
-//        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
 
         // lấy sách dựa trên số sao đánh giá cao nhất
-        List<Book> bookRating = booksService.getBookByRating();
+        List<Book> bookRating = booksService.getBookByRating(pageable1);
 
-//        if (bookUser.isEmpty()) {
-//            bookReturn.setBookList(bookList);
-//            bookReturn.setBooks(bookList1);
-//            bookReturn.setBookRatings(bookRatings);
-//            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-//        } else {
         bookReturn.setBookList(bookList);
         bookReturn.setBookOder(bookOrder);
         bookReturn.setBookRating(bookRating);
-//            bookReturn.setBooks(bookUser);
-//        bookReturn.setFullBooks(fullBooks);
         return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        }
 
@@ -111,31 +100,19 @@ public class HomeController {
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
-        bookList.setCount(bookPageContent.size());
+        bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
         Pageable pageable1 = PageRequest.of(0, 6);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
-        // lấy sách dựa trên số sách mà khách hàng đã mượn
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User user = userService.findUserName(userName);
-//        List<Book> bookUser = orderssDeSevice.getBookFromBorrDeAndUser(pageable1, user);
-
         // lấy sách dựa trên số sao đánh giá cao nhất
-        List<Book> bookRating = booksService.getBookByRating();
+        List<Book> bookRating = booksService.getBookByRating(pageable1);
 
-//        if (bookUser.isEmpty()) {
-//            bookReturn.setBookList(bookList);
-//            bookReturn.setBooks(bookList1);
-//            bookReturn.setBookRatings(bookRatings);
-//            return new ResponseEntity<>(bookReturn, HttpStatus.OK);
-//        } else {
         bookReturn.setBookList(bookList);
         bookReturn.setBookOder(bookOrder);
         bookReturn.setBookRating(bookRating);
-//            bookReturn.setBooks(bookUser);
-//        bookReturn.setFullBooks(fullBooks);
+
         return new ResponseEntity<>(bookReturn, HttpStatus.OK);
 //        }
 

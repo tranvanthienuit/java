@@ -14,52 +14,8 @@ import java.util.Map;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-//    @Transactional
-//    @Modifying
-//    @Query("delete from User u where u.userId=:idUser")
-//    void removeUserByUserId(@Param("idUser") String idUser);
 
     User findByNameUser(String username);
-
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.nameUser=:nameUser where u.userId=:userId")
-//    void editUserName(@Param("nameUser") String nameUser, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.password=:pass where u.userId=:userId")
-//    void editUserPass(@Param("pass") String pass, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.address=:address where u.userId=:userId")
-//    void editUserAdress(@Param("address") String address, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.email=:email where u.userId=:userId")
-//    void editUserEmail(@Param("email") String email, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.telephone=:telephone where u.userId=:userId")
-//    void editUserTelephone(@Param("telephone") String telephone, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.sex=:sex where u.userId=:userId")
-//    void editUserSex(@Param("sex") String sex, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.image=:image where u.userId=:userId")
-//    void editImage(@Param("image") byte[] image, @Param("userId") String userId);
-//
-//    @Transactional
-//    @Modifying
-//    @Query("update User u set u.fullName=:fullName where u.userId=:userId")
-//    void editUserFullname(@Param("fullName") String fullName, @Param("userId") String userId);
 
     User findUserByUserId(String userId);
 
@@ -74,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     User findByEmail(String mail);
     @Query("select u from User u where u.role.nameRole=:roleName")
     List<User> findUsersByRole(@Param("roleName")String roleName);
+    @Query(value = "select * from users where address like %:keyword% or email like %:keyword% or full_name like %:keyword% or name_user like %:keyword% or sex like %:keyword% or telephone like %:keyword%",nativeQuery = true)
+    List<User> findUser(@Param("keyword") String keyword);
 }

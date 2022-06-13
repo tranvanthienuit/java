@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.Mail;
@@ -16,11 +13,11 @@ import spring.JWT.JwtTokenProvider;
 import spring.Repository.MailService;
 import spring.Repository.UserRepository;
 import spring.Sercurity.userDetail;
+import spring.Service.OrderssSevice;
 import spring.Service.UserService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @RestController
 public class UserController {
@@ -36,6 +33,8 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    OrderssSevice orderssSevice;
 
     @PostMapping(value = {"/user/sua-thong-tin", "/admin/sua-thong-tin", "/seller/sua-thong-tin"})
     public ResponseEntity<User> editInfo(@RequestBody(required = false) User user) throws Exception {
@@ -66,7 +65,8 @@ public class UserController {
 //            userService.editUserSex(user.getSex(), userDetail.getUserId());
         }
         userService.saveUser(user1);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        user1 = userService.findUserByUserId(user.getUserId());
+        return new ResponseEntity<>(user1, HttpStatus.OK);
     }
 
     @PostMapping(value = {"/user/cap-nhat-anh", "/admin/cap-nhat-anh", "/seller/cap-nhat-anh"})
@@ -114,7 +114,7 @@ public class UserController {
             mail.setMailContent("<h1>Reset Password</h1></br></br>\n" +
                     "<h2>Xin chào quý khách mật khẩu của bạn đang được reset.</br>\n" +
                     "\tHãy nhấp vào link dưới đây để cài đặt mật khẩu lại. Cảm ơn quý khách\n</h2>\n" +
-                    "<h3>Link: </h3>" + "<a href=https://cai-dat-mat-khau-moi/" + token + ">" + email + "</a>");
+                    "<h3>Link: </h3>" + "<a href=http:localhost:3000//cai-dat-mat-khau-moi/"+Email+"/" + token + ">" + email + "</a>");
             mailService.sendEmail(mail);
             return new ResponseEntity<>("successful", HttpStatus.OK);
         }
@@ -138,5 +138,20 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @GetMapping("/tim-user/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable(name = "email")String email){
+        if (email!=null)
+            return new ResponseEntity<>(userService.findUser(email),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping(value = {"/user/timorderss"})
+    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String,Object> keysearch) {
+        if (orderssSevice.findOrder(keysearch.get("keysearch").toString()).size()==0) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrder(keysearch.get("keysearch").toString());
+            return new ResponseEntity<>(orderssList, HttpStatus.OK);
+        }
     }
 }

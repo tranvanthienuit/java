@@ -19,12 +19,7 @@ public class RatingService {
     public void save(Rating rating){
         ratingRepository.save(rating);
     }
-//    public List<FullBook> bookRating(){
-//        Pageable pageable = PageRequest.of(0, 16);
-//        List<FullBook> fullBooks = ratingRepository.getAllBookRating(pageable);
-//        fullBooks.stream().filter(result->result.getRating()>4).collect(Collectors.toList());
-//        return fullBooks;
-//    }
+
     @EventListener(ApplicationReadyEvent.class)
     public void deleteRating(){
         ratingRepository.deleteRatingByRating();

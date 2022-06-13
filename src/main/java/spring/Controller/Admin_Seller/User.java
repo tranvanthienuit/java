@@ -53,4 +53,10 @@ public class User {
             return new ResponseEntity<>(userList, HttpStatus.OK);
         }
     }
+    @PostMapping(value = {"/admin/tim-user","/seller/tim/user"})
+    public ResponseEntity<?> findUser(@RequestBody Map<String,Object> keyword){
+        if (keyword!=null)
+            return new ResponseEntity<>(userService.findUser(keyword.get("keyword").toString()),HttpStatus.OK);
+        return new ResponseEntity<>("Không có người dùng nào cả",HttpStatus.OK);
+    }
 }
