@@ -23,6 +23,7 @@ import spring.Service.UserService;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UserCart {
@@ -43,7 +44,7 @@ public class UserCart {
 
         User user = new User();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.getName()!=null) {
+        if (!Objects.equals(auth.getName(), "anonymousUser")) {
             userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             user = userService.findUserByUserId(user1.getUserId());
         } else {
