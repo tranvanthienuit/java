@@ -47,12 +47,12 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select u from Book u where u.category.categoryId=:categoryId")
     List<Book> findBooksByCategoryId(@Param("categoryId")String categoryId);
 
-    @Query("select u.author from Book u")
+    @Query("select distinct (u.author) from Book u")
     List<String> findAuthor();
 
-    @Query("select u.price from Book u order by u.price asc")
+    @Query("select distinct (u.price) from Book u order by u.price asc")
     List<Integer> findPrice();
 
-    @Query("select u.publishYear from Book u")
+    @Query("select distinct (u.publishYear) from Book u")
     List<String> findYearPublic();
 }
