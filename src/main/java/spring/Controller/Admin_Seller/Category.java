@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import spring.Entity.CateList;
-import spring.Entity.Model.Categories;
 import spring.Service.CategoryService;
 
 import java.util.List;
@@ -27,13 +26,13 @@ public class Category {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 6 );
-        Page<Categories> categoriesList = categoryService.getAllCate(pageable);
-        List<Categories> categoriesListContent = categoriesList.getContent();
-        if (categoriesListContent.isEmpty()) {
+        Pageable pageable = PageRequest.of(page, 8 );
+        Page<spring.Entity.Model.Category> categoriesList = categoryService.getAllCategory(pageable);
+        List<spring.Entity.Model.Category> categoryListContent = categoriesList.getContent();
+        if (categoryListContent.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            cateList.setCategoriesList(categoriesListContent);
+            cateList.setCategoryList(categoryListContent);
             cateList.setCount(categoryService.getAllCategory().size());
             return new ResponseEntity<>(cateList, HttpStatus.OK);
         }

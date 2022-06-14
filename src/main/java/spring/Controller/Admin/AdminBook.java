@@ -23,25 +23,6 @@ public class AdminBook {
     @Autowired
     CategoryService categoryService;
 
-//    @GetMapping(value = {"/admin/xem-tat-ca-sach/{page}", "/admin/xem-tat-ca-sach"})
-//    public ResponseEntity<BookList> getAllBook(
-//            @PathVariable(name = "page", required = false) Integer page) throws Exception {
-//        BookList bookList = new BookList();
-//        if (page == null) {
-//            page = 0;
-//        }
-//        Pageable pageable = PageRequest.of(page, 4);
-//        Page<Book> bookPage = booksService.getAllBooks(pageable);
-//        List<Book> bookPageContent = bookPage.getContent();
-//        if (bookPageContent.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } else {
-//            bookList.setBookList(bookPageContent);
-//            bookList.setCount(booksService.getAllBook().size());
-//            return new ResponseEntity<>(bookList, HttpStatus.OK);
-//        }
-//    }
-
     @PostMapping(value = "/admin/luu-sach")
     public ResponseEntity<String> saveBook(@RequestBody Book book) throws Exception {
         List<Book> books = booksService.getAllBook();
@@ -60,7 +41,7 @@ public class AdminBook {
 
     @DeleteMapping(value = {"/admin/xoa-sach/{bookId}", "/admin/xoa-sach"})
     public ResponseEntity<String> removeBook(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
-        if (booksService.findBooksByBookId(bookId) != null) {
+        if (booksService.findBookByBookId(bookId) != null) {
             booksService.removeBookByBookId(bookId);
             return new ResponseEntity<>("successful",HttpStatus.OK);
         }

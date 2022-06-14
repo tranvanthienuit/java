@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Categories {
+public class Category {
     //Categories: id, name
     @Id
     @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)

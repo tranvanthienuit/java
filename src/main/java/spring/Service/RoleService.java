@@ -12,8 +12,8 @@ public class RoleService {
     @Autowired
     RoleRepository roleRepository;
 
-    public Role fineRoleByName(String name) {
-        return roleRepository.fineRoleByName(name);
+    public Role findRoleByName(String name) {
+        return roleRepository.findRoleByName(name);
     }
 
 }

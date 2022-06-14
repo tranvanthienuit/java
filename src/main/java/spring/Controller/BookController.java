@@ -49,7 +49,7 @@ public class BookController {
 
     @GetMapping(value = {"/xem-chi-tiet-sach/{bookId}", "/xem-chi-tiet-sach"})
     public ResponseEntity<Book> productdetail(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
-        Book book = booksService.findBooksByBookId(bookId);
+        Book book = booksService.findBookByBookId(bookId);
         if (book != null) {
             return new ResponseEntity<>(book, HttpStatus.OK);
         }
@@ -58,7 +58,7 @@ public class BookController {
 
     @GetMapping("/sach-moi")
     public ResponseEntity<List<Book>> findbyarrive() throws Exception {
-        Pageable pageable = PageRequest.of(0, 6, Sort.by("dayAdd").descending());
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("dayAdd").descending());
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
         List<Book> bookList = bookPage.getContent();
         if (bookList.isEmpty()) {
@@ -88,14 +88,14 @@ public class BookController {
 
     @PostMapping("/search/{page}")
     public ResponseEntity<?> findBookByCondition(@RequestBody Filter keyword,
-                                                 @RequestParam(name = "page", required = false) Integer page) {
+                                                 @PathVariable(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
         Pageable pageable = null;
         if (keyword.isMa())
-            pageable = PageRequest.of(page, 6, Sort.by("price").ascending());
+            pageable = PageRequest.of(page, 8, Sort.by("price").ascending());
         else
-            pageable = PageRequest.of(page, 6, Sort.by("price").descending());
+            pageable = PageRequest.of(page, 8, Sort.by("price").descending());
         BookList bookList = booksService.findBookByCondition(keyword, pageable);
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
@@ -110,7 +110,7 @@ public class BookController {
         Rating rating = new Rating();
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
-        Book book = booksService.findBooksByBookId(bookId);
+        Book book = booksService.findBookByBookId(bookId);
         rating.setUser(user);
         rating.setBook(book);
         rating.setRating(star);

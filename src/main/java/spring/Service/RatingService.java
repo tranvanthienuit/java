@@ -21,7 +21,7 @@ public class RatingService {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void deleteRating(){
+    public void delete(){
         ratingRepository.deleteRatingByRating();
     }
 }

@@ -17,10 +17,10 @@ import java.util.Map;
 @Repository
 public interface OrderssRepository extends JpaRepository<Orderss, String> {
 
-    @Query("select u from  Orderss u where u.OrderssId=:orderssId")
+    @Query("select u from  Orderss u where u.orderssId=:orderssId")
     Orderss findOrderssByOrderssId(@Param("orderssId") String orderssId);
 
-    @Query("select u from Orderss u where u.OrderssDate=:date and u.user=:user")
+    @Query("select u from Orderss u where u.orderssDate=:date and u.user=:user")
     Orderss findOrderssByOrderssDateAndUserId(Date date, User user);
 
     @Query("select u from Orderss u where u.fullName like %:keyword% or u.address like %:keyword% or u.status like %:keyword% or u.telephone like %:keyword% or u.pay like %:keyword%")
@@ -30,6 +30,6 @@ public interface OrderssRepository extends JpaRepository<Orderss, String> {
     @Query("select u from Orderss u where u.user.userId=:keyword")
     List<Orderss> findOrderssByUserId(@Param("keyword")String keyword);
 
-    @Query("select new spring.Entity.month_book(month(u.OrderssDate),sum(u.totalBook)) from Orderss u group by month(u.OrderssDate)")
+    @Query("select new spring.Entity.month_book(month(u.orderssDate),sum(u.totalBook)) from Orderss u group by month(u.orderssDate)")
     List<month_book> getBookAndMonth();
 }

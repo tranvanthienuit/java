@@ -18,22 +18,18 @@ public class OrderssSevice {
     @Autowired
     OrderssRepository orderssRepository;
 
-    public Orderss findOrderssByOrderssId(String idOrderss) {
-        return orderssRepository.findOrderssByOrderssId(idOrderss);
+    public Orderss findByOrderssId(String orderssId) {
+        return orderssRepository.findOrderssByOrderssId(orderssId);
     }
 
-    public void removeOrderssByOrderssId(String idOrderss) {
-        Orderss orderss = orderssRepository.findOrderssByOrderssId(idOrderss);
+    public void removeByOrderssId(String orderssId) {
+        Orderss orderss = orderssRepository.findOrderssByOrderssId(orderssId);
         orderssRepository.delete(orderss);
     }
 
 
     public void saveOrderss(Orderss orderss) {
         orderssRepository.save(orderss);
-    }
-
-    public Orderss findOrderssByOrderssDateAndUserId(Date date, User user) {
-        return orderssRepository.findOrderssByOrderssDateAndUserId(date, user);
     }
 
     public Page<Orderss> getAllOrderss(Pageable pageable) {

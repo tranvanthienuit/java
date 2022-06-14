@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import spring.Entity.Model.Categories;
+import spring.Entity.Model.Category;
 import spring.Repository.CategoryRepository;
 
 import java.util.List;
@@ -14,24 +14,24 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void saveCategory(Categories categories) {
-        categoryRepository.save(categories);
+    public void saveCategory(Category category) {
+        categoryRepository.save(category);
     }
 
-    public void removeCategoriesByCategoryId(String categoryId) {
-        Categories categories = categoryRepository.findByCategoryId(categoryId);
-        categoryRepository.delete(categories);
+    public void removeByCategoryId(String categoryId) {
+        Category category = categoryRepository.findByCategoryId(categoryId);
+        categoryRepository.delete(category);
     }
 
-    public Categories findByCategoryId(String categoryid) {
-        return categoryRepository.findByCategoryId(categoryid);
+    public Category findByCategoryId(String categoryId) {
+        return categoryRepository.findByCategoryId(categoryId);
     }
 
-    public Page<Categories> getAllCate(Pageable pageable) {
+    public Page<Category> getAllCategory(Pageable pageable) {
         return categoryRepository.findAll(pageable);
     }
 
-    public List<Categories> getAllCategory() {
+    public List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
 }

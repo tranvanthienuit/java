@@ -14,8 +14,8 @@ public class CommentService {
     public void saveComment(Comment comment){
         commentRepository.save(comment);
     }
-    public void deleteUserAndComment(String UserId,String CommentId){
-        spring.Entity.Model.Comment comment = commentRepository.findByUserIdAndCommentId(UserId,CommentId);
+    public void deleteUserAndComment(String userId,String commentId){
+        spring.Entity.Model.Comment comment = commentRepository.findByUserIdAndCommentId(userId,commentId);
         commentRepository.delete(comment);
     }
     public void updateComment(String commentId,String content){

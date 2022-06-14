@@ -1,18 +1,14 @@
 package spring.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import spring.Entity.Model.Categories;
-
-import javax.transaction.Transactional;
-import java.util.List;
+import spring.Entity.Model.Category;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Categories, String> {
+public interface CategoryRepository extends JpaRepository<Category, String> {
 
-    @Query("select u from Categories u where u.categoryId=:categoryid")
-    Categories findByCategoryId(@Param("categoryid") String categoryid);
+    @Query("select u from Category u where u.categoryId=:categoryid")
+    Category findByCategoryId(@Param("categoryid") String categoryid);
 }

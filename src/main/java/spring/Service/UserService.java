@@ -16,8 +16,8 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void removeUserByUserId(String idUser) {
-        User user = userRepository.findUserByUserId(idUser);
+    public void removeUserByUserId(String userId) {
+        User user = userRepository.findUserByUserId(userId);
         userRepository.delete(user);
     }
 
@@ -29,8 +29,8 @@ public class UserService {
         return userRepository.findByNameUser(username);
     }
 
-    public User findUserByUserId(String idUser) {
-        return userRepository.findUserByUserId(idUser);
+    public User findUserByUserId(String userId) {
+        return userRepository.findUserByUserId(userId);
     }
 
     public Page<User> getAllUser(Pageable pageable) {
@@ -53,8 +53,8 @@ public class UserService {
         return userRepository.getUserAndMonnth();
     }
 
-    User findByEmail(String mail) {
-        return userRepository.findByEmail(mail);
+    User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public List<User> findUser(String keyword){

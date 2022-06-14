@@ -21,10 +21,10 @@ public class Orderss {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "OrderssId", updatable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
-    private String OrderssId;
+    private String orderssId;
     @Column(name = "OrderssDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date OrderssDate;
+    private java.util.Date orderssDate;
     @Column(name = "totalBook")
     private Integer totalBook;
     @Column(name = "totalPrice")

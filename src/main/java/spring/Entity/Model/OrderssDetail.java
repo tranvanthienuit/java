@@ -19,7 +19,7 @@ public class OrderssDetail {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "OrderssDeId")
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
-    private String OrderssDeId;
+    private String orderssDeId;
     @Column(name = "count")
     private Integer count;
     @Column(name = "total_Price")

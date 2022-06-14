@@ -2,11 +2,9 @@ package spring.Entity.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -47,11 +45,11 @@ public class Book {
     private byte[] image;
     @Column(name = "rating")
     private Integer rating = 5;
-    @Column(name = "Cmt")
-    private Integer Cmt = 0;
+    @Column(name = "cmt")
+    private Integer cmt = 0;
     @ManyToOne
     @JoinColumn(name = "CategoryId")
-    private Categories category;
+    private Category category;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude
@@ -99,8 +97,8 @@ public class Book {
     }
     public void setCmt(boolean value){
         if (value)
-            this.Cmt = this.Cmt + 1;
+            this.cmt = this.cmt + 1;
         if (value == false)
-            this.Cmt = this.Cmt - 1;
+            this.cmt = this.cmt - 1;
     }
 }

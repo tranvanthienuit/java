@@ -60,14 +60,14 @@ public class HomeController {
             page = 0;
         }
         //lấy tất cả các sách và số lưởng tổng
-        Pageable pageable = PageRequest.of(page, 6);
+        Pageable pageable = PageRequest.of(page, 8);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
-        Pageable pageable1 = PageRequest.of(0,6);
+        Pageable pageable1 = PageRequest.of(0,8);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
@@ -96,14 +96,14 @@ public class HomeController {
             page = 0;
         }
         //lấy tất cả các sách và số lưởng tổng
-        Pageable pageable = PageRequest.of(page, 6);
+        Pageable pageable = PageRequest.of(page, 8);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
-        Pageable pageable1 = PageRequest.of(0, 6);
+        Pageable pageable1 = PageRequest.of(0, 8);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sao đánh giá cao nhất
@@ -124,11 +124,11 @@ public class HomeController {
         if (CategoryId == null) {
             return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
         } else {
-            Categories categoriesList = categoryService.findByCategoryId(CategoryId);
-            if (categoriesList == null) {
+            Category categoryList = categoryService.findByCategoryId(CategoryId);
+            if (categoryList == null) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-            return new ResponseEntity<>(categoriesList, HttpStatus.OK);
+            return new ResponseEntity<>(categoryList, HttpStatus.OK);
         }
     }
 
@@ -181,7 +181,7 @@ public class HomeController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = user.getRole();
         if (role == null)
-            role = roleService.fineRoleByName("USER");
+            role = roleService.findRoleByName("USER");
         user.setRole(role);
 //        user.setNameRole(role.getNameRole());
         LocalDate ldate = LocalDate.now();
@@ -213,7 +213,7 @@ public class HomeController {
     @GetMapping("/category")
     public ResponseEntity<CateList> getAllCategory() {
         CateList cateList = new CateList();
-        cateList.setCategoriesList(categoryService.getAllCategory());
+        cateList.setCategoryList(categoryService.getAllCategory());
         cateList.setCount(categoryService.getAllCategory().size());
         return new ResponseEntity<>(cateList, HttpStatus.OK);
     }

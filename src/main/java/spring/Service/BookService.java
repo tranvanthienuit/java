@@ -23,12 +23,12 @@ public class BookService {
         return booksRepository.getAllBooks(pageable);
     }
 
-    public Page<Book> getAllBook(Pageable pageable) {
+    public Page<Book> getAllBookByAdmin(Pageable pageable) {
         return booksRepository.getAllBook(pageable);
     }
 
-    public Book saveBook(Book book) {
-        return booksRepository.save(book);
+    public void saveBook(Book book) {
+        booksRepository.save(book);
     }
 
     public List<Book> searchBook(String keyword) {
@@ -38,11 +38,6 @@ public class BookService {
     public List<Book> findBooksByCategoryId(String categoryId, Pageable pageable) {
         return booksRepository.findBooksByCategoryId(categoryId, pageable);
     }
-
-    public Book findBooksByBookId(String idBook) {
-        return booksRepository.findBooksByBookId(idBook);
-    }
-
 
     public void removeBookByBookId(String idBook) {
         Book book = booksRepository.findBooksByBookId(idBook);
@@ -61,8 +56,8 @@ public class BookService {
         booksRepository.findBookAndUpdate(count, bookId);
     }
 
-    public Book findBookByBookId(String IdBook) {
-        return booksRepository.findBooksByBookId(IdBook);
+    public Book findBookByBookId(String bookId) {
+        return booksRepository.findBooksByBookId(bookId);
     }
 
     public List<String> searchAuto(String keyword) {
@@ -76,8 +71,8 @@ public class BookService {
             filter.setGiathap(0);
         if (filter.getGiacao() == null)
             filter.setGiacao(booksRepository.maxPrice());
-        bookList.setBookList(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb(), pageable));
-        bookList.setCount(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb()));
+        bookList.setBookList(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb(), filter.getLoai(), pageable));
+        bookList.setCount(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb(), filter.getLoai()));
         return bookList;
     }
 

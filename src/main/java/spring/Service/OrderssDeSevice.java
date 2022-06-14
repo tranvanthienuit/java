@@ -26,12 +26,8 @@ public class OrderssDeSevice {
     @Autowired
     OrderssDeRepository orderssDeRepository;
 
-    public void removeByOrderssId(String idOrderss) {
-        orderssDeRepository.removeByOrderssId(idOrderss);
-    }
-
-    public void removeByOrderssDeId(String idOrderssDe) {
-        OrderssDetail orderssDetail = orderssDeRepository.findOrderssDetailByOrderssDeId(idOrderssDe);
+    public void removeByOrderssDeId(String orderssDeId) {
+        OrderssDetail orderssDetail = orderssDeRepository.findOrderssDetailByOrderssDeId(orderssDeId);
         orderssDeRepository.delete(orderssDetail);
     }
 
@@ -43,12 +39,12 @@ public class OrderssDeSevice {
         return orderssDeRepository.findAll(pageable);
     }
 
-    public List<OrderssDetail> findOrderssDe(String idOrderss) {
-        return orderssDeRepository.findAllByOrderssId(idOrderss);
+    public List<OrderssDetail> findOrderssDe(String orderssId) {
+        return orderssDeRepository.findAllByOrderssId(orderssId);
     }
 
-    public List<OrderssDetail> findOrderssDetailsByOrderss(String OrderssId) {
-        return orderssDeRepository.findOrderssDetailsByOrderss(OrderssId);
+    public List<OrderssDetail> findOrderssDetailsByOrderss(String orderssId) {
+        return orderssDeRepository.findOrderssDetailsByOrderss(orderssId);
     }
 
     public List<Book> getBookFromBorrDe(Pageable pageable) {

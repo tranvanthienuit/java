@@ -3,7 +3,7 @@ package spring.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import spring.Entity.Model.Categories;
+import spring.Entity.Model.Category;
 
 import java.util.List;
 
@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CateList {
-    List<Categories> categoriesList;
+    List<Category> categoryList;
     int count;
 }

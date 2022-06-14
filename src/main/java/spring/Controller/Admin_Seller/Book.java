@@ -29,8 +29,8 @@ public class Book {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 6);
-        Page<spring.Entity.Model.Book> bookPage = booksService.getAllBook(pageable);
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<spring.Entity.Model.Book> bookPage = booksService.getAllBookByAdmin(pageable);
         List<spring.Entity.Model.Book> bookPageContent = bookPage.getContent();
         if (bookPageContent.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);

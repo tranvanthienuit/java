@@ -18,5 +18,5 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
     void removeByRoleId(@Param("roleId") String roleId);
 
     @Query("select u from Role u where u.nameRole=:nameRole")
-    Role fineRoleByName(@Param("nameRole") String nameRole);
+    Role findRoleByName(@Param("nameRole") String nameRole);
 }
