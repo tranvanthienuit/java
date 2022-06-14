@@ -8,11 +8,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.Entity.Mail;
+import spring.Entity.Model.OrderssDetail;
 import spring.Entity.Model.User;
 import spring.JWT.JwtTokenProvider;
 import spring.Repository.MailService;
 import spring.Repository.UserRepository;
 import spring.Sercurity.userDetail;
+import spring.Service.OrderssDeSevice;
 import spring.Service.OrderssSevice;
 import spring.Service.UserService;
 
@@ -35,6 +37,8 @@ public class UserController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     OrderssSevice orderssSevice;
+    @Autowired
+    OrderssDeSevice orderssDeSevice;
 
     @PostMapping(value = {"/user/sua-thong-tin", "/admin/sua-thong-tin", "/seller/sua-thong-tin"})
     public ResponseEntity<User> editInfo(@RequestBody(required = false) User user) throws Exception {
@@ -152,6 +156,15 @@ public class UserController {
         } else {
             List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrder(keysearch.get("keysearch").toString());
             return new ResponseEntity<>(orderssList, HttpStatus.OK);
+        }
+    }
+    @PostMapping(value = {"/user/tim-Orderssde/{orderId}","/user/tim-Orderssde"})
+    public ResponseEntity<?> findOrderDe(@PathVariable("orderId")String orderDeId) {
+        if (orderDeId == null){
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            List<OrderssDetail> orderssDetail = orderssDeSevice.findOrderssDe(orderDeId);
+            return new ResponseEntity<>(orderssDetail,HttpStatus.OK);
         }
     }
 }
