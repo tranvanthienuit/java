@@ -44,8 +44,13 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select u from Book u where u.author=:tacgia and u.price<:giathap and u.price<:giacao and u.publishYear=:namsb ")
     List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
                                    @Param("giacao") Integer giacao, @Param("namsb") String namsb, Pageable pageable);
+
+    @Query("select count (u) from Book u where u.author=:tacgia and u.price<:giathap and u.price<:giacao and u.publishYear=:namsb ")
+    Integer findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
+                                @Param("giacao") Integer giacao, @Param("namsb") String namsb);
+
     @Query("select u from Book u where u.category.categoryId=:categoryId")
-    List<Book> findBooksByCategoryId(@Param("categoryId")String categoryId);
+    List<Book> findBooksByCategoryId(@Param("categoryId") String categoryId);
 
     @Query("select distinct (u.author) from Book u")
     List<String> findAuthor();
@@ -55,4 +60,10 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     @Query("select distinct (u.publishYear) from Book u")
     List<String> findYearPublic();
+
+    @Query("select u from Book u where u.count<>0")
+    List<Book> countBook();
+
+    @Query("select max (u.price) from Book u")
+    Integer maxPrice();
 }

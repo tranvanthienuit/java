@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import spring.Entity.BookList;
 import spring.Entity.DataFilter;
 import spring.Entity.Filter;
 import spring.Entity.Model.Book;
@@ -21,6 +22,7 @@ public class BookService {
     public Page<Book> getAllBooks(Pageable pageable) {
         return booksRepository.getAllBooks(pageable);
     }
+
     public Page<Book> getAllBook(Pageable pageable) {
         return booksRepository.getAllBook(pageable);
     }
@@ -29,12 +31,12 @@ public class BookService {
         return booksRepository.save(book);
     }
 
-    public List<Book> searchBook(String keyword){
+    public List<Book> searchBook(String keyword) {
         return booksRepository.searchBook(keyword);
     }
 
-    public List<Book> findBooksByCategoryId(String categoryId,Pageable pageable){
-        return booksRepository.findBooksByCategoryId(categoryId,pageable);
+    public List<Book> findBooksByCategoryId(String categoryId, Pageable pageable) {
+        return booksRepository.findBooksByCategoryId(categoryId, pageable);
     }
 
     public Book findBooksByBookId(String idBook) {
@@ -52,7 +54,7 @@ public class BookService {
     }
 
     public List<Book> getAllBook() {
-        return booksRepository.findAll();
+        return booksRepository.countBook();
     }
 
     public void findBookAndUpdate(Integer count, String bookId) {
@@ -63,24 +65,31 @@ public class BookService {
         return booksRepository.findBooksByBookId(IdBook);
     }
 
-    public List<String> searchAuto(String keyword){
+    public List<String> searchAuto(String keyword) {
         return booksRepository.searchAuto(keyword);
     }
 
 
-    public List<Book> findBookByCondition(Filter filter, Pageable pageable){
-        return booksRepository.findBookByCondition(filter.getTacgia(),filter.getGiathap(), filter.getGiacao(),filter.getNamsb(),pageable);
+    public BookList findBookByCondition(Filter filter, Pageable pageable) {
+        BookList bookList = new BookList();
+        if (filter.getGiathap() == null)
+            filter.setGiathap(0);
+        if (filter.getGiacao() == null)
+            filter.setGiacao(booksRepository.maxPrice());
+        bookList.setBookList(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb(), pageable));
+        bookList.setCount(booksRepository.findBookByCondition(filter.getTacgia(), filter.getGiathap(), filter.getGiacao(), filter.getNamsb()));
+        return bookList;
     }
 
-    public List<Book> getBookByRating(Pageable pageable){
+    public List<Book> getBookByRating(Pageable pageable) {
         return booksRepository.getBookByRating(pageable);
     }
 
-    public List<Book> findBooksByCategoryId(String categoryId){
+    public List<Book> findBooksByCategoryId(String categoryId) {
         return booksRepository.findBooksByCategoryId(categoryId);
     }
 
-    public DataFilter dataFilters(){
+    public DataFilter dataFilters() {
         DataFilter dataFilter = new DataFilter();
         dataFilter.setTacgia(booksRepository.findAuthor());
         dataFilter.setGia(booksRepository.findPrice());

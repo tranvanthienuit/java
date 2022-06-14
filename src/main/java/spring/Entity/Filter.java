@@ -8,4 +8,5 @@ public class Filter {
     private Integer giathap;
     private Integer giacao;
     private String namsb;
+    private boolean ma;
 }

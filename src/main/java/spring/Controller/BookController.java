@@ -68,7 +68,7 @@ public class BookController {
     }
 
     @PostMapping(value = {"/search/book"})
-    public ResponseEntity<List<String>> searchByNameBook(@RequestBody Map<String,String> keywword) {
+    public ResponseEntity<List<String>> searchByNameBook(@RequestBody Map<String, String> keywword) {
         List<String> searchString = booksService.searchAuto(keywword.get("keyword"));
         return new ResponseEntity<>(searchString, HttpStatus.OK);
     }
@@ -86,19 +86,25 @@ public class BookController {
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @PostMapping("/search")
+    @PostMapping("/search/{page}")
     public ResponseEntity<?> findBookByCondition(@RequestBody Filter keyword,
                                                  @RequestParam(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
-        Pageable pageable = PageRequest.of(page, 6);
-        List<Book> bookList = booksService.findBookByCondition(keyword, pageable);
+        Pageable pageable = null;
+        if (keyword.isMa())
+            pageable = PageRequest.of(page, 6, Sort.by("price").ascending());
+        else
+            pageable = PageRequest.of(page, 6, Sort.by("price").descending());
+        BookList bookList = booksService.findBookByCondition(keyword, pageable);
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
+
     @GetMapping("/data-filter")
-    public ResponseEntity<?> findDataFilter(){
-        return new ResponseEntity<>(booksService.dataFilters(),HttpStatus.OK);
+    public ResponseEntity<?> findDataFilter() {
+        return new ResponseEntity<>(booksService.dataFilters(), HttpStatus.OK);
     }
+
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
     public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();
