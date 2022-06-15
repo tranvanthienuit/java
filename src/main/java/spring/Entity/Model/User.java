@@ -42,7 +42,7 @@ public class User {
 
 //    @Column(name = "nameRole")
 //    private String nameRole;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "RoleId")
     private Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

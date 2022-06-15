@@ -29,10 +29,10 @@ public class Comment {
     private java.util.Date dayAdd;
 //    @Column(name = "nameUser")
 //    private String nameUser;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "User")
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "Book")
     @JsonIgnore
     private Book book;

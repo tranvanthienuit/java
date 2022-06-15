@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class OrderssDetail {
 
     @Id
-    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "OrderssDeId")
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
@@ -24,11 +24,11 @@ public class OrderssDetail {
     private Integer count;
     @Column(name = "total_Price")
     private Double total;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "OrderssId")
     private Orderss orderss;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BooksId")
     private Book book;
 

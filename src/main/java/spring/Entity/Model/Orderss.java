@@ -17,7 +17,7 @@ import java.util.List;
 public class Orderss {
 
     @Id
-    @GeneratedValue(generator = "uuid",strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "OrderssId", updatable = false)
 //    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
@@ -41,16 +41,17 @@ public class Orderss {
     private String nameUser;
     @Column(name = "fullName")
     private String fullName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserId")
     private User user;
     @OneToMany(mappedBy = "orderss", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude
     private List<OrderssDetail> orderssDetails;
+
     //xóa các bảng, thông tin có khóa ngoại liên kết
     @PreRemove
-    public void preRemove(){
+    public void preRemove() {
         this.getOrderssDetails().remove(this);
     }
 }

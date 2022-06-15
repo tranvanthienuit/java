@@ -47,7 +47,7 @@ public class Book {
     private Integer rating = 5;
     @Column(name = "cmt")
     private Integer cmt = 0;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CategoryId")
     private Category category;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
