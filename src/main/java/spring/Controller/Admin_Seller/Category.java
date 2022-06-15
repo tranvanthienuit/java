@@ -26,7 +26,7 @@ public class Category {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 8 );
+        Pageable pageable = PageRequest.of(page, 12 );
         Page<spring.Entity.Model.Category> categoriesList = categoryService.getAllCategory(pageable);
         List<spring.Entity.Model.Category> categoryListContent = categoriesList.getContent();
         if (categoryListContent.isEmpty()) {

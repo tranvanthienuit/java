@@ -84,11 +84,11 @@ public class BookService {
         return booksRepository.findBooksByCategoryId(categoryId);
     }
 
-    public DataFilter dataFilters() {
+    public DataFilter dataFilters(String categoryId) {
         DataFilter dataFilter = new DataFilter();
-        dataFilter.setTacgia(booksRepository.findAuthor());
-        dataFilter.setGia(booksRepository.findPrice());
-        dataFilter.setNamsb(booksRepository.findYearPublic());
+        dataFilter.setTacgia(booksRepository.findAuthor(categoryId));
+        dataFilter.setGia(booksRepository.findPrice(categoryId));
+        dataFilter.setNamsb(booksRepository.findYearPublic(categoryId));
         return dataFilter;
     }
 }

@@ -50,7 +50,8 @@ public class UserCart {
         } else {
             user = objectCart.getUser();
         }
-
+        user.setAddress(objectCart.getUser().getAddress());
+        user.setTelephone(objectCart.getUser().getTelephone());
 
         LocalDate ldate = LocalDate.now();
         Date date = Date.valueOf(ldate);

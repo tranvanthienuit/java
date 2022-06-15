@@ -60,14 +60,14 @@ public class HomeController {
             page = 0;
         }
         //lấy tất cả các sách và số lưởng tổng
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 12);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
-        Pageable pageable1 = PageRequest.of(0,8);
+        Pageable pageable1 = PageRequest.of(0,12);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sách mà khách hàng đã mượn
@@ -96,14 +96,14 @@ public class HomeController {
             page = 0;
         }
         //lấy tất cả các sách và số lưởng tổng
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 12);
         Page<Book> bookPage = booksService.getAllBooks(pageable);
         List<Book> bookPageContent = bookPage.getContent();
         bookList.setBookList(bookPageContent);
         bookList.setCount(booksService.getAllBook().size());
 
         // lấy sách dựa trên những phiếu mượn sách trước
-        Pageable pageable1 = PageRequest.of(0, 8);
+        Pageable pageable1 = PageRequest.of(0, 12);
         List<Book> bookOrder = orderssDeSevice.getBookFromBorrDe(pageable1);
 
         // lấy sách dựa trên số sao đánh giá cao nhất

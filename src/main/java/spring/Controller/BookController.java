@@ -60,7 +60,7 @@ public class BookController {
 
     @GetMapping("/sach-moi")
     public ResponseEntity<List<Book>> findbyarrive() throws Exception {
-        Pageable pageable = PageRequest.of(0, 8, Sort.by("dayAdd").descending());
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("dayAdd").descending());
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
         List<Book> bookList = bookPage.getContent();
         if (bookList.isEmpty()) {
@@ -80,7 +80,7 @@ public class BookController {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 12);
         List<Book> book = booksService.findBooksByCategoryId(categoryId, pageable);
         BookList bookList = new BookList();
         bookList.setBookList(book);
@@ -95,16 +95,16 @@ public class BookController {
             page = 0;
         Pageable pageable = null;
         if (keyword.isMa())
-            pageable = PageRequest.of(page, 8, Sort.by("price").ascending());
+            pageable = PageRequest.of(page, 12, Sort.by("price").ascending());
         else
-            pageable = PageRequest.of(page, 8, Sort.by("price").descending());
+            pageable = PageRequest.of(page, 12, Sort.by("price").descending());
         BookList bookList = booksService.findBookByCondition(keyword, pageable);
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @GetMapping("/data-filter")
-    public ResponseEntity<?> findDataFilter() {
-        return new ResponseEntity<>(booksService.dataFilters(), HttpStatus.OK);
+    @GetMapping("/data-filter/{categoryId}")
+    public ResponseEntity<?> findDataFilter(@PathVariable("categoryId")String categoryId) {
+        return new ResponseEntity<>(booksService.dataFilters(categoryId), HttpStatus.OK);
     }
 
     @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})

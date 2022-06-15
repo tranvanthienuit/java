@@ -43,7 +43,7 @@ public class OrderssDe {
         if (page == null) {
             page = 0;
         }
-        Pageable pageable = PageRequest.of(page, 8);
+        Pageable pageable = PageRequest.of(page, 12);
         Page<OrderssDetail> OrderssDetailPage = orderssDeSevice.getAllOrderssDe(pageable);
         List<OrderssDetail> orderssDetailPageContent = OrderssDetailPage.getContent();
         if (orderssDetailPageContent.isEmpty()) {
